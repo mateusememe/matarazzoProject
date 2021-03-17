@@ -1,9 +1,13 @@
 import React from 'react';
+import '../main.css';
+import Header from '../../components/Header'
 
 export default function Inicio() {
+    
+    
     return(
-        <div>
-            <h1>hello world</h1>
-        </div>
+        <React.Fragment>
+            <Header />
+        </React.Fragment>
     );
 }
