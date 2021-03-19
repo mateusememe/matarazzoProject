@@ -7,8 +7,10 @@ export default function Cadastro() {
             <div className="form">
                 <h1 className="title">CADASTRO</h1>
                 <form>
-                    <input type="text" placeholder="Digite seu primeiro nome..."></input>
-                    <input type="text" placeholder="Digite seu sobrenome..."></input>
+                    <div className="flexName">
+                        <input style={{width: "45%"}}type="text" placeholder="Digite seu primeiro nome..."></input>
+                        <input style={{width: "45%"}} type="text" placeholder="Digite seu sobrenome..."></input>
+                    </div>
                     <input type="email" placeholder="Digite seu email..."></input>
                     <input type="text" placeholder="Digite seu cpf..."></input>
                 </form>
