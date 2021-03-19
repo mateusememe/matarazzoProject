@@ -37,5 +37,11 @@ routes.post('/eventos',EveCtrl.gravarEvento);
 routes.put('/eventos',EveCtrl.alterarEvento);
 routes.delete('/eventos/:eve_id', EveCtrl.excluirEvento);
 
+const NotCtrl = require('./Controllers/NoticiaCtrl');
+
+routes.get('/noticias',NotCtrl.listarNoticia);
+routes.post('/noticias',NotCtrl.gravarNoticia);
+routes.put('/noticias',NotCtrl.alterarNoticia);
+routes.delete('/noticias/:not_id', NotCtrl.excluirNoticia);
 
 module.exports = routes;
