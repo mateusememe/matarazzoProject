@@ -3,12 +3,12 @@ const db = require('../models/Database');
 module.exports = {
 //cadastros básicos e login
     async login(request, response) {
-        const {email, senha} = request.query;
+        const {email, senha} = request.body;
         const con = await db.conecta();
         const sql = "SELECT * FROM Usuario WHERE usu_email = ? and usu_senha = ?";
         const valores = [email, senha];
         const result = await db.consulta(sql, valores);
-        return response.json(result);
+        return response.json(result.data);
     },
     async listarUsuarios(request, response) {
         const con = await db.conecta();

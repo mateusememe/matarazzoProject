@@ -11,7 +11,6 @@ export default function Cadastro() {
                     <input type="text" placeholder="Digite seu sobrenome..."></input>
                     <input type="email" placeholder="Digite seu email..."></input>
                     <input type="text" placeholder="Digite seu cpf..."></input>
-
                 </form>
                 <a href="/login"><span>Ja possuo uma conta</span></a>
                 <button>CRIAR CONTA</button>

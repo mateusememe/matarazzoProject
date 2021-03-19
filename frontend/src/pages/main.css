@@ -35,6 +35,21 @@
     border-bottom: 2px solid rgb(255, 186, 37);
 }
 
+.form-links {
+    font-size: 12px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #f5c359;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: flex-end;
+    transition: 0.5s;
+}
+
+.form-links:hover {
+    color: #ddb150;
+}
+
 button { 
     border: none;
     padding: 10px;

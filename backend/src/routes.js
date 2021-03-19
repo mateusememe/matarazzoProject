@@ -7,6 +7,7 @@ routes.post('/usuarios',UsuCtrl.gravarUsuario);
 routes.get('/usuarios',UsuCtrl.listarUsuarios);
 routes.put('/usuarios',UsuCtrl.alterarUsuario);
 routes.delete('/usuarios/:usu_id', UsuCtrl.excluirUsuario);
+routes.post('/usuarios/login', UsuCtrl.login);
 
 const AssCtrl = require('./Controllers/AssentoCtrl');
 
