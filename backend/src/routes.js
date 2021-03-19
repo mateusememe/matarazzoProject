@@ -22,5 +22,12 @@ routes.get('/categorias',CatCtrl.listarCategorias);
 routes.put('/categorias',CatCtrl.alterarCategoria);
 routes.delete('/categorias/:cat_id', CatCtrl.excluirCategoria);
 
+const CurCtrl = require('./Controllers/CursoCtrl');
+
+routes.get('/cursos',CurCtrl.listarCursos);
+routes.post('/cursos',CurCtrl.gravarCaurso);
+routes.put('/cursos',CurCtrl.alterarCurso);
+routes.delete('/cursos/:cur_id', CurCtrl.excluirCurso);
+
 
 module.exports = routes;
