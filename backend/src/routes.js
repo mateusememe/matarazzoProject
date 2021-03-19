@@ -5,9 +5,10 @@ const UsuCtrl = require('./Controllers/UsuarioCtrl');
 
 routes.post('/usuarios/cadastro', UsuCtrl.gravarUsuario);
 routes.get('/usuarios', UsuCtrl.listarUsuarios);
-routes.put('/usuarios', UsuCtrl.alterarUsuario);
+routes.put('/usuarios/alterar', UsuCtrl.alterarUsuario);
 routes.delete('/usuarios/:usu_id', UsuCtrl.excluirUsuario);
 routes.post('/usuarios/login', UsuCtrl.login);
+routes.get('/usuarios/busca/:usu_id', UsuCtrl.buscarUsuario);//busca de um determinado usuário
 
 const AssCtrl = require('./Controllers/AssentoCtrl');
 

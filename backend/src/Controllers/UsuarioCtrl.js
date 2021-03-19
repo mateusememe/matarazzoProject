@@ -29,16 +29,16 @@ module.exports = {
     async gravarUsuario(request, response) {
         const {
             usu_nome, usu_sobrenome, usu_email,
-            usu_senha, usu_status
+            usu_senha, usu_nivel
         } = request.body;
         await db.conecta();
         const sql = "INSERT INTO Usuario (usu_nome, usu_sobrenome," +
-            "usu_email, usu_senha, usu_status) " +
+            "usu_email, usu_senha, usu_nivel) " +
             "VALUES (?, ?, ?, ?, ?)";
         
         const valores = [
             usu_nome, usu_sobrenome, usu_email,
-            usu_senha, usu_status
+            usu_senha, usu_nivel
         ];
         const result = await db.manipula(sql, valores);
         return response.json(result);
@@ -51,7 +51,9 @@ module.exports = {
             usu_cidade, usu_cep, usu_fone, usu_sexo, usu_id
         } = request.body;
         await db.conecta();
-        const sql = "UPDATE Usuario SET usu_nome = ?, usu_sobrenome = ?, usu_email = ?, usu_senha = ?, usu_cpf = ?, usu_dtNasc = ?, usu_endereco = ?, usu_cidade = ?, usu_cep = , usu_fone = ?, usu_sexo = ? WHERE usu_id = ?";
+        const sql = "UPDATE Usuario SET usu_nome = ?, usu_sobrenome = ?,"
+       +" usu_email = ?, usu_senha = ?, usu_cpf = ?, usu_dtNasc = ?, usu_endereco = ?,"
+       +" usu_cidade = ?, usu_cep = ?, usu_fone = ?, usu_sexo = ? WHERE usu_id = ?";
         const valores = [
             usu_nome, usu_sobrenome, usu_email,
             usu_senha, usu_cpf, usu_dtNasc, usu_endereco,
