@@ -29,14 +29,12 @@
     transition: 0.5s;
     outline: none;
     -webkit-transition: 0.5s;
-    
 }
 
 .form input:focus {
     border-bottom: 2px solid rgb(255, 186, 37);
 }
 
-<<<<<<< HEAD
 .form-links {
     font-size: 12px;
     font-weight: bold;
@@ -50,12 +48,11 @@
 
 .form-links:hover {
     color: #ddb150;
-=======
+}
+
 .flexName{
     display: flex;
     justify-content: space-between;
-
->>>>>>> f2eb2e41c220f81136c8aee86dd88edfa5eab9f9
 }
 
 button { 
