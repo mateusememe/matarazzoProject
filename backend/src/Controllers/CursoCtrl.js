@@ -2,14 +2,14 @@ const db = require('../models/Database');
 
 module.exports = {
 
-    async listarCursos(request, response) {//f
+    async listarCursos(request, response) {//ok
         await db.conecta();
         const sql = "SELECT * FROM curso";
         const cursos = await db.consulta(sql);
         return response.json(cursos.data);
     },
 
-    async gravarCurso(request, response){//f
+    async gravarCurso(request, response){//ok
         const {cur_nome, cur_status, usu_id, cat_id} = request.body;
         await db.conecta();
         const sql = "INSERT INTO curso (cur_nome, cur_status, usu_id, cat_id) "+
@@ -19,7 +19,7 @@ module.exports = {
         return response.json(result);
     },
 
-    async alterarCurso(request, response) {//f
+    async alterarCurso(request, response) {//ok
         const {cur_id, cur_nome, cur_status, usu_id, cat_id} = request.body;
         await db.conecta();
         const sql = "UPDATE Curso SET cur_nome = ?, cur_status = ?, usu_id = ?, cat_id = ? WHERE cur_id = ?";
@@ -28,7 +28,7 @@ module.exports = {
         return response.json(result);
     },
 
-    async excluirCurso(request, response) {
+    async excluirCurso(request, response) {//ok
         const {cur_id} = request.params;
         await db.conecta();
         const sql = "DELETE FROM Curso WHERE cur_id = ?";

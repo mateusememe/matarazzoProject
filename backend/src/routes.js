@@ -25,9 +25,16 @@ routes.delete('/categorias/:cat_id', CatCtrl.excluirCategoria);
 const CurCtrl = require('./Controllers/CursoCtrl');
 
 routes.get('/cursos',CurCtrl.listarCursos);
-routes.post('/cursos',CurCtrl.gravarCaurso);
+routes.post('/cursos',CurCtrl.gravarCurso);
 routes.put('/cursos',CurCtrl.alterarCurso);
 routes.delete('/cursos/:cur_id', CurCtrl.excluirCurso);
+
+const EveCtrl = require('./Controllers/EventoCtrl');
+
+routes.get('/eventos',EveCtrl.listarEvento);
+routes.post('/eventos',EveCtrl.gravarEvento);
+routes.put('/eventos',EveCtrl.alterarEvento);
+routes.delete('/eventos/:eve_id', EveCtrl.excluirEvento);
 
 
 module.exports = routes;
