@@ -18,31 +18,45 @@ module.exports = {
         return response.json(usuarios.data);
     },
 
+    async buscarUsuario(request, response) {
+        const { usu_id } = request.params;
+        await db.conecta();
+        const sql = "SELECT * FROM Usuario WHERE usu_id = "+usu_id;
+        const usuarios = await db.consulta(sql);
+        return response.json(usuarios.data);
+    },
+
     async gravarUsuario(request, response) {
         const {
-            nome, sobrenome, email,
-            senha, cpf, endereco,
-            cidade, cep
+            usu_nome, usu_sobrenome, usu_email,
+            usu_senha, usu_status
         } = request.body;
         await db.conecta();
         const sql = "INSERT INTO Usuario (usu_nome, usu_sobrenome," +
-            "usu_email, usu_senha, usu_cpf, " +
-            "usu_endereco, usu_cidade, usu_cep) " +
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            "usu_email, usu_senha, usu_status) " +
+            "VALUES (?, ?, ?, ?, ?)";
+        
         const valores = [
-            nome, sobrenome, email,
-            senha, cpf, endereco, 
-            cidade, cep
+            usu_nome, usu_sobrenome, usu_email,
+            usu_senha, usu_status
         ];
         const result = await db.manipula(sql, valores);
         return response.json(result);
     },
 
     async alterarUsuario(request, response) {
-        const { usu_id, usu_email, usu_senha, usu_nome, usu_dtNasc, usu_fone, usu_cpf, usu_sexo } = request.body;
+        const {
+            usu_nome, usu_sobrenome, usu_email,
+            usu_senha, usu_cpf, usu_dtNasc, usu_endereco,
+            usu_cidade, usu_cep, usu_fone, usu_sexo, usu_id
+        } = request.body;
         await db.conecta();
-        const sql = "UPDATE Usuario SET usu_email = ?, usu_senha = ?, usu_nome = ?, usu_dtNasc = ?, usu_fone = ?, usu_cpf = ?, usu_sexo = ? WHERE usu_id = ?";
-        const valores = [usu_email, usu_senha, usu_nome, usu_dtNasc, usu_fone, usu_cpf, usu_sexo, usu_id];
+        const sql = "UPDATE Usuario SET usu_nome = ?, usu_sobrenome = ?, usu_email = ?, usu_senha = ?, usu_cpf = ?, usu_dtNasc = ?, usu_endereco = ?, usu_cidade = ?, usu_cep = , usu_fone = ?, usu_sexo = ? WHERE usu_id = ?";
+        const valores = [
+            usu_nome, usu_sobrenome, usu_email,
+            usu_senha, usu_cpf, usu_dtNasc, usu_endereco,
+            usu_cidade, usu_cep,usu_fone, usu_sexo, usu_id
+        ];
         const result = await db.manipula(sql, valores);
         return response.json(result);
     },
