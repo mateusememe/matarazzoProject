@@ -7,20 +7,15 @@ export default function Cadastro() {
     const [sobrenome, setSobrenome] = useState('');
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
-    const [cpf, setCpf] = useState('');
-    const [dataNasc, setDataNasc] = useState('');
-    const [endereco, setEndereco] = useState('');
-    const [cidade, setCidade] = useState('');
-    const [cep, setCep] = useState('');
+    const [nivel, setNivel] = useState('');
 
     async function registrar(e) {
         e.preventDefault();
 
         await api.post('usuarios/cadastro', 
             {
-                nome, sobrenome, email,
-                senha, cpf,
-                endereco, cidade, cep
+                nome, sobrenome, 
+                email, senha, nivel
             }
         );
 
@@ -28,10 +23,7 @@ export default function Cadastro() {
         setSobrenome('');
         setEmail('');
         setSenha('');
-        setCpf('');
-        setEndereco('');
-        setCidade('');
-        setCep('');
+        setNivel('');
     }
     return (
         <React.Fragment>
@@ -63,37 +55,6 @@ export default function Cadastro() {
                             value={senha} onChange={e => setSenha(e.target.value)}
                             placeholder="Digite sua senha..."
                         ></input>
-                        <div className="flexName">
-                            <input
-                                style={{ width: "55%" }}
-                                type="text" name="cpf" id="cpf"
-                                value={cpf} onChange={e => setCpf(e.target.value)}
-                                placeholder="Digite seu cpf..."
-                            ></input>
-                            <input
-                                style={{ width: "35%" }}
-                                type="date"
-                            ></input>
-                        </div>
-                        <input
-                            type="text" name="endereco" id="endereco"
-                            value={endereco} onChange={e => setEndereco(e.target.value)}
-                            placeholder="Digite seu endereço (com o nº)..."
-                        ></input>
-                        <div className="flexName">
-                            <input
-                                style={{ width: "55%" }}
-                                type="text" name="cidade" id="cidade"
-                                value={cidade} onChange={e => setCidade(e.target.value)}
-                                placeholder="Digite o nome da sua Cidade..."
-                            ></input>
-                            <input
-                                style={{ width: "35%" }}
-                                type="text" name="cep" id="cep"
-                                value={cep} onChange={e => setCep(e.target.value)}
-                                placeholder="Digite seu CEP..."
-                            ></input>
-                        </div>
                         <Link to="/login" className="form-links">Ja possuo uma conta</Link>
                         <button type="submit">CRIAR CONTA</button>
                     </form>
