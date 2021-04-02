@@ -18,3 +18,37 @@
     outline: none !important;
     border: 2px solid #231f20 !important;
 }
+
+.form-links {
+    font-size: 14px;
+    font-weight: bold;
+    color: #095283;
+}
+
+.form-links:hover {
+    color: #0b5f97;
+    font-style: normal;
+}
+
+.title {
+    color: #231f20;
+    text-align: center;
+    font-weight: bold;
+    padding: 2vw;
+}
+
+.bg-brown {
+    color: #f9f8f9;
+    font-weight: bold;
+    background-color: #231f20;
+    transition: all .15s ease-in-out;
+}
+
+.bg-brown:hover {
+    color: #f9f8f9;
+    background-color: #363032;
+}
+
+.bg-brown:focus {
+    box-shadow: none;
+}

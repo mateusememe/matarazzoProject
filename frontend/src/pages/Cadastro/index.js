@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import api from '../../services/api.js'
-import Navbar from '../../components/Navbar'
+import api from '../../services/api.js';
+import { Container, Row } from 'react-bootstrap';
+
 import './cadastro.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function Cadastro() {
     const [usu_nome, setNome] = useState('');
@@ -14,9 +16,9 @@ export default function Cadastro() {
     async function registrar(e) {
         e.preventDefault();
 
-        await api.post('/usuarios/cadastro', 
+        await api.post('/usuarios/cadastro',
             {
-                usu_nome, usu_sobrenome, 
+                usu_nome, usu_sobrenome,
                 usu_email, usu_senha
             }
         );
@@ -25,46 +27,60 @@ export default function Cadastro() {
         setSobrenome('');
         setEmail('');
         setSenha('');
-        
+
         alert('CADASTRADO COM SUCESSO!');
         history.push('./');
     }
     return (
         <React.Fragment>
-            <Navbar />
-            <h1 className="title">CADASTRO</h1>
-            <main className="container">
-                <div className="form">
-                    <form method="post" onSubmit={registrar}>
-                        <div className="flexName">
-                            <input
-                                style={{ width: "45%" }}
-                                type="text" name="usu_nome" id="usu_nome"
-                                value={usu_nome} onChange={e => setNome(e.target.value)}
-                                placeholder="Digite seu primeiro nome..."
-                            ></input>
-                            <input
-                                style={{ width: "45%" }}
-                                type="text" name="usu_sobrenome" id="usu_sobrenome"
-                                value={usu_sobrenome} onChange={e => setSobrenome(e.target.value)}
-                                placeholder="Digite seu sobrenome..."
-                            ></input>
-                        </div>
-                        <input
-                            type="email" name="usu_email" id="usu_email"
-                            value={usu_email} onChange={e => setEmail(e.target.value)}
-                            placeholder="Digite seu email..."
-                        ></input>
-                        <input
-                            type="password" name="usu_senha" id="usu_senha"
-                            value={usu_senha} onChange={e => setSenha(e.target.value)}
-                            placeholder="Digite sua usu_senha..."
-                        ></input>
-                        <Link to="/login" className="form-links">Ja possuo uma conta</Link>
-                        <button type="submit">CRIAR CONTA</button>
-                    </form>
-                </div>
-            </main>
+            <Container>
+                <Row style={{ minHeight: "100vh" }} className="align-items-center justify-content-center">
+                    <div style={{ minWidth: "50vh" }}>
+                        <h1 className="title">CADASTRO</h1>
+                        <form method="post" onSubmit={registrar}>
+                            <div className="form-row form-group">
+                                <div className="col">
+                                    <input
+                                        className="form-ctrl"
+                                        type="text" name="usu_nome" id="usu_nome"
+                                        value={usu_nome} onChange={e => setNome(e.target.value)}
+                                        placeholder="Digite seu primeiro nome..."
+                                    ></input>
+                                </div>
+                                <div className="col">
+                                    <input
+                                        className="form-ctrl"
+                                        type="text" name="usu_sobrenome" id="usu_sobrenome"
+                                        value={usu_sobrenome} onChange={e => setSobrenome(e.target.value)}
+                                        placeholder="Digite seu sobrenome..."
+                                    ></input>
+                                </div>
+                            </div>
+                            <div className="form-group">
+                                <input
+                                    className="form-ctrl"
+                                    type="email" name="usu_email" id="usu_email"
+                                    value={usu_email} onChange={e => setEmail(e.target.value)}
+                                    placeholder="Digite seu email..."
+                                ></input>
+                            </div>
+
+                            <div className="form-group mb-1">
+                                <input
+                                    className="form-ctrl"
+                                    type="password" name="usu_senha" id="usu_senha"
+                                    value={usu_senha} onChange={e => setSenha(e.target.value)}
+                                    placeholder="Digite sua senha..."
+                                ></input>
+                            </div>
+                            <div className="form-group d-flex flex-row-reverse">
+                                <Link to="/login" className="form-links">Ja possuo uma conta</Link>
+                            </div>
+                            <button className="btn bg-brown w-100" type="submit">CRIAR CONTA</button>
+                        </form>
+                    </div>
+                </Row>
+            </Container>
         </React.Fragment>
     );
 }

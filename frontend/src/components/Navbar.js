@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState, useEffect } from 'react'
 import { NavLink, useHistory } from 'react-router-dom'
 import { ReactComponent as Logo } from '../assets/Logo.svg'
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -10,8 +10,14 @@ const Navbar = () => {
     const [navbar, setNavbar] = useState(false);
     const history = useHistory();
 
+    useEffect(() => {
+        return () => {
+          setNavbar({});
+        };
+    }, []);
+    
     const alterarNav = () => {
-        if(window.scrollY >= 100)
+        if (window.scrollY >= 100)
             setNavbar(true);
         else
             setNavbar(false);
@@ -32,10 +38,10 @@ const Navbar = () => {
                     <div>
                         <Logo />
                     </div>
-                    <div className="header-nav">
+                    <div className="header-nav align-items-center">
                         <NavLink to='./minha-conta'>Minha conta</NavLink>
                         <NavLink to='./'>
-                            <button onClick={logOut}>SAIR</button>
+                            <button className="btn bt-dark bg-yellow" onClick={logOut}>SAIR</button>
                         </NavLink>
                     </div>
                 </div>
@@ -50,11 +56,11 @@ const Navbar = () => {
                     </div>
                     <div className="header-nav">
                         <NavLink to='/login'>
-                            <button className="button">LOGIN</button>
+                            <button className="btn bt-dark bg-yellow">LOGIN</button>
                         </NavLink>
 
                         <NavLink to='/cadastro'>
-                            <button className="button">CADASTRO</button>
+                            <button className="btn bt-dark bg-yellow">CADASTRO</button>
                         </NavLink>
                     </div>
                 </div>
