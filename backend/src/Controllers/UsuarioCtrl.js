@@ -3,10 +3,10 @@ const db = require('../models/Database');
 module.exports = {
     //cadastros básicos e login
     async login(request, response) {
-        const { email, senha } = request.body;
+        const { usu_email, usu_senha } = request.body;
         await db.conecta();
         const sql = "SELECT * FROM Usuario WHERE usu_email = ? and usu_senha = ?";
-        const valores = [email, senha];
+        const valores = [usu_email, usu_senha];
         const result = await db.consulta(sql, valores);
         return response.json(result.data);
     },
@@ -27,9 +27,10 @@ module.exports = {
     },
 
     async gravarUsuario(request, response) {
+        const usu_nivel = 'U';
         const {
             usu_nome, usu_sobrenome, usu_email,
-            usu_senha, usu_nivel
+            usu_senha
         } = request.body;
         await db.conecta();
         const sql = "INSERT INTO Usuario (usu_nome, usu_sobrenome," +

@@ -6,7 +6,7 @@ import Login from './pages/Login/'
 import Cadastro from './pages/Cadastro'
 
 export default function Rotas() {
-    return(
+    return (
         <BrowserRouter>
             <Switch>
                 <Route path="/" exact component={Inicio} />
