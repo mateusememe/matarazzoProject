@@ -16,19 +16,19 @@ export default function PainelAdm() {
                     <Row className="mt-5 mb-5">
                         <Col sm={3}>
                             <Nav variant="pills" className="flex-column">
-                                <NavDropdown title="Gerenciar Curso" id="nav-dropdown">
+                                <NavDropdown className="a" title="Gerenciar Curso" id="nav-dropdown">
                                     <NavDropdown.Item eventKey="add-curso">Adicionar Novo</NavDropdown.Item>
                                     <NavDropdown.Divider />
                                     <NavDropdown.Item eventKey="edit-curso">Alterar Existente</NavDropdown.Item>
                                     <NavDropdown.Item eventKey="remove-curso">Remover Existente</NavDropdown.Item>
                                 </NavDropdown>
-                                <NavDropdown title="Gerenciar Evento" id="nav-dropdown">
-                                    <NavDropdown.Item eventKey="add-evento">Adicionar Novo</NavDropdown.Item>
+                                <NavDropdown className="a" title="Gerenciar Evento" id="nav-dropdown">
+                                    <NavDropdown.Item className="a" eventKey="add-evento">Adicionar Novo</NavDropdown.Item>
                                     <NavDropdown.Divider />
-                                    <NavDropdown.Item eventKey="edit-evento">Alterar Existente</NavDropdown.Item>
-                                    <NavDropdown.Item eventKey="remove-evento">Remover Existente</NavDropdown.Item>
+                                    <NavDropdown.Item className="a" eventKey="edit-evento">Alterar Existente</NavDropdown.Item>
+                                    <NavDropdown.Item className="a" eventKey="remove-evento">Remover Existente</NavDropdown.Item>
                                 </NavDropdown>
-                                <NavDropdown title="Gerenciar Noticia" id="nav-dropdown">
+                                <NavDropdown className="a" title="Gerenciar Noticia" id="nav-dropdown">
                                     <NavDropdown.Item eventKey="add-noticia">Adicionar Novo</NavDropdown.Item>
                                     <NavDropdown.Divider />
                                     <NavDropdown.Item eventKey="edit-noticia">Alterar Existente</NavDropdown.Item>

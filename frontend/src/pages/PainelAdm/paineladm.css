@@ -13,11 +13,11 @@
     font-weight: bold;
 }
 
-a {
+.a a {
     color: #231f20;
 }
 
-a:hover {
+.a a:hover {
     color: #554b4e;
     background-color: #e7d06b;
 }
