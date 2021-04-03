@@ -4,7 +4,7 @@ import { Card, Badge, Button } from 'react-bootstrap';
 export default function CapaCurso({ data }) {
     
     return (
-        <Card className="h-100 shadow-sm bg-transparent rounded">
+        <Card className="h-100 shadow-sm bg-white rounded">
             <Card.Img variant="top" src="https://i.imgur.com/JOXBB8V.jpg"/>
             <Card.Body className="d-flex flex-column">
                 <Card.Img />
