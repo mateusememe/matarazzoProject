@@ -51,11 +51,14 @@ export default function Inicio() {
                 <Col className="mb-4">
                     <h1 className="title">Cursos Abertos</h1>
                     <Row>
-                        {cursos.map(curso => (
-                            <Col xs={3} className="mb-0" key={`${curso.cur_id}`}>
-                                <CapaCurso data={curso} />
-                            </Col>
-                        ))}
+                        {cursos.length !== 0
+                            ? cursos.map(curso => (
+                                <Col xs={3} className="mb-0" key={`${curso.cur_id}`}>
+                                    <CapaCurso data={curso} />
+                                </Col>
+                            ))
+                            : <span style={{textAlign: 'center'}}>Não existem cursos </span>
+                        }
                     </Row>
                 </Col>
             </Container>

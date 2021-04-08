@@ -10,20 +10,21 @@ module.exports = {
     },
 
     async gravarCurso(request, response){//ok
-        const {cur_nome, cur_status, usu_id, cat_id} = request.body;
+        const {cur_nome, cur_status, cur_adm, cur_categoria, cur_valor} = request.body;
+        console.log(request.body);
         await db.conecta();
-        const sql = "INSERT INTO curso (cur_nome, cur_status, usu_id, cat_id) "+
-        "VALUES (?, ?, ?, ?)";
-        const valores = [cur_nome, cur_status, usu_id, cat_id];
+        const sql = "INSERT INTO curso (cur_nome, cur_status, usu_id, cat_id, cur_valor) "+
+        "VALUES (?, ?, ?, ?, ?)";
+        const valores = [cur_nome, cur_status, cur_adm, cur_categoria, cur_valor];
         const result = await db.manipula(sql, valores);
         return response.json(result);
     },
 
     async alterarCurso(request, response) {//ok
-        const {cur_id, cur_nome, cur_status, usu_id, cat_id} = request.body;
+        const {cur_nome, cur_status, cur_adm, cur_categoria, cur_valor} = request.body;
         await db.conecta();
-        const sql = "UPDATE Curso SET cur_nome = ?, cur_status = ?, usu_id = ?, cat_id = ? WHERE cur_id = ?";
-        const valores = [cur_nome, cur_status, usu_id, cat_id, cur_id];
+        const sql = "UPDATE Curso SET cur_nome = ?, cur_status = ?, usu_id = ?, cur_valor = ?, cat_id = ? WHERE cur_id = ?";
+        const valores = [cur_nome, cur_status, cur_adm, cur_categoria, cur_valor, cur_id];
         const result = await db.manipula(sql, valores);
         return response.json(result);
     },

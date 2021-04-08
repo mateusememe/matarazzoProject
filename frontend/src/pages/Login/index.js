@@ -20,6 +20,7 @@ export default function Login() {
         if (response.data.length !== 0) {
             localStorage.setItem('usu_email', usu_email);
             localStorage.setItem('usu_senha', usu_senha);
+            localStorage.setItem('usu_id', response.data[0].usu_id);
             history.push('./');
         }
     }
