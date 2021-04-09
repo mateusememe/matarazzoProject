@@ -28,6 +28,8 @@ const Navbar = () => {
     function logOut() {
         localStorage.removeItem('usu_email');
         localStorage.removeItem('usu_senha');
+        localStorage.removeItem('usu_nivel');
+        localStorage.removeItem('usu_id');
         history.push('./');
     }
 

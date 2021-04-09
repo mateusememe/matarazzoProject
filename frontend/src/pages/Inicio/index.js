@@ -14,12 +14,12 @@ export default function Inicio() {
     const [eventos, setEvento] = useState([]);
     const [cursos, setCurso] = useState([]);
 
-    async function carregarEventos(params) {
+    async function carregarEventos() {
         const response = await api.get('/eventos');
         setEvento(response.data);
     }
 
-    async function carregarCursos(params) {
+    async function carregarCursos() {
         const response = await api.get('/cursos');
         setCurso(response.data);
     }
@@ -41,11 +41,15 @@ export default function Inicio() {
                 <Col className="mb-4">
                     <h1 className="title">Proximos Eventos</h1>
                     <Row>
-                        {eventos.map(evento => (
-                            <Col xs={3} className="mb-0" key={`${evento.eve_id}`}>
-                                <CapaEvento data={evento} />
-                            </Col>
-                        ))}
+                        {eventos.length !== 0
+                            ? eventos.map(evento => (
+                                <Col xs={3} className="mb-0" key={`${evento.eve_id}`}>
+                                    <CapaEvento data={evento} />
+                                </Col>
+
+                            ))
+                            : <span style={{ textAlign: 'center' }}>Não existem cursos</span>
+                        }
                     </Row>
                 </Col>
                 <Col className="mb-4">
@@ -57,7 +61,7 @@ export default function Inicio() {
                                     <CapaCurso data={curso} />
                                 </Col>
                             ))
-                            : <span style={{textAlign: 'center'}}>Não existem cursos </span>
+                            : <span style={{ textAlign: 'center' }}>Não existem cursos</span>
                         }
                     </Row>
                 </Col>

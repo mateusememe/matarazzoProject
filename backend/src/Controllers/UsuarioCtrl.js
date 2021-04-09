@@ -19,10 +19,11 @@ module.exports = {
     },
 
     async buscarUsuario(request, response) {
-        const { usu_id } = request.params;
+        const { usu_email } = request.params;
         await db.conecta();
-        const sql = "SELECT * FROM Usuario WHERE usu_id = "+usu_id;
-        const usuarios = await db.consulta(sql);
+        const sql = "SELECT usu_email FROM Usuario WHERE usu_email = ?";
+        const value = [ usu_email ];
+        const usuarios = await db.consulta(sql, value);
         return response.json(usuarios.data);
     },
 

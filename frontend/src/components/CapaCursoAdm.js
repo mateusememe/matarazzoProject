@@ -15,7 +15,7 @@ export default function CapaCurso({ data }) {
                 <Button className="m-0 p-0 border-0 bg-transparent"><FiEdit style={{color: "#231f20"}} /></Button>
                 <Button onClick={() => removerCurso(data.cur_id)} className="ml-2 p-0 border-0 bg-transparent"><FiDelete style={{color: "#231f20"}} /></Button>
             </div>
-            <Card.Img variant="top" src="https://i.imgur.com/JOXBB8V.jpg"/>
+            <Card.Img variant="top" src={"uploads/" + data.cur_img}/>
             <Card.Body className="d-flex flex-column">
                 <Card.Img />
                 <Card.Title className="mb-0 font-weight-bold">{data.cur_nome}</Card.Title>
