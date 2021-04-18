@@ -7,7 +7,6 @@ import CapaEvento from '../../components/CapaEvento'
 import CapaCurso from '../../components/CapaCurso'
 import CarouselIni from '../../components/CarouselIni'
 
-import '../main.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function Inicio() {
@@ -15,12 +14,12 @@ export default function Inicio() {
     const [cursos, setCurso] = useState([]);
 
     async function carregarEventos() {
-        const response = await api.get('/eventos');
+        const response = await api.get('/eventosAtivos');
         setEvento(response.data);
     }
 
     async function carregarCursos() {
-        const response = await api.get('/cursos');
+        const response = await api.get('/cursosAtivos');
         setCurso(response.data);
     }
 

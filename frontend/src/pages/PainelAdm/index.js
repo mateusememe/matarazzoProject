@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import api from '../../services/api.js';
-import { Container, Row, Col, Tab, Nav, NavDropdown } from 'react-bootstrap';
-
-import CapaEvento from '../../components/CapaEventoAdm'
-import CapaCurso from '../../components/CapaCursoAdm'
-import CapaNoticia from '../../components/CapaNoticiaAdm'
+import {
+    Container, Row, Col, Tab, Nav,
+    NavDropdown, Table, Button
+} from 'react-bootstrap';
+import { FiTrash, FiEdit } from "react-icons/fi"
 
 import './paineladm.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function PainelAdm() {
     const usu_id = localStorage.getItem("usu_id");
-    const usu_nivel = localStorage.getItem("usu_nivel");
+    const nivel = localStorage.getItem("usu_nivel");
     const [checado, setChecado] = useState(false);
     const [checado2, setChecado2] = useState(false);
     const [erroMsg, setErroMsg] = useState('');
@@ -22,6 +22,8 @@ export default function PainelAdm() {
     const [cursos, setCurso] = useState([]);
     const [noticias, setNoticia] = useState([]);
     const [categorias, setCategoria] = useState([]);
+    const [usuarios, setUsuario] = useState([]);
+
 
     const [cur_nome, setNomeCur] = useState('');
     const [cur_status, setStatusCur] = useState('');
@@ -44,7 +46,39 @@ export default function PainelAdm() {
     const [eve_categoria, setCategoriaEve] = useState('DEFAULT');
     const [eve_img, setImgEve] = useState('');
 
+    const [usu_nome, setNome] = useState('');
+    const [usu_sobrenome, setSobrenome] = useState('');
+    const [usu_email, setEmail] = useState('');
+    const [usu_senha, setSenha] = useState('');
+    const [usu_nivel, setNivel] = useState('');
+
+    const [cat_nome, setCatNome] = useState('');
+    const [cat_tipo, setTipo] = useState('');
+
     const history = useHistory();
+
+    async function removerCurso(id) {
+        await api.delete(`/cursos/${id}`);
+        carregarCursos();
+    }
+
+    async function removerUsuario(id) {
+        await api.delete(`/usuarios/${id}`);
+        carregarUsuarios();
+    }
+
+    async function removerEvento(id) {
+        await api.delete(`/eventos/${id}`);
+        carregarEventos();
+    }
+
+    async function removerCategoria(id) {
+        const resp = await api.delete(`/categorias/${id}`);
+        if (resp.data.status === false) {
+            alert("Categoria em uso. Operação Falhou!")
+        }
+        carregarCategorias(null);
+    }
 
     async function adicionarCurso(e) {
         e.preventDefault();
@@ -126,13 +160,98 @@ export default function PainelAdm() {
         } else {
             setErroMsg("Preencha todos os campos!")
             await sleep(3000);
-            setErroMsg(false);        
+            setErroMsg(false);
+        }
+    }
+
+    function validarEmail() {
+        if (usu_email === "") {
+            setErroMsg("Preencha o campo Email!");
+            return false;
+        }
+        else if (!(/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i).test(usu_email)) {
+            setErroMsg("Email inválido!");
+            return false;
+        }
+        setErroMsg("");
+        return true;
+    }
+    function validarSenha() {
+        if (usu_senha === "") {
+            setErroMsg("Preencha o campo Senha!");
+            return false;
+        }
+        else if (!(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/i).test(usu_senha)) {
+            //Mínimo de 6 caracteres, pelo menos uma letra e um número:
+            setErroMsg("Senha inválida!");
+            return false;
+        }
+        setErroMsg("");
+        return true;
+    }
+
+    async function registrar(e) {
+        e.preventDefault();
+        if (usu_nome.length < 3)
+            setErroMsg("Nome precisa ter pelo menos 3 caracteres");
+        else if (usu_sobrenome.length < 3)
+            setErroMsg("Sobrenome precisa ter pelo menos 3 caracteres");
+        else if (validarEmail()) {
+            if (validarSenha()) {
+                const resp = await api.get('/usuarios/busca/' + usu_email);
+                if (resp.data.length === 0) {
+                    await api.post('/usuarios/cadastro',
+                        {
+                            usu_nome, usu_sobrenome,
+                            usu_email, usu_senha, usu_nivel
+                        }
+                    );
+                    setNome('');
+                    setSobrenome('');
+                    setEmail('');
+                    setSenha('');
+                    setNivel('null');
+                    setSucessoMsg("Usuario adicionado com sucesso!");
+                    await sleep(3000);
+                    setSucessoMsg(false);
+                } else
+                    setErroMsg("Email já cadastrado no sistema!");
+            }
+        }
+    }
+
+    async function adicionarCategoria(e) {
+        e.preventDefault();
+        if (cat_nome && cat_tipo) {
+            const resp = await api.get('/categorias/' + cat_nome + '/' + cat_tipo);
+            if (resp.data.length === 0) {
+                await api.post('/categorias', {
+                    cat_nome, cat_tipo
+                });
+                setCatNome('');
+                setTipo('null');
+                setSucessoMsg("Categoria adicionada com sucesso!");
+                await sleep(3000);
+                setSucessoMsg(false);
+            }
+            else {
+                setErroMsg("Categoria já existente!");
+            }
+        } else {
+            setErroMsg("Preencha todos os campos!");
+            await sleep(3000);
+            setErroMsg(false);
         }
     }
 
     async function carregarEventos() {
         const response = await api.get('/eventos');
         setEvento(response.data);
+    }
+
+    async function carregarUsuarios() {
+        const response = await api.get('/usuarios');
+        setUsuario(response.data);
     }
 
     async function carregarCursos() {
@@ -145,27 +264,29 @@ export default function PainelAdm() {
         setNoticia(response.data);
     }
 
-    async function carregarCategorias() {
-        const response = await api.get('/categorias');
+    async function carregarCategorias(tipoCat) {
+        const response = await api.get('/categorias/' + tipoCat);
         setCategoria(response.data);
     }
 
     useEffect(() => {
-        if (usu_nivel !== 'A')
+        if (nivel !== 'A')
             history.push('/');
         else {
             carregarEventos();
             carregarCursos();
             carregarNoticias();
-            carregarCategorias();
+            carregarCategorias(null);
+            carregarUsuarios();
             return () => {
                 setEvento({});
                 setCurso({});
                 setNoticia({});
                 setCategoria({});
+                setUsuario({});
             };
         }
-    }, [usu_nivel, history]);
+    }, [nivel, history]);
 
     async function uploadImgCurso() {
         const imgData = new FormData();
@@ -202,25 +323,38 @@ export default function PainelAdm() {
     return (
         <React.Fragment>
             <Container>
+                <button className="btn bg-brown mt-3 w-30">
+                    <Link to="./" style={{ color: "#fce373", textDecoration: "none" }}>INÍCIO</Link>
+                </button>
                 <h1 className="title">Painel Administrativo</h1>
                 <Tab.Container defaultActiveKey="first">
                     <Row className="mt-5 mb-5">
                         <Col sm={3}>
                             <Nav variant="pills" className="flex-column">
                                 <NavDropdown className="a" title="Gerenciar Curso" id="nav-dropdown">
-                                    <NavDropdown.Item eventKey="add-curso">Adicionar Novo</NavDropdown.Item>
+                                    <NavDropdown.Item eventKey="add-curso" onClick={() => carregarCategorias('C')}>Adicionar Novo</NavDropdown.Item>
                                     <NavDropdown.Divider />
                                     <NavDropdown.Item eventKey="edit-curso">Alterar ou Remover</NavDropdown.Item>
                                 </NavDropdown>
                                 <NavDropdown className="a" title="Gerenciar Evento" id="nav-dropdown">
-                                    <NavDropdown.Item eventKey="add-evento">Adicionar Novo</NavDropdown.Item>
+                                    <NavDropdown.Item eventKey="add-evento" onClick={() => carregarCategorias('E')}>Adicionar Novo</NavDropdown.Item>
                                     <NavDropdown.Divider />
                                     <NavDropdown.Item eventKey="edit-evento">Alterar ou Remover</NavDropdown.Item>
                                 </NavDropdown>
                                 <NavDropdown className="a" title="Gerenciar Noticia" id="nav-dropdown">
-                                    <NavDropdown.Item eventKey="add-noticia">Adicionar Novo</NavDropdown.Item>
+                                    <NavDropdown.Item eventKey="add-noticia" onClick={() => carregarCategorias('N')}>Adicionar Novo</NavDropdown.Item>
                                     <NavDropdown.Divider />
                                     <NavDropdown.Item eventKey="edit-noticia">Alterar ou Remover</NavDropdown.Item>
+                                </NavDropdown>
+                                <NavDropdown className="a" title="Gerenciar Categorias" id="nav-dropdown">
+                                    <NavDropdown.Item eventKey="add-cat">Adicionar Categoria</NavDropdown.Item>
+                                    <NavDropdown.Divider />
+                                    <NavDropdown.Item eventKey="edit-cat">Alterar ou Remover</NavDropdown.Item>
+                                </NavDropdown>
+                                <NavDropdown className="a" title="Gerenciar Usuário" id="nav-dropdown">
+                                    <NavDropdown.Item eventKey="add-adm">Adicionar Novo</NavDropdown.Item>
+                                    <NavDropdown.Divider />
+                                    <NavDropdown.Item eventKey="edit-adm" onClick={() => carregarCategorias(null)}>Alterar ou Remover</NavDropdown.Item>
                                 </NavDropdown>
                             </Nav>
                         </Col>
@@ -296,16 +430,37 @@ export default function PainelAdm() {
                                     </Container>
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="edit-curso">
-                                    <Row>
-                                        {cursos.length !== 0
-                                            ? Object.keys(cursos).map((key, index) => (
-                                                <Col xs={3} className="mb-0" key={`${cursos[key].cur_id}`}>
-                                                    <CapaCurso data={cursos[key]} />
-                                                </Col>
-                                            ))
-                                            : <span>Não há cursos cadastrados</span>
-                                        }
-                                    </Row>
+                                    <Table responsive hover>
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Nome</th>
+                                                <th>Status</th>
+                                                <th>Valor</th>
+                                                <th>Ação</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {cursos.length !== 0
+                                                ? Object.keys(cursos).map((key, index) => (
+                                                    <tr key={`${cursos[key].cur_id}`}>
+                                                        <td>{cursos[key].cur_id}</td>
+                                                        <td>{cursos[key].cur_nome}</td>
+                                                        <td>{cursos[key].cur_status}</td>
+                                                        <td>{cursos[key].cur_valor}</td>
+                                                        <td>
+                                                            <Button className="m-0 p-0 border-0 bg-transparent"><FiEdit style={{ color: "#231f20" }} /></Button>
+                                                            <Button onClick={() => removerCurso(cursos[key].cur_id)} className="ml-2 p-0 border-0 bg-transparent"><FiTrash style={{ color: "#231f20" }} /></Button>
+                                                        </td>
+                                                    </tr>
+                                                ))
+                                                : <tr>
+                                                    <td colSpan="5">Não há cursos cadastrados</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </Table>
+
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="add-evento">
                                     <Container>
@@ -392,16 +547,40 @@ export default function PainelAdm() {
                                     </Container>
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="edit-evento">
-                                    <Row>
-                                        {eventos.length !== 0
-                                            ? Object.keys(eventos).map((key, index) => (
-                                                <Col xs={3} className="mb-0" key={`${eventos[key].eve_id}`}>
-                                                    <CapaEvento data={eventos[key]} />
-                                                </Col>
-                                            ))
-                                            : <span>Não há eventos cadastrados</span>
-                                        }
-                                    </Row>
+                                    <Table responsive hover>
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Nome</th>
+                                                <th>Status</th>
+                                                <th>Valor</th>
+                                                <th>Data</th>
+                                                <th>Horario</th>
+                                                <th>Ação</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {eventos.length !== 0
+                                                ? Object.keys(eventos).map((key, index) => (
+                                                    <tr key={`${eventos[key].eve_id}`}>
+                                                        <td>{eventos[key].eve_id}</td>
+                                                        <td>{eventos[key].eve_nome}</td>
+                                                        <td>{eventos[key].eve_status}</td>
+                                                        <td>{eventos[key].eve_valor}</td>
+                                                        <td>{eventos[key].eve_data}</td>
+                                                        <td>{eventos[key].eve_horario}</td>
+                                                        <td>
+                                                            <Button className="m-0 p-0 border-0 bg-transparent"><FiEdit style={{ color: "#231f20" }} /></Button>
+                                                            <Button onClick={() => removerEvento(eventos[key].eve_id)} className="ml-2 p-0 border-0 bg-transparent"><FiTrash style={{ color: "#231f20" }} /></Button>
+                                                        </td>
+                                                    </tr>
+                                                ))
+                                                : <tr>
+                                                    <td colSpan="7">Não há eventos cadastrados</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </Table>
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="add-noticia">
                                     <Container>
@@ -414,12 +593,12 @@ export default function PainelAdm() {
                                                             <input
                                                                 className="form-ctrl"
                                                                 type="text" name="not_titulo" id="not_titulo"
-                                                                value={not_titulo} onChange={e => {setTituloNot(e.target.value); setErroMsg(false); setSucessoMsg(false)}}
+                                                                value={not_titulo} onChange={e => { setTituloNot(e.target.value); setErroMsg(false); setSucessoMsg(false) }}
                                                                 placeholder="Titulo da notícia..."
                                                             ></input>
                                                             <div className="form-row form-group pt-1 mb-0 align-items-center">
                                                                 <div className="col mt-4">
-                                                                    <select className="custom-select" value={not_categoria} onChange={e => {setCategoriaNot(e.target.value); setErroMsg(false); setSucessoMsg(false)}}>
+                                                                    <select className="custom-select" value={not_categoria} onChange={e => { setCategoriaNot(e.target.value); setErroMsg(false); setSucessoMsg(false) }}>
                                                                         <option value='DEFAULT' disabled>Escolher categoria...</option>
                                                                         {Object.keys(categorias).map((key, index) => (
                                                                             <option key={categorias[key].cat_id}
@@ -432,7 +611,7 @@ export default function PainelAdm() {
                                                                     <input
                                                                         className="form-ctrl"
                                                                         type="date" name="not_data" id="not_data"
-                                                                        value={not_data} onChange={e => {setDataNot(e.target.value); setErroMsg(false); setSucessoMsg(false)}}
+                                                                        value={not_data} onChange={e => { setDataNot(e.target.value); setErroMsg(false); setSucessoMsg(false) }}
                                                                     ></input>
                                                                 </Col>
                                                             </div>
@@ -451,16 +630,208 @@ export default function PainelAdm() {
                                     </Container>
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="edit-noticia">
-                                    <Row>
-                                        {noticias.length !== 0
-                                            ? Object.keys(noticias).map((key, index) => (
-                                                <Col xs={3} className="mb-0" key={`${noticias[key].not_id}`}>
-                                                    <CapaNoticia data={noticias[key]} />
-                                                </Col>
-                                            ))
-                                            : <span>Não há noticias cadastradas</span>
-                                        }
-                                    </Row>
+                                    <Table responsive hover>
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Nome</th>
+                                                <th>Status</th>
+                                                <th>Ação</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {noticias.length !== 0
+                                                ? Object.keys(noticias).map((key, index) => (
+                                                    <tr key={`${noticias[key].not_id}`}>
+                                                        <td>{noticias[key].not_id}</td>
+                                                        <td>{noticias[key].not_titulo}</td>
+                                                        <td>{noticias[key].not_status}</td>
+                                                        <td>
+                                                            <Button className="m-0 p-0 border-0 bg-transparent"><FiEdit style={{ color: "#231f20" }} /></Button>
+                                                            <Button onClick={() => removerCurso(noticias[key].not_id)} className="ml-2 p-0 border-0 bg-transparent"><FiTrash style={{ color: "#231f20" }} /></Button>
+                                                        </td>
+                                                    </tr>
+                                                ))
+                                                : <tr>
+                                                    <td colSpan="4">Não há notícias cadastradas</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </Table>
+                                </Tab.Pane>
+                                <Tab.Pane eventKey="add-adm">
+                                    <Container>
+                                        <Row className="align-items-center justify-content-center">
+                                            <div style={{ minWidth: "50vh" }}>
+                                                <h3 className="title">Adicionar Novo Usuário</h3>
+                                                <form method="post" onSubmit={registrar}>
+                                                    <div className="form-row form-group justify-content-between">
+                                                        <Col xs={5}>
+                                                            <div className="row">
+                                                                <input
+                                                                    className="form-ctrl"
+                                                                    type="text" name="usu_nome" id="usu_nome"
+                                                                    value={usu_nome} onChange={e => { setNome(e.target.value); setErroMsg(false); setSucessoMsg(false); }}
+                                                                    placeholder="Digite o primeiro nome..."
+                                                                ></input>
+                                                            </div>
+                                                        </Col>
+                                                        <Col xs={6}>
+                                                            <div className="row">
+                                                                <input
+                                                                    className="form-ctrl"
+                                                                    type="text" name="usu_sobrenome" id="usu_sobrenome"
+                                                                    value={usu_sobrenome} onChange={e => { setSobrenome(e.target.value); setErroMsg(false); setSucessoMsg(false); }}
+                                                                    placeholder="Digite o sobrenome..."
+                                                                ></input>
+                                                            </div>
+                                                        </Col>
+                                                    </div>
+                                                    <div className="row mb-3">
+                                                        <select className="custom-select" defaultValue='null' onChange={e => { setErroMsg(false); setSucessoMsg(false); setNivel(e.target.value) }}>
+                                                            <option value='null' disabled>Escolher nível...</option>
+                                                            <option value="U">Usuário</option>
+                                                            <option value="A">Administrador</option>
+                                                        </select>
+                                                    </div>
+                                                    <div className="form-group">
+                                                        <div className="row">
+                                                            <input
+                                                                className="form-ctrl"
+                                                                type="text" name="usu_email" id="usu_email"
+                                                                value={usu_email} onChange={e => { setEmail(e.target.value); setErroMsg(false); setSucessoMsg(false); }}
+                                                                placeholder="Digite o email..."
+                                                            ></input>
+                                                        </div>
+                                                    </div>
+                                                    <div className="form-group mb-1">
+                                                        <div className="row">
+                                                            <input
+                                                                className="form-ctrl"
+                                                                type="password" name="usu_senha" id="usu_senha"
+                                                                value={usu_senha} onChange={e => { setSenha(e.target.value); setErroMsg(false); setSucessoMsg(false); }}
+                                                                placeholder="Digite a senha..."
+                                                            ></input>
+                                                        </div>
+                                                    </div>
+                                                    <Col>
+                                                        {erroMsg ? <span className="erro">{erroMsg}</span> : null}
+                                                        {sucessoMsg ? <span className="sucesso">{sucessoMsg}</span> : null}
+                                                    </Col>
+                                                    <div className="form-group d-flex flex-row-reverse p-3">
+                                                        <button className="btn bg-brown w-30" type="submit">ADICIONAR</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </Row>
+                                    </Container>
+                                </Tab.Pane>
+                                <Tab.Pane eventKey="edit-adm">
+                                    <div style={{ height: '50vh', overflow: 'auto' }}>
+                                        <Table responsive hover size="sm">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Nível</th>
+                                                    <th>Nome</th>
+                                                    <th>Cidade</th>
+                                                    <th>Sexo</th>
+                                                    <th>Ação</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {usuarios.length !== 0
+                                                    ? Object.keys(usuarios).map((key, index) => (
+                                                        <tr key={`${usuarios[key].usu_id}`}>
+                                                            <td>{usuarios[key].usu_id}</td>
+                                                            <td>{usuarios[key].usu_nivel}</td>
+                                                            <td>{usuarios[key].usu_nome}</td>
+                                                            <td>{usuarios[key].usu_cidade}</td>
+                                                            <td>{usuarios[key].usu_sexo}</td>
+                                                            <td>
+                                                                <Button className="m-0 p-0 border-0 bg-transparent"><FiEdit style={{ color: "#231f20" }} /></Button>
+                                                                <Button onClick={() => removerUsuario(usuarios[key].usu_id)} className="ml-2 p-0 border-0 bg-transparent"><FiTrash style={{ color: "#231f20" }} /></Button>
+                                                            </td>
+                                                        </tr>
+                                                    ))
+                                                    : <tr>
+                                                        <td colSpan="6">Não há usuários cadastrados</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </Table>
+                                    </div>
+                                </Tab.Pane>
+                                <Tab.Pane eventKey="add-cat">
+                                    <Container>
+                                        <Row className="align-items-center justify-content-center">
+                                            <div style={{ minWidth: "50vh" }}>
+                                                <h3 className="title">Adicionar Nova Categoria</h3>
+                                                <form method="post" onSubmit={adicionarCategoria}>
+                                                    <div className="form-col form-group">
+                                                        <div className="col">
+                                                            <input
+                                                                className="form-ctrl"
+                                                                type="text" name="cat_nome" id="cat_nome"
+                                                                value={cat_nome} onChange={e => { setCatNome(e.target.value); setErroMsg(false); setSucessoMsg(false) }}
+                                                                placeholder="Nome da categoria..."
+                                                            ></input>
+                                                            <div className="form-row form-group pt-1 mb-0 align-items-center">
+                                                                <div className="col mt-2">
+                                                                    <select className="custom-select" defaultValue='null' onChange={e => { setErroMsg(false); setSucessoMsg(false); setTipo(e.target.value) }}>
+                                                                        <option value='null' disabled selected>Escolher tipo...</option>
+                                                                        <option value="E">Evento</option>
+                                                                        <option value="C">Curso</option>
+                                                                        <option value="N">Notícia</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <Col>
+                                                        {erroMsg ? <span className="erro">{erroMsg}</span> : null}
+                                                        {sucessoMsg ? <span className="sucesso">{sucessoMsg}</span> : null}
+                                                    </Col>
+                                                    <div className="form-group d-flex flex-row-reverse p-3">
+                                                        <button className="btn bg-brown w-30" type="submit">ADICIONAR</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </Row>
+                                    </Container>
+                                </Tab.Pane>
+                                <Tab.Pane eventKey="edit-cat">
+                                    <div style={{ height: '50vh', overflow: 'auto' }}>
+                                        <Table responsive hover size="sm">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Nome</th>
+                                                    <th>Tipo</th>
+                                                    <th>Ação</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {categorias.length !== 0
+                                                    ? Object.keys(categorias).map((key, index) => (
+                                                        <tr key={`${categorias[key].cat_id}`}>
+                                                            <td>{categorias[key].cat_id}</td>
+                                                            <td>{categorias[key].cat_nome}</td>
+                                                            <td>{categorias[key].cat_tipo}</td>
+                                                            <td>
+                                                                <Button className="m-0 p-0 border-0 bg-transparent"><FiEdit style={{ color: "#231f20" }} /></Button>
+                                                                <Button onClick={() => removerCategoria(categorias[key].cat_id)} className="ml-2 p-0 border-0 bg-transparent"><FiTrash style={{ color: "#231f20" }} /></Button>
+                                                            </td>
+                                                        </tr>
+                                                    ))
+                                                    : <tr>
+                                                        <td colSpan="3">Não há categorias cadastrados</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </Table>
+                                    </div>
+
                                 </Tab.Pane>
                             </Tab.Content>
                         </Col>

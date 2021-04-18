@@ -9,6 +9,13 @@ module.exports = {
         return response.json(cursos.data);
     },
 
+    async listarCursosAtivos(request, response) {//ok
+        await db.conecta();
+        const sql = "SELECT * FROM curso WHERE cur_status = 'A'";
+        const cursos = await db.consulta(sql);
+        return response.json(cursos.data);
+    },
+
     async gravarCurso(request, response) {//ok
         const {
             cur_nome, cur_status, cur_adm,

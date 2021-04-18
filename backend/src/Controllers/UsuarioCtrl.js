@@ -28,10 +28,9 @@ module.exports = {
     },
 
     async gravarUsuario(request, response) {
-        const usu_nivel = 'U';
         const {
             usu_nome, usu_sobrenome, usu_email,
-            usu_senha
+            usu_senha, usu_nivel
         } = request.body;
         await db.conecta();
         const sql = "INSERT INTO Usuario (usu_nome, usu_sobrenome," +

@@ -2,9 +2,16 @@ const db = require('../models/Database');
 
 module.exports = {
 
-    async listarEvento(request, response) {//f
+    async listarEventos(request, response) {//f
         await db.conecta();
         const sql = "SELECT * FROM evento";
+        const eventos = await db.consulta(sql);
+        return response.json(eventos.data);
+    },
+
+    async listarEventosAtivo(request, response) {//f
+        await db.conecta();
+        const sql = "SELECT * FROM evento WHERE eve_status = 'A'";
         const eventos = await db.consulta(sql);
         return response.json(eventos.data);
     },

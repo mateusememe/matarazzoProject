@@ -50,3 +50,27 @@
     font-size: 10px;
     font-weight: bold;
 }
+
+.table td, .table th {
+    border-top: 1px solid #231f20;
+}
+
+.table thead th {
+    border-bottom: 2px solid #231f20;
+}
+
+.custom-control-label::before, .custom-file-label, .custom-select {
+    background-color: transparent;
+    border: 2px solid #e7d06b;   
+}
+
+.custom-select:focus {
+    border-color: #231f20;
+    box-shadow: 0 0 0 0.2rem rgb(230 207 107);
+}
+
+.custom-control-input:checked~.custom-control-label::before{
+    color: #fff;
+    border-color: #231f20;
+    background-color: #231f20;
+}
