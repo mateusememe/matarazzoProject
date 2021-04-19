@@ -24,7 +24,6 @@ export default function PainelAdm() {
     const [categorias, setCategoria] = useState([]);
     const [usuarios, setUsuario] = useState([]);
 
-
     const [cur_nome, setNomeCur] = useState('');
     const [cur_status, setStatusCur] = useState('');
     const [cur_adm, setAdmCur] = useState(usu_id);
@@ -176,6 +175,7 @@ export default function PainelAdm() {
         setErroMsg("");
         return true;
     }
+
     function validarSenha() {
         if (usu_senha === "") {
             setErroMsg("Preencha o campo Senha!");
