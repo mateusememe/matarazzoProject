@@ -33,6 +33,7 @@ routes.get('/cursosAtivos',CurCtrl.listarCursosAtivos);
 routes.post('/cursos',CurCtrl.gravarCurso);
 routes.put('/cursos',CurCtrl.alterarCurso);
 routes.delete('/cursos/:cur_id', CurCtrl.excluirCurso);
+routes.get('/cursos/:cur_id', CurCtrl.buscarCurso);
 
 const EveCtrl = require('./Controllers/EventoCtrl');
 
@@ -41,6 +42,7 @@ routes.get('/eventosAtivos',EveCtrl.listarEventosAtivo);
 routes.post('/eventos',EveCtrl.gravarEvento);
 routes.put('/eventos',EveCtrl.alterarEvento);
 routes.delete('/eventos/:eve_id', EveCtrl.excluirEvento);
+routes.get('/eventos/:eve_id', EveCtrl.buscarEvento);
 
 const NotCtrl = require('./Controllers/NoticiaCtrl');
 
@@ -48,6 +50,7 @@ routes.get('/noticias',NotCtrl.listarNoticia);
 routes.post('/noticias',NotCtrl.gravarNoticia);
 routes.put('/noticias',NotCtrl.alterarNoticia);
 routes.delete('/noticias/:not_id', NotCtrl.excluirNoticia);
+routes.get('/noticias/:not_id', NotCtrl.buscarNoticia);
 
 //Controla upload
 const storageEventos = multer.diskStorage({

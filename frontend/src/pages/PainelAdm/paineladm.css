@@ -74,3 +74,37 @@
     border-color: #231f20;
     background-color: #231f20;
 }
+
+.modal {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.containerModal {
+    background-color: #fce373;
+    border-radius: 8px;
+    height: auto;
+    margin: 5% 0 5% 0;
+}
+
+.close {
+    background-color: transparent;
+    cursor: pointer;
+    margin: 10px;
+}
+
+.container-form {
+    width: 35%;
+    margin: 5% auto 5% auto;
+    border-radius: 8px;
+    background-color: #f5f7f7;
+    padding: 20px;
+    line-height: 1.65;
+}

@@ -37,7 +37,7 @@ export default function Cadastro() {
         }
         else if (!(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/i).test(usu_senha)) {
             //Mínimo de 6 caracteres, pelo menos uma letra e um número:
-            setErroMsg("Senha inválida!");
+            setErroMsg("Senha deve possuir pelo menos 6 caracteres, uma letra e um número!");
             return false;
         }
         setErroMsg("");

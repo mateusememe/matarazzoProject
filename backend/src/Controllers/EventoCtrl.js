@@ -16,6 +16,15 @@ module.exports = {
         return response.json(eventos.data);
     },
 
+    async buscarEvento(request, response) {
+        const {eve_id} = request.params;
+        await db.conecta();
+        const sql = "SELECT * FROM Evento WHERE eve_id = ?";
+        const value = [eve_id];
+        const evento = await db.consulta(sql, value);
+        return response.json(evento.data);
+    },
+
     async gravarEvento(request, response) {//f
         const {
             eve_nome, eve_status, eve_data,
@@ -40,7 +49,7 @@ module.exports = {
         const { 
             eve_nome, eve_status, eve_data,
             eve_horario, eve_categoria, eve_img,
-            eve_adm, eve_valor 
+            eve_adm, eve_valor, eve_id
         } = request.body;
         const con = await db.conecta();
         const sql = "UPDATE evento SET eve_nome = ?, eve_status = ?,"+
@@ -50,7 +59,7 @@ module.exports = {
         const valores = [
             eve_nome, eve_status, eve_data,
             eve_horario, eve_categoria, eve_img,
-            eve_adm, eve_valor
+            eve_adm, eve_valor, eve_id
         ];
         const result = await db.manipula(sql, valores);
         return response.json(result);

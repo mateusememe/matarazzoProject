@@ -14,7 +14,6 @@ export default function Login() {
     const [erroMsgS, setErroMsgS] = useState('');
     const history = useHistory();
 
-
     function validarEmail() {
         if (usu_email === "") {
             setErroMsgE("Preencha o campo Email!");
@@ -27,6 +26,7 @@ export default function Login() {
         setErroMsgE("");
         return true;
     }
+
     function validarSenha() {
         if (usu_senha === "") {
             setErroMsgS("Preencha o campo Senha!");
@@ -40,6 +40,7 @@ export default function Login() {
         setErroMsgS("");
         return true;
     }
+    
     async function validadarLogin(e) {
         setErroMsgE(""); setErroMsgS("");
         e.preventDefault();
@@ -94,7 +95,7 @@ export default function Login() {
                                 </div>
                                 {erroMsgS ? <span className="erro">{erroMsgS}</span> : null}
                                 <span className="form-group d-flex flex-row-reverse">
-                                    <Link to="/alterar-senha" className="form-links">Recuperar Senha</Link>
+                                    <Link to="/recuperar-senha" className="form-links">Recuperar Senha</Link>                                    
                                 </span>
                                 <button className="btn bg-brown w-100" type="submit">ENTRAR</button>
                             </form>

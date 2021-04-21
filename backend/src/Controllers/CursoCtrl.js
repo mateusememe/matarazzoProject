@@ -16,6 +16,15 @@ module.exports = {
         return response.json(cursos.data);
     },
 
+    async buscarCurso(request, response) {
+        const { cur_id } = request.params;
+        await db.conecta();
+        const sql = "SELECT * FROM Curso WHERE cur_id = ?";
+        const value = [cur_id];
+        const curso = await db.consulta(sql, value);
+        return response.json(curso.data);
+    },
+
     async gravarCurso(request, response) {//ok
         const {
             cur_nome, cur_status, cur_adm,
@@ -34,12 +43,12 @@ module.exports = {
     },
 
     async alterarCurso(request, response) {//ok
-        const { cur_nome, cur_status, cur_adm, cur_categoria, cur_valor, cur_img} = request.body;
+        const { cur_nome, cur_status, cur_adm, cur_categoria, cur_valor, cur_img, cur_id} = request.body;
         await db.conecta();
         const sql = "UPDATE Curso SET cur_nome = ?, cur_status = ?, usu_id = ?, cur_valor = ?, cur_img = ?, cat_id = ? WHERE cur_id = ?";
         const valores = [
             cur_nome, cur_status, cur_adm,
-            cur_categoria, cur_valor, cur_img, cur_id
+            cur_valor, cur_img, cur_categoria, cur_id
         ];
         const result = await db.manipula(sql, valores);
         return response.json(result);

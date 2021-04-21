@@ -9,6 +9,15 @@ module.exports = {
         return response.json(news.data);
     },
 
+    async buscarNoticia(request, response) {
+        const { not_id } = request.params;
+        await db.conecta();
+        const sql = "SELECT * FROM Noticia WHERE not_id = ?";
+        const value = [not_id];
+        const noticia = await db.consulta(sql, value);
+        return response.json(noticia.data);
+    },
+
     async gravarNoticia(request, response){
         const {not_titulo, not_data, not_adm, not_categoria} = request.body;
         await db.conecta();        
@@ -20,10 +29,10 @@ module.exports = {
     },
 
     async alterarNoticia(request, response) {
-        const {not_titulo, not_data, not_adm, not_categoria} = request.body;
+        const {not_titulo, not_data, not_adm, not_categoria, not_id} = request.body;
         await db.conecta();
         const sql = "UPDATE Noticia SET not_titulo = ?, not_data = ?, usu_id = ?, cat_id = ? WHERE not_id = ?";
-        const valores = [not_titulo, not_data, not_adm, not_categoria];
+        const valores = [not_titulo, not_data, not_adm, not_categoria, not_id];
         const result = await db.manipula(sql, valores);
         return response.json(result);
     },
