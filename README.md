@@ -23,7 +23,7 @@ College project for the class "Projeto Integrador II".
   </tr>
 <table>
   
-## 🛠 Tecnologias
+## 🛠 Technologies
 
 As seguintes ferramentas foram usadas na construção do projeto:
 
