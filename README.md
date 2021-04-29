@@ -22,3 +22,11 @@ College project for the class "Projeto Integrador II".
       </td>
   </tr>
 <table>
+  
+### 🛠 Tecnologias
+
+As seguintes ferramentas foram usadas na construção do projeto:
+
+- [Node.js](https://nodejs.org/en/)
+- [React](https://pt-br.reactjs.org/)
+- [React Native](https://reactnative.dev/) [soon]
