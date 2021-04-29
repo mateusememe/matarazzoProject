@@ -1,7 +1,7 @@
 # MatarazzoProject
 College project for the class "Projeto Integrador II".
 
-## Contributors✨
+## ✨Contributors
 <table>
   <tr>
       <td align="center">
