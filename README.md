@@ -1,5 +1,5 @@
 # MatarazzoProject
-College project to the class "Projeto Integrador II".
+College project for the class "Projeto Integrador II".
 
 ## Contributors✨
 <table>
