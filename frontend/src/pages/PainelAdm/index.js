@@ -10,6 +10,8 @@ import Modal from '../../components/Modal';
 import './paineladm.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+import GerenciarCurso from '../../components/GerenciarCurso'
+
 export default function PainelAdm() {
 	const usuario = localStorage.getItem('usu_id');
 	const nivel = localStorage.getItem('usu_nivel');
@@ -21,8 +23,10 @@ export default function PainelAdm() {
 	const [modalCurVisivel, setModalCurVisivel] = useState(false);
 	const [modalEveVisivel, setModalEveVisivel] = useState(false);
 	const [modalNotVisivel, setModalNotVisivel] = useState(false);
+	const [modalUsuVisivel, setModalUsuVisivel] = useState(false);
+	const [modalCatVisivel, setModalCatVisivel] = useState(false);
 
-	const [modalRemove, setModalRemove] = useState(false);
+	//const [modalRemove, setModalRemove] = useState(false);
 
 	const [adicionar, setAdicionar] = useState(true);
 
@@ -44,6 +48,8 @@ export default function PainelAdm() {
 	const [eve_nome, setNomeEve] = useState('');
 	const [eve_data, setDataEve] = useState('');
 	const [eve_horario, setHorarioEve] = useState('');
+	const [eve_dataFim, setDataFimEve] = useState('');
+	const [eve_horarioFim, setHorarioFimEve] = useState('');
 	const [eve_status, setStatusEve] = useState('');
 	const [eve_valor, setValorEve] = useState('');
 	const [eve_adm, setAdmEve] = useState(usuario);
@@ -62,6 +68,13 @@ export default function PainelAdm() {
 	const [usu_email, setEmail] = useState('');
 	const [usu_senha, setSenha] = useState('');
 	const [usu_nivel, setNivel] = useState('');
+	const [usu_dtNasc, setDtNasc] = useState('');
+	const [usu_fone, setFone] = useState('');
+	const [usu_cpf, setCPF] = useState('');
+	const [usu_endereco, setEndereco] = useState('');
+	const [usu_cep, setCEP] = useState('');
+	const [usu_cidade, setCidade] = useState('');
+	const [usu_sexo, setSexo] = useState('');
 
 	const [cat_id, setCatId] = useState('');
 	const [cat_nome, setCatNome] = useState('');
@@ -69,14 +82,14 @@ export default function PainelAdm() {
 
 	const history = useHistory();
 
-	async function removerCurso(id) {
-		await api.delete(`/cursos/${id}`);
-		carregarCursos();
-	}
-
 	async function removerUsuario(id) {
 		await api.delete(`/usuarios/${id}`);
 		carregarUsuarios();
+	}
+
+	async function removerNoticia(id) {
+		await api.delete(`/noticias/${id}`);
+		carregarNoticias();
 	}
 
 	async function removerEvento(id) {
@@ -111,14 +124,7 @@ export default function PainelAdm() {
 				setSucessoMsg('Curso atualizado com sucesso!');
 			}
 
-			setChecado(false);
-			setChecado2(false);
-			setNomeCur('');
-			setStatusCur('');
-			setCategoriaCur('DEFAULT');
-			setAdmCur(usuario);
-			setValorCur('');
-			setImgCur('');
+			limparFormCurso();
 			await sleep(3000);
 			setSucessoMsg(false);
 			carregarCursos();
@@ -144,18 +150,10 @@ export default function PainelAdm() {
 					eve_nome, eve_status, eve_data, eve_horario,
 					eve_categoria, eve_img, eve_adm, eve_valor, eve_id
 				});
-				setSucessoMsg('Curso atualizado com sucesso!');
+				setSucessoMsg('Evento atualizado com sucesso!');
 			}
 
-			setChecado(false);
-			setChecado2(false);
-			setNomeEve('');
-			setStatusEve('');
-			setDataEve('');
-			setCategoriaEve('DEFAULT');
-			setAdmEve(usuario);
-			setValorEve('');
-			setImgEve('');
+			limparFormEvento();
 			await sleep(3000);
 			setSucessoMsg(false);
 			carregarEventos();
@@ -167,22 +165,81 @@ export default function PainelAdm() {
 		setAdicionar(true);
 	}
 
+	function limparFormCurso() {
+		if (modalCurVisivel)
+			setAdicionar(true);
+		setChecado(false);
+		setChecado2(false);
+		setNomeCur('');
+		setStatusCur('');
+		setCategoriaCur('DEFAULT');
+		setAdmCur(usuario);
+		setValorCur('');
+		setImgCur('');
+	}
+
+	function limparFormEvento() {
+		if (modalEveVisivel)
+			setAdicionar(true);
+		setChecado(false);
+		setChecado2(false);
+		setNomeEve('');
+		setStatusEve('');
+		setDataEve('');
+		setHorarioEve('');
+		setCategoriaEve('DEFAULT');
+		setAdmEve(usuario);
+		setValorEve('');
+		setImgEve('');
+	}
+
+	function limparFormNoticia() {
+		if (modalNotVisivel)
+			setAdicionar(true);
+		setTituloNot('');
+		setDataNot('');
+		setAdmNot(usuario);
+		setCategoriaNot('');
+	}
+
+	function limparFormUsuario() {
+		if (modalUsuVisivel)
+			setAdicionar(true);
+		setNome('');
+		setSobrenome('');
+		setEmail('');
+		setSenha('');
+		setNivel('null');
+	}
+
+	function limparFormCategoria() {
+		if (modalCatVisivel)
+			setAdicionar(true);
+		setCatNome('');
+		setTipo('null');
+	}
+
 	async function adicionarNoticia(e) {
 		e.preventDefault();
 
 		if (not_titulo && not_data && not_adm && not_categoria) {
-			await api.post('/noticias', {
-				not_titulo, not_data, not_adm, not_categoria
-			});
+			if (adicionar) {
+				await api.post('/noticias', {
+					not_titulo, not_data, not_adm, not_categoria
+				});
+				setSucessoMsg('Noticia adicionada com sucesso!');
+			}
+			else {
+				await api.put('/noticias', {
+					not_titulo, not_data, not_adm, not_categoria, not_id
+				});
+				setSucessoMsg('Noticia atualizada com sucesso!');
+			}
 
-			setTituloNot('');
-			setDataNot('');
-			setAdmNot(usuario);
-			setSucessoMsg('Noticia adicionada com sucesso!');
+			limparFormNoticia();
 			await sleep(3000);
 			setSucessoMsg(false);
-			setCategoriaNot('');
-			carregarCategorias();
+			carregarNoticias();
 		} else {
 			setErroMsg('Preencha todos os campos!');
 			await sleep(3000);
@@ -222,21 +279,29 @@ export default function PainelAdm() {
 			setErroMsg('Sobrenome precisa ter pelo menos 3 caracteres');
 		else if (validarEmail()) {
 			if (validarSenha()) {
-				const resp = await api.get('/usuarios/busca/' + usu_email);
-				if (resp.data.length === 0) {
-					await api.post('/usuarios/cadastro', {
+				if (adicionar) {
+					const resp = await api.get('/usuarios/busca/' + usu_email);
+					if (resp.data.length === 0) {
+						await api.post('/usuarios/cadastro', {
+							usu_nome, usu_sobrenome, usu_email,
+							usu_senha, usu_nivel
+						});
+						setSucessoMsg('Usuario adicionado com sucesso!');
+					}
+					else setErroMsg('Email já cadastrado no sistema!');
+				}
+				else {
+					await api.put('/usuarios/alterar', {
 						usu_nome, usu_sobrenome, usu_email,
-						usu_senha, usu_nivel
+						usu_senha, usu_cpf, usu_dtNasc, usu_endereco,
+						usu_cidade, usu_cep, usu_fone, usu_sexo, usu_id
 					});
-					setNome('');
-					setSobrenome('');
-					setEmail('');
-					setSenha('');
-					setNivel('null');
-					setSucessoMsg('Usuario adicionado com sucesso!');
-					await sleep(3000);
-					setSucessoMsg(false);
-				} else setErroMsg('Email já cadastrado no sistema!');
+					setSucessoMsg('Usuario alterado com sucesso!');
+					carregarUsuarios();
+				}
+				limparFormUsuario();
+				await sleep(3000);
+				setSucessoMsg(false);
 			}
 		}
 	}
@@ -244,21 +309,30 @@ export default function PainelAdm() {
 	async function adicionarCategoria(e) {
 		e.preventDefault();
 		if (cat_nome && cat_tipo) {
-			const resp = await api.get(
-				'/categorias/' + cat_nome + '/' + cat_tipo
-			);
-			if (resp.data.length === 0) {
-				await api.post('/categorias', {
-					cat_nome, cat_tipo
+			if (adicionar) {
+				const resp = await api.get(
+					'/categorias/' + cat_nome + '/' + cat_tipo
+				);
+				if (resp.data.length === 0) {
+					await api.post('/categorias', {
+						cat_nome, cat_tipo
+					});
+					setSucessoMsg('Categoria adicionada com sucesso!');
+					await sleep(3000);
+					setSucessoMsg(false);
+				} else {
+					setErroMsg('Categoria já existente!');
+				}
+			}
+			else {
+				await api.put('/categorias', {
+					cat_id, cat_nome, cat_tipo
 				});
-				setCatNome('');
-				setTipo('null');
-				setSucessoMsg('Categoria adicionada com sucesso!');
+				setSucessoMsg('Categoria alterada com sucesso!');
 				await sleep(3000);
 				setSucessoMsg(false);
-			} else {
-				setErroMsg('Categoria já existente!');
 			}
+			limparFormCategoria();
 		} else {
 			setErroMsg('Preencha todos os campos!');
 			await sleep(3000);
@@ -287,7 +361,7 @@ export default function PainelAdm() {
 	}
 
 	async function carregarCategorias(tipoCat) {
-		const response = await api.get('/categorias/' + tipoCat);
+		const response = await api.get('/categorias/tipo/' + tipoCat);
 		setCategoria(response.data);
 	}
 
@@ -295,13 +369,13 @@ export default function PainelAdm() {
 		if (nivel !== 'A') history.push('/');
 		else {
 			carregarEventos();
-			carregarCursos();
+			//carregarCursos();
 			carregarNoticias();
 			carregarCategorias(null);
 			carregarUsuarios();
 			return () => {
 				setEvento({});
-				setCurso({});
+				//setCurso({});
 				setNoticia({});
 				setCategoria({});
 				setUsuario({});
@@ -341,7 +415,7 @@ export default function PainelAdm() {
 		setSucessoMsg(false);
 	}
 
-	async function editarCurso(id) {
+	/* async function editarCurso(id) {
 		setIdCur(id);
 		const response = await api.get('/cursos/' + id);
 		console.log(response);
@@ -359,11 +433,11 @@ export default function PainelAdm() {
 		setCategoriaCur(response.data[0].cat_id);
 		setAdicionar(false);
 		setModalCurVisivel(true);
-	}
+	} */
 
 	async function editarEvento(id) {
 		const response = await api.get('/eventos/' + id);
-		setIdEve(response.data[0].eve_id);
+		setIdEve(id);
 		setNomeEve(response.data[0].eve_nome);
 		setDataEve(formatarData(response.data[0].eve_data));
 		console.log(formatarData(response.data[0].eve_data));
@@ -382,6 +456,46 @@ export default function PainelAdm() {
 		setIdUsu(response.data[0].usu_id);
 		setAdicionar(false);
 		setModalEveVisivel(true);
+	}
+
+	async function editarNoticia(id) {
+		const response = await api.get('/noticias/' + id);
+		setIdNot(id);
+		setTituloNot(response.data[0].not_titulo);
+		setDataNot(formatarData(response.data[0].not_data));
+		setAdmNot(response.data[0].usu_id);
+		setCategoriaNot(response.data[0].cat_id);
+		setAdicionar(false);
+		setModalNotVisivel(true);
+	}
+
+	async function editarCategoria(id) {
+		const response = await api.get('/categorias/id/' + id);
+		setCatId(id);
+		setCatNome(response.data[0].cat_nome);
+		setTipo(response.data[0].cat_tipo);
+		setAdicionar(false);
+		setModalCatVisivel(true);
+	}
+
+	async function editarUsuario(id) {
+		const response = await api.get('/usuarios/' + id);
+		setIdUsu(id);
+		setEmail(response.data[0].usu_email);
+		setSenha(response.data[0].usu_senha)
+		setNome(response.data[0].usu_nome);
+		setDtNasc(response.data[0].usu_dtNasc);
+		setFone(response.data[0].usu_fone);
+		setSobrenome(response.data[0].usu_sobrenome);
+		setCPF(response.data[0].usu_cpf);
+		setEndereco(response.data[0].usu_endereco);
+		setCEP(response.data[0].usu_cep);
+		setCidade(response.data[0].usu_cidade);
+		setSexo(response.data[0].usu_sexo);
+		setNivel(response.data[0].usu_nivel);
+
+		setAdicionar(false);
+		setModalUsuVisivel(true);
 	}
 
 	function formatarData(temp) {
@@ -423,7 +537,7 @@ export default function PainelAdm() {
 									id='nav-dropdown'>
 									<NavDropdown.Item
 										eventKey='add-curso'
-										onClick={() => carregarCategorias('C')}>
+										onClick={() => { limparFormCurso(); carregarCategorias('C') }}>
 										Adicionar Novo
 									</NavDropdown.Item>
 									<NavDropdown.Divider />
@@ -436,7 +550,7 @@ export default function PainelAdm() {
 									id='nav-dropdown'>
 									<NavDropdown.Item
 										eventKey='add-evento'
-										onClick={() => carregarCategorias('E')}>
+										onClick={() => { limparFormEvento(); carregarCategorias('E') }}>
 										Adicionar Novo
 									</NavDropdown.Item>
 									<NavDropdown.Divider />
@@ -449,7 +563,7 @@ export default function PainelAdm() {
 									id='nav-dropdown'>
 									<NavDropdown.Item
 										eventKey='add-noticia'
-										onClick={() => carregarCategorias('N')}>
+										onClick={() => { limparFormNoticia(); carregarCategorias('N') }}>
 										Adicionar Novo
 									</NavDropdown.Item>
 									<NavDropdown.Divider />
@@ -488,7 +602,8 @@ export default function PainelAdm() {
 						<Col sm={9}>
 							<Tab.Content>
 								<Tab.Pane eventKey='add-curso'>
-									<Container>
+									<GerenciarCurso usuario={usuario} nivel={nivel} flag='add' />
+									{/* <Container>
 										<Row className='align-items-center justify-content-center'>
 											<div style={{ minWidth: '50vh' }}>
 												<h3 className='title'>Adicionar Novo Curso</h3>
@@ -635,10 +750,11 @@ export default function PainelAdm() {
 												</form>
 											</div>
 										</Row>
-									</Container>
+									</Container> */}
 								</Tab.Pane>
 								<Tab.Pane eventKey='edit-curso'>
-									<Table responsive hover>
+									<GerenciarCurso usuario={usuario} nivel={nivel} flag='edit' />
+									{/* <Table responsive hover>
 										<thead>
 											<tr>
 												<th>#</th><th>Nome</th><th>Status</th><th>Valor</th><th>Ação</th>
@@ -672,7 +788,7 @@ export default function PainelAdm() {
 												</tr>
 											}
 										</tbody>
-									</Table>
+									</Table> */}
 								</Tab.Pane>
 								<Tab.Pane eventKey='add-evento'>
 									<Container>
@@ -699,7 +815,7 @@ export default function PainelAdm() {
 															<div className='form-row form-group pt-1 mb-0 align-items-center'>
 																<Col className='mt-2'>
 																	<label className='mb-0'>
-																		Data do evento
+																		Data inicial
 																	</label>
 																	<input
 																		className='form-ctrl'
@@ -715,7 +831,7 @@ export default function PainelAdm() {
 																</Col>
 																<Col className='mt-2'>
 																	<label className='mb-0'>
-																		Hora do evento
+																		Hora Inicial do evento
 																	</label>
 																	<input
 																		className='form-ctrl'
@@ -730,12 +846,45 @@ export default function PainelAdm() {
 																		}}></input>
 																</Col>
 															</div>
+															<div className='form-row form-group pt-1 mb-0 align-items-center'>
+																<Col className='mt-2'>
+																	<label className='mb-0'>  Data Final </label>
+																	<input
+																		className='form-ctrl'
+																		type='date'
+																		name='eve_dataFim'
+																		id='eve_dataFim'
+																		value={eve_dataFim}
+																		onChange={e => {
+																			setDataFimEve(e.target.value);
+																			setErroMsg(false);
+																			setSucessoMsg(false);
+																		}}></input>
+																</Col>
+																<Col className='mt-2'>
+																	<label className='mb-0'>
+																		Hora final do evento
+																	</label>
+																	<input
+																		className='form-ctrl'
+																		type='time'
+																		name='eve_horarioFim'
+																		id='eve_horarioFim'
+																		value={eve_horarioFim}
+																		onChange={e => {
+																			setHorarioFimEve(e.target.value);
+																			setErroMsg(false);
+																			setSucessoMsg(false);
+																		}}></input>
+																</Col>
+															</div>
 															<div className='mt-2 custom-control custom-radio custom-control-inline'>
 																<input
 																	checked={checado}
 																	onChange={e => {
 																		setStatusEve('A');
 																		setChecado(true);
+																		setChecado2(false);
 																		setErroMsg(false);
 																		setSucessoMsg(false);
 																	}}
@@ -755,6 +904,7 @@ export default function PainelAdm() {
 																	checked={checado2}
 																	onChange={e => {
 																		setStatusEve('I'); setChecado2(true);
+																		setChecado(false);
 																		setErroMsg(false); setSucessoMsg(false);
 																	}}
 																	type='radio'
@@ -986,12 +1136,12 @@ export default function PainelAdm() {
 														<td>{noticias[key].not_status}</td>
 														<td>
 															<Button
-																/*  onClick={() => editarNoticia(noticias[key].not_id)} */
+																onClick={() => editarNoticia(noticias[key].not_id)}
 																className='m-0 p-0 border-0 bg-transparent'>
 																<FiEdit style={{ color: '#231f20' }} />
 															</Button>
 															<Button
-																onClick={() => removerCurso(noticias[key].not_id)}
+																onClick={() => removerNoticia(noticias[key].not_id)}
 																className='ml-2 p-0 border-0 bg-transparent'>
 																<FiTrash style={{ color: '#231f20' }} />
 															</Button>
@@ -1130,10 +1280,13 @@ export default function PainelAdm() {
 															<td>{usuarios[key].usu_cidade}</td>
 															<td>{usuarios[key].usu_sexo}</td>
 															<td>
-																<Button className='m-0 p-0 border-0 bg-transparent'>
+																<Button
+																	onClick={() => editarUsuario(usuarios[key].usu_id)}
+																	className='m-0 p-0 border-0 bg-transparent'>
 																	<FiEdit style={{ color: '#231f20' }} />
 																</Button>
 																<Button
+
 																	onClick={() => removerUsuario(usuarios[key].usu_id)}
 																	className='ml-2 p-0 border-0 bg-transparent'>
 																	<FiTrash style={{ color: '#231f20' }} />
@@ -1184,7 +1337,7 @@ export default function PainelAdm() {
 																		<option
 																			value='null'
 																			disabled
-																			selected>
+																		>
 																			Escolher tipo...
 																		</option>
 																		<option value='E'>Evento</option>
@@ -1229,7 +1382,7 @@ export default function PainelAdm() {
 															<td>{categorias[key].cat_tipo}</td>
 															<td>
 																<Button
-																	/*  onClick={() => editarCategoria(categorias[key].cat_id)} */
+																	onClick={() => editarCategoria(categorias[key].cat_id)}
 																	className='m-0 p-0 border-0 bg-transparent'>
 																	<FiEdit style={{ color: '#231f20' }} />
 																</Button>
@@ -1258,6 +1411,7 @@ export default function PainelAdm() {
 			</Container>
 			{modalCurVisivel ? (
 				<Modal onClose={() => setModalCurVisivel(false)}>
+					{/* <GerenciarCurso usuario={usuario} nivel={nivel} flag='edit' onUpdateModal={setModalCurVisivel(true)} /> */}
 					<h3 className='title'>Editar Curso</h3>
 					<form
 						method='post'
@@ -1412,7 +1566,7 @@ export default function PainelAdm() {
 						</Col>
 						<div className='form-group d-flex flex-row-reverse p-3 mb-0'>
 							<button className='btn bg-brown w-30' type='submit'>
-								ADICIONAR
+								CONFIRMAR
 							</button>
 						</div>
 					</form>
@@ -1479,6 +1633,7 @@ export default function PainelAdm() {
 										onChange={e => {
 											setStatusEve('A');
 											setChecado(true);
+											setChecado2(false);
 											setErroMsg(false);
 											setSucessoMsg(false);
 										}}
@@ -1499,6 +1654,7 @@ export default function PainelAdm() {
 										onChange={e => {
 											setStatusEve('I');
 											setChecado2(true);
+											setChecado(false);
 											setErroMsg(false);
 											setSucessoMsg(false);
 										}}
@@ -1605,12 +1761,248 @@ export default function PainelAdm() {
 						</Col>
 						<div className='form-group d-flex flex-row-reverse p-3 mb-0'>
 							<button className='btn bg-brown w-30' type='submit'>
-								ADICIONAR
+								CONFIRMAR
 							</button>
 						</div>
 					</form>
 				</Modal>
 			) : null}
+			{modalNotVisivel ? (
+				<Modal onClose={() => setModalNotVisivel(false)}>
+					<h3 className='title'>Alterar Notícia</h3>
+					<form
+						method='post'
+						onSubmit={adicionarNoticia}>
+						<div className='form-col form-group'>
+							<div className='col'>
+								<input
+									className='form-ctrl'
+									type='text'
+									name='not_titulo'
+									id='not_titulo'
+									value={not_titulo}
+									onChange={e => {
+										setTituloNot(e.target.value);
+										setErroMsg(false); setSucessoMsg(false);
+									}}
+									placeholder='Titulo da notícia...'></input>
+								<div className='form-row form-group pt-1 mb-0 align-items-center'>
+									<div className='col mt-4'>
+										<select
+											className='custom-select'
+											value={not_categoria}
+											onChange={e => {
+												setCategoriaNot(e.target.value);
+												setErroMsg(false); setSucessoMsg(false);
+											}}>
+											<option
+												value='DEFAULT'
+												disabled>
+												Escolher categoria...
+												</option>
+											{Object.keys(categorias).map((key, index) => (
+												<option
+													key={categorias[key].cat_id}
+													value={categorias[key].cat_id}>
+													{categorias[key].cat_nome}
+												</option>
+											))}
+										</select>
+									</div>
+									<Col>
+										<label className='mb-0'>
+											Data da noticia
+										</label>
+										<input
+											className='form-ctrl'
+											type='date'
+											name='not_data'
+											id='not_data'
+											value={not_data}
+											onChange={e => {
+												setDataNot(e.target.value);
+												setErroMsg(false);
+												setSucessoMsg(false);
+											}}></input>
+									</Col>
+								</div>
+							</div>
+						</div>
+						<Col>
+							{erroMsg ? (<span className='erro'>{erroMsg}</span>) : null}
+							{sucessoMsg ? (<span className='sucesso'>{sucessoMsg}</span>) : null}
+						</Col>
+						<div className='form-group d-flex flex-row-reverse p-3 mb-0'>
+							<button
+								className='btn bg-brown w-30'
+								type='submit'>
+								CONFIRMAR
+							</button>
+						</div>
+					</form>
+				</Modal>
+			) : null}
+			{modalUsuVisivel ?
+				<Modal onClose={() => setModalUsuVisivel(false)}>
+					<h3 className='title'>Editar Usuário</h3>
+					<form
+						method='post'
+						onSubmit={registrar}>
+						<div className='form-row form-group justify-content-between'>
+							<Col xs={5}>
+								<div className='row'>
+									<input
+										className='form-ctrl'
+										type='text'
+										name='usu_nome'
+										id='usu_nome'
+										value={usu_nome}
+										onChange={e => {
+											setNome(e.target.value);
+											setErroMsg(false);
+											setSucessoMsg(false);
+										}}
+										placeholder='Digite o primeiro nome...'></input>
+								</div>
+							</Col>
+							<Col xs={6}>
+								<div className='row'>
+									<input
+										className='form-ctrl'
+										type='text'
+										name='usu_sobrenome'
+										id='usu_sobrenome'
+										value={usu_sobrenome}
+										onChange={e => {
+											setSobrenome(e.target.value);
+											setErroMsg(false);
+											setSucessoMsg(false);
+										}}
+										placeholder='Digite o sobrenome...'></input>
+								</div>
+							</Col>
+						</div>
+						<div className='row mb-3'>
+							<select
+								className='custom-select'
+								defaultValue={usu_nivel}
+								onChange={e => {
+									setErroMsg(false);
+									setSucessoMsg(false);
+									setNivel(e.target.value);
+								}}>
+								<option
+									value='null'
+									disabled>
+									Escolher nível...
+								</option>
+								<option value='U'>Usuário</option>
+								<option value='A'>Administrador</option>
+							</select>
+						</div>
+						<div className='form-group'>
+							<div className='row'>
+								<input
+									className='form-ctrl'
+									type='text'
+									name='usu_email'
+									id='usu_email'
+									value={usu_email}
+									onChange={e => {
+										setEmail(e.target.value);
+										setErroMsg(false); setSucessoMsg(false);
+									}}
+									placeholder='Digite o email...'></input>
+							</div>
+						</div>
+						<div className='form-group mb-1'>
+							<div className='row'>
+								<input
+									className='form-ctrl'
+									type='password'
+									name='usu_senha'
+									id='usu_senha'
+									value={usu_senha}
+									onChange={e => {
+										setSenha(e.target.value);
+										setErroMsg(false);
+										setSucessoMsg(false);
+									}}
+									placeholder='Digite a senha...'></input>
+							</div>
+						</div>
+						<Col>
+							{erroMsg ? (<span className='erro'>{erroMsg}</span>) : null}
+							{sucessoMsg ? (<span className='sucesso'>{sucessoMsg}</span>) : null}
+						</Col>
+						<div className='form-group d-flex flex-row-reverse p-3 mb-0'>
+							<button
+								className='btn bg-brown w-30'
+								type='submit'>
+								CONFIRMAR
+							</button>
+						</div>
+					</form>
+				</Modal>
+				: null}
+			{modalCatVisivel ?
+				<Modal onClose={() => setModalCatVisivel(false)}>
+					<h3 className='title'>Editar Categoria</h3>
+					<form
+						method='post'
+						onSubmit={adicionarCategoria}>
+						<div className='form-col form-group'>
+							<div className='col'>
+								<input
+									className='form-ctrl'
+									type='text'
+									name='cat_nome'
+									id='cat_nome'
+									value={cat_nome}
+									onChange={e => {
+										setCatNome(e.target.value);
+										setErroMsg(false);
+										setSucessoMsg(false);
+									}}
+									placeholder='Nome da categoria...'></input>
+								<div className='form-row form-group pt-1 mb-0 align-items-center'>
+									<div className='col mt-2'>
+										<select
+											className='custom-select'
+											defaultValue='null'
+											onChange={e => {
+												setErroMsg(false);
+												setSucessoMsg(false);
+												setTipo(e.target.value);
+											}}>
+											<option
+												value='null'
+												disabled
+												selected>
+												Escolher tipo...
+											</option>
+											<option value='E'>Evento</option>
+											<option value='C'>Curso</option>
+											<option value='N'>Notícia</option>
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
+						<Col>
+							{erroMsg ? (<span className='erro'>	{erroMsg}</span>) : null}
+							{sucessoMsg ? (<span className='sucesso'> {sucessoMsg}</span>) : null}
+						</Col>
+						<div className='form-group d-flex flex-row-reverse p-3 mb-0'>
+							<button
+								className='btn bg-brown w-30'
+								type='submit'>
+								CONFIRMAR
+							</button>
+						</div>
+					</form>
+				</Modal>
+				: null}
 		</React.Fragment>
 	);
 }

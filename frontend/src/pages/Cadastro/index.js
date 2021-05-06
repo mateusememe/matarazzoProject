@@ -8,12 +8,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function Cadastro() {
     const email = localStorage.getItem("usu_email");
-    const nivel = localStorage.getItem("usu_nivel");
+    //const nivel = localStorage.getItem("usu_nivel");
     const [usu_nome, setNome] = useState('');
     const [usu_sobrenome, setSobrenome] = useState('');
     const [usu_email, setEmail] = useState('');
     const [usu_senha, setSenha] = useState('');
-    const [usu_nivel, setUsuNivel] = useState('U');
+    //const [usu_nivel, setUsuNivel] = useState('U');
     const [concluido, setConcluido] = useState(false);
     const [erroMsg, setErroMsg] = useState('');
     const history = useHistory();
@@ -53,6 +53,7 @@ export default function Cadastro() {
             if (validarSenha()) {
                 const resp = await api.get('/usuarios/busca/' + usu_email);
                 if (resp.data.length === 0) {
+                    const usu_nivel = 'U';
                     await api.post('/usuarios/cadastro',
                         {
                             usu_nome, usu_sobrenome,

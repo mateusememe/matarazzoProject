@@ -22,7 +22,16 @@ module.exports = {
         const { usu_email } = request.params;
         await db.conecta();
         const sql = "SELECT usu_email FROM Usuario WHERE usu_email = ?";
-        const value = [ usu_email ];
+        const value = [usu_email];
+        const usuarios = await db.consulta(sql, value);
+        return response.json(usuarios.data);
+    },
+
+    async buscarUsuarioId(request, response) {
+        const { id } = request.params;
+        await db.conecta();
+        const sql = "SELECT * FROM Usuario WHERE usu_id = ?";
+        const value = [id];
         const usuarios = await db.consulta(sql, value);
         return response.json(usuarios.data);
     },
@@ -36,7 +45,7 @@ module.exports = {
         const sql = "INSERT INTO Usuario (usu_nome, usu_sobrenome," +
             "usu_email, usu_senha, usu_nivel) " +
             "VALUES (?, ?, ?, ?, ?)";
-        
+
         const valores = [
             usu_nome, usu_sobrenome, usu_email,
             usu_senha, usu_nivel
@@ -53,12 +62,12 @@ module.exports = {
         } = request.body;
         await db.conecta();
         const sql = "UPDATE Usuario SET usu_nome = ?, usu_sobrenome = ?,"
-       +" usu_email = ?, usu_senha = ?, usu_cpf = ?, usu_dtNasc = ?, usu_endereco = ?,"
-       +" usu_cidade = ?, usu_cep = ?, usu_fone = ?, usu_sexo = ? WHERE usu_id = ?";
+            + " usu_email = ?, usu_senha = ?, usu_cpf = ?, usu_dtNasc = ?, usu_endereco = ?,"
+            + " usu_cidade = ?, usu_cep = ?, usu_fone = ?, usu_sexo = ? WHERE usu_id = ?";
         const valores = [
             usu_nome, usu_sobrenome, usu_email,
             usu_senha, usu_cpf, usu_dtNasc, usu_endereco,
-            usu_cidade, usu_cep,usu_fone, usu_sexo, usu_id
+            usu_cidade, usu_cep, usu_fone, usu_sexo, usu_id
         ];
         const result = await db.manipula(sql, valores);
         return response.json(result);
