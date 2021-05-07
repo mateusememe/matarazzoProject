@@ -1,5 +1,5 @@
 const db = require('../models/Database');
-
+const UsuarioDAO = require('../DAO/UsuarioDAO');
 module.exports = {
     //cadastros básicos e login
     async login(request, response) {
@@ -12,10 +12,7 @@ module.exports = {
     },
 
     async listarUsuarios(request, response) {
-        await db.conecta();
-        const sql = "SELECT * FROM Usuario";
-        const usuarios = await db.consulta(sql);
-        return response.json(usuarios.data);
+        return response.json(UsuarioDAO.listarUsuarios());
     },
 
     async buscarUsuario(request, response) {
@@ -36,22 +33,20 @@ module.exports = {
         return response.json(usuarios.data);
     },
 
-    async gravarUsuario(request, response) {
+    async gravarUsuario(req, resp) {
         const {
             usu_nome, usu_sobrenome, usu_email,
             usu_senha, usu_nivel
-        } = request.body;
-        await db.conecta();
-        const sql = "INSERT INTO Usuario (usu_nome, usu_sobrenome," +
-            "usu_email, usu_senha, usu_nivel) " +
-            "VALUES (?, ?, ?, ?, ?)";
+        } = req.body;
 
-        const valores = [
+        const usu = new Usuario(
             usu_nome, usu_sobrenome, usu_email,
             usu_senha, usu_nivel
-        ];
-        const result = await db.manipula(sql, valores);
-        return response.json(result);
+        );
+
+        var retorno = UsuarioDAO.gravar(usu);
+
+        return resp.json(retorno);
     },
 
     async alterarUsuario(request, response) {
@@ -60,26 +55,18 @@ module.exports = {
             usu_senha, usu_cpf, usu_dtNasc, usu_endereco,
             usu_cidade, usu_cep, usu_fone, usu_sexo, usu_id
         } = request.body;
-        await db.conecta();
-        const sql = "UPDATE Usuario SET usu_nome = ?, usu_sobrenome = ?,"
-            + " usu_email = ?, usu_senha = ?, usu_cpf = ?, usu_dtNasc = ?, usu_endereco = ?,"
-            + " usu_cidade = ?, usu_cep = ?, usu_fone = ?, usu_sexo = ? WHERE usu_id = ?";
-        const valores = [
-            usu_nome, usu_sobrenome, usu_email,
+
+        const usu = new Usuario(usu_id, usu_nome, usu_sobrenome, usu_email,
             usu_senha, usu_cpf, usu_dtNasc, usu_endereco,
-            usu_cidade, usu_cep, usu_fone, usu_sexo, usu_id
-        ];
-        const result = await db.manipula(sql, valores);
-        return response.json(result);
+            usu_cidade, usu_cep, usu_fone, usu_sexo);
+
+        const retorno = UsuarioDAO.alterar(usu);
+        return response.json(retorno);
     },
 
     async excluirUsuario(request, response) {
         const { usu_id } = request.params;
-        await db.conecta();
-        const sql = "DELETE FROM Usuario WHERE usu_id = ?";
-        const valor = [usu_id];
-        const result = await db.manipula(sql, valor);
-        console.log(result);
-        return response.json(result);
+        const retorno = UsuarioDAO.excluir(usu_id);
+        return response.json(retorno);
     }
 }

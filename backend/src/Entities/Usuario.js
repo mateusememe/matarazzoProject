@@ -1,4 +1,4 @@
-export class Usuario {
+class Usuario {
     constructor(id, nome, sobrenome, email, senha, nivel) {
         this.id = id;
         this.nome = nome;
@@ -7,19 +7,29 @@ export class Usuario {
         this.senha = senha;
         this.nivel = nivel;
     }
-    constructor(nome, sobrenome, email, senha, nivel) {
+
+    static SemId(nome, sobrenome, email, senha, nivel) {
         this(0, nome, sobrenome, email, senha, nivel);
     }
-    constructor() {
-        this(0, 0, 0);
+
+    static DadosCompra(id, nome, sobrenome, email, senha, cpf, dtNasc, endereco, cidade, cep, fone, sexo) {
+        this(id, nome, sobrenome, email, senha, nivel);
+        this.cpf = cpf;
+        this.dtNasc = dtNasc;
+        this.endereco = endereco;
+        this.cidade = cidade;
+        this.cep = cep;
+        this.fone = fone;
+        this.sexo = sexo;
     }
+
     getId() {
         return this.id;
     }
+
     setId(id) {
         this.id = id;
     }
-
 
     getNome() {
         return this.nome;
@@ -40,7 +50,6 @@ export class Usuario {
     getEmail() {
         return this.email;
     }
-
     setEmail(email) {
         this.email = email;
     }
@@ -48,7 +57,6 @@ export class Usuario {
     getSenha() {
         return this.senha;
     }
-
     setSenha(senha) {
         this.senha = senha;
     }
@@ -56,8 +64,58 @@ export class Usuario {
     getNivel() {
         return this.nivel;
     }
-
     setNivel(nivel) {
         this.nivel = nivel;
     }
+
+    getCpf() {
+        return this.cpf;
+    }
+    setCpf(cpf) {
+        this.cpf = cpf;
+    }
+
+    getDtNasc() {
+        return this.dtNasc;
+    }
+    setDtNasc(dtNasc) {
+        this.dtNasc = dtNasc;
+    }
+
+    getEndereco() {
+        return this.endereco;
+    }
+    setEndereco(endereco) {
+        this.endereco = endereco;
+    }
+
+    getCidade() {
+        return this.cidade;
+    }
+    setCidade(cidade) {
+        this.cidade = cidade;
+    }
+
+    getCep() {
+        return this.cep;
+    }
+    setCep(cep) {
+        this.cep = cep;
+    }
+
+    getFone() {
+        return this.fone;
+    }
+    setFone(fone) {
+        this.fone = fone;
+    }
+
+    getSexo() {
+        return this.sexo;
+    }
+    setSexo(sexo) {
+        this.sexo = sexo;
+    }
 }
+
+module.exports = Usuario;

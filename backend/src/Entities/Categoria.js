@@ -1,15 +1,14 @@
-export class Categoria {
-    cosntructor(id, nome, tipo) {
+class Categoria {
+    constructor(id, nome, tipo) {
         this.id = id;
         this.nome = nome;
         this.tipo = tipo;
     }
-    constructor(nome, tipo) {
-        this(0, nome, tipo);
+
+    static SemId(nome, tipo) {
+        return new Categoria(0, nome, tipo);
     }
-    constructor() {
-        this(0, 0, 0);
-    }
+
     getNome() {
         return this.nome;
     }
@@ -23,5 +22,6 @@ export class Categoria {
     setTipo(tipo) {
         this.tipo = tipo;
     }
-
 }
+
+module.exports = Categoria;
