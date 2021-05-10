@@ -1,70 +1,74 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { Container, Col, Row } from 'react-bootstrap';
-
-import api from '../../services/api'
-import Navbar from '../../components/Navbar'
-import CapaEvento from '../../components/CapaEvento'
-import CapaCurso from '../../components/CapaCurso'
-import CarouselIni from '../../components/CarouselIni'
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+import Navbar from '../../components/Navbar'
+import CarouselIni from '../../components/CarouselIni'
+
+import CapaEvento from '../../components/CapaEvento'
+import CapaCurso from '../../components/CapaCurso'
+import CapaNoticia from '../../components/CapaNoticia'
+
+import { DadosContext } from '../../context/DadosContext.js';
+
 export default function Inicio() {
-    const [eventos, setEvento] = useState([]);
-    const [cursos, setCurso] = useState([]);
+  const {
+    carregarCursos, carregarEventos, carregarNoticias,
+    eventos, cursos, noticias
+  } = useContext(DadosContext);
 
-    async function carregarEventos() {
-        const response = await api.get('/eventosAtivos');
-        setEvento(response.data);
-    }
+  useEffect(() => {
+    carregarEventos();
+    carregarCursos();
+    carregarNoticias();
+  });
 
-    async function carregarCursos() {
-        const response = await api.get('/cursosAtivos');
-        setCurso(response.data);
-    }
-
-    useEffect(() => {
-        carregarEventos();
-        carregarCursos();
-        return () => {
-            setEvento({});
-            setCurso({});
-        };
-    }, []);
-
-    return (
-        <React.Fragment>
-            <Navbar />
-            <CarouselIni />
-            <Container className="mt-1">
-                <Col className="mb-4">
-                    <h1 className="title">Proximos Eventos</h1>
-                    <Row>
-                        {eventos.length !== 0
-                            ? eventos.map(evento => (
-                                <Col xs={3} className="mb-0" key={`${evento.eve_id}`}>
-                                    <CapaEvento data={evento} />
-                                </Col>
-
-                            ))
-                            : <span style={{ textAlign: 'center' }}>Não existem cursos</span>
-                        }
-                    </Row>
+  return (
+    <React.Fragment>
+      <Navbar />
+      <CarouselIni />
+      <Container className="mt-1">
+        <Col className="mb-4">
+          <h1 className="title">Proximos Eventos</h1>
+          <Row>
+            {eventos.length !== 0
+              ? eventos.map((evento) => (
+                <Col xs={3} className="mb-0" key={`${evento.eve_id}`}>
+                  <CapaEvento data={evento} />
                 </Col>
-                <Col className="mb-4">
-                    <h1 className="title">Cursos Abertos</h1>
-                    <Row>
-                        {cursos.length !== 0
-                            ? cursos.map(curso => (
-                                <Col xs={3} className="mb-0" key={`${curso.cur_id}`}>
-                                    <CapaCurso data={curso} />
-                                </Col>
-                            ))
-                            : <span style={{ textAlign: 'center' }}>Não existem cursos</span>
-                        }
-                    </Row>
+              ))
+              : <span style={{ fontWeight: 'bold' }}>Não existem eventos</span>
+            }
+          </Row>
+        </Col>
+        <Col className="mb-4">
+          <h1 className="title">Cursos Abertos</h1>
+          <Row>
+            {cursos.length !== 0
+              ? Object.keys(cursos).map((key, index) => (
+                <Col xs={3} className="mb-0" key={`${cursos[key].cur_id}`}>
+                  <CapaCurso data={cursos[key]} />
                 </Col>
-            </Container>
-        </React.Fragment>
-    );
+              ))
+              : <span style={{ textAlign: 'center' }}>Não existem cursos</span>
+            }
+          </Row>
+        </Col>
+        <Col className="mb-4">
+          <h1 className="title">Ultimas Notícias</h1>
+          <Row>
+            {noticias.length !== 0
+              ? noticias.map((noticia) => (
+                <Col xs={3} className="mb-0" key={`${noticia.not_id}`}>
+                  <CapaNoticia data={noticia} />
+                </Col>
+              ))
+
+              : <span style={{ textAlign: 'center' }}>Não existem noticias</span>
+            }
+          </Row>
+        </Col>
+      </Container>
+    </React.Fragment>
+  );
 }

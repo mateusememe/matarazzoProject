@@ -40,7 +40,7 @@ const Navbar = () => {
                     className={
                         navbar
                             ? 'navbar fixed-top navbar-expand-lg navbar-dark bg-brown scrolled-up'
-                            : 'navbar fixed-top navbar-expand-lg navbar-dark bg-transparent scrolled-down'
+                            : 'navbar fixed-top navbar-expand-lg navbar-dark bg-brown scrolled-down'
                     }>
                     <div className='header-div'>
                         <div>
