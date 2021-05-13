@@ -12,7 +12,8 @@ class Usuario {
         this(0, nome, sobrenome, email, senha, nivel);
     }
 
-    static DadosCompra(id, nome, sobrenome, email, senha, cpf, dtNasc, endereco, cidade, cep, fone, sexo) {
+
+    static DadosCompra(id, nome, sobrenome, email, senha, cpf, dtNasc, endereco, cidade, cep, fone, sexo, nivel) {
         this(id, nome, sobrenome, email, senha, nivel);
         this.cpf = cpf;
         this.dtNasc = dtNasc;

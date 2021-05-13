@@ -1,65 +1,48 @@
-const db = require('../models/Database');
+const CursoDAO = require('../DAO/CursoDAO');
+const Curso = require('../Entities/Curso');
 
 module.exports = {
 
-    async listarCursos(request, response) {//ok
-        await db.conecta();
-        const sql = "SELECT * FROM curso";
-        const cursos = await db.consulta(sql);
-        return response.json(cursos.data);
+    async listarCursos(request, response) {
+        const cursos = CursoDAO.listarCursos();
+        return response.json(cursos);
     },
 
-    async listarCursosAtivos(request, response) {//ok
-        await db.conecta();
-        const sql = "SELECT * FROM curso WHERE cur_status = 'A'";
-        const cursos = await db.consulta(sql);
-        return response.json(cursos.data);
+    async listarCursosAtivos(request, response) {
+        const cursos = CursoDAO.listarCursosAtivos();
+        return response.json(cursos);
     },
 
     async buscarCurso(request, response) {
         const { cur_id } = request.params;
-        await db.conecta();
-        const sql = "SELECT * FROM Curso WHERE cur_id = ?";
-        const value = [cur_id];
-        const curso = await db.consulta(sql, value);
-        return response.json(curso.data);
+        const curso = CursoDAO.buscarCurso(cur_id);
+        return response.json(curso);
     },
 
     async gravarCurso(request, response) {//ok
         const {
-            cur_nome, cur_status, cur_adm,
-            cur_categoria, cur_valor, cur_img
+            cur_nome, cur_status, usu_id,
+            cat_id, cur_valor, cur_img
         } = request.body;
-        console.log(request.body);
-        await db.conecta();
-        const sql = "INSERT INTO curso (cur_nome, cur_status, usu_id, cat_id, cur_valor, cur_img) " +
-            "VALUES (?, ?, ?, ?, ?, ?)";
-        const valores = [
-            cur_nome, cur_status, cur_adm,
-            cur_categoria, cur_valor, cur_img
-        ];
-        const result = await db.manipula(sql, valores);
+
+        const curso = Curso.curso(cur_nome, cur_status, usu_id, cat_id, cur_valor, cur_img);
+
+        const result = CursoDAO.gravar(curso);
         return response.json(result);
     },
 
     async alterarCurso(request, response) {//ok
-        const { cur_nome, cur_status, cur_adm, cur_categoria, cur_valor, cur_img, cur_id} = request.body;
-        await db.conecta();
-        const sql = "UPDATE Curso SET cur_nome = ?, cur_status = ?, usu_id = ?, cur_valor = ?, cur_img = ?, cat_id = ? WHERE cur_id = ?";
-        const valores = [
-            cur_nome, cur_status, cur_adm,
-            cur_valor, cur_img, cur_categoria, cur_id
-        ];
-        const result = await db.manipula(sql, valores);
+        const { cur_nome, cur_status, usu_id,
+            cat_id, cur_valor, cur_img, cur_id } = request.body;
+        const curso = new Curso(cur_id, cur_nome, cur_status, usu_id, cat_id, cur_valor, cur_img);
+
+        const result = CursoDAO.alterar(curso);
         return response.json(result);
     },
 
     async excluirCurso(request, response) {//ok
         const { cur_id } = request.params;
-        await db.conecta();
-        const sql = "DELETE FROM Curso WHERE cur_id = ?";
-        const valor = [cur_id];
-        const result = await db.manipula(sql, valor);
+        const result = CursoDAO.excluir(cur_id);
         return response.json(result);
     },
 

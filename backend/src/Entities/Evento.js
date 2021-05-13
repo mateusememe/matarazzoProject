@@ -1,22 +1,19 @@
-export class Evento {
-    constructor(id, nome, status, data, horario, cat_id, img, usu_id, valor) {
+class Evento {
+    constructor(id, nome, status, dataInicio, dataFim, cat_id, img, usu_id, valor) {
         this.id = id;
         this.nome = nome;
         this.status = status;
-        this.data = data;
-        this.horario = horario;
+        this.dataInicio = dataInicio;
+        this.dataFim = dataFim;
         this.cat_id = cat_id;
         this.img = img;
         this.usu_id = usu_id;
         this.valor = valor;
     }
-    constructor(nome, status, data, horario, cat_id, img, usu_id, valor) {
-        this(0, nome, status, data, horario, cat_id, img, usu_id, valor);
-    }
-    constructor() {
-        this(0, 0, 0);
-    }
 
+    static SemId(nome, status, dataInicio, dataFim, cat_id, img, usu_id, valor) {
+        return new Evento(0, nome, status, dataInicio, dataFim, cat_id, img, usu_id, valor);
+    }
     getId() {
         return this.id;
     }
@@ -38,18 +35,18 @@ export class Evento {
         this.status = status;
     }
 
-    getData() {
+    getDataInicio() {
         return this.data;
     }
-    setData(data) {
+    setDataInicio(data) {
         this.data = data;
     }
 
-    getHorario() {
-        return this.horario;
+    getDataFim() {
+        return this.dataFim;
     }
-    setHorario() {
-        this.horario = horario;
+    setDataFim() {
+        this.dataFim = dataFim;
     }
 
     getCatId() {
@@ -80,5 +77,5 @@ export class Evento {
         this.valor = valor;
     }
 
-
 }
+module.exports = Evento;

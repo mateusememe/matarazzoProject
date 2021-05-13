@@ -40,11 +40,11 @@ const Navbar = () => {
                     className={
                         navbar
                             ? 'navbar fixed-top navbar-expand-lg navbar-dark bg-brown scrolled-up'
-                            : 'navbar fixed-top navbar-expand-lg navbar-dark bg-brown scrolled-down'
+                            : 'navbar fixed-top navbar-expand-lg navbar-dark bg-transparent scrolled-down'
                     }>
                     <div className='header-div'>
                         <div>
-                            <Logo />
+                            <Logo style={{ cursor: "pointer" }} onClick={() => history.push('./')} />
                         </div>
                         <div className='header-nav align-items-center' title='Minha Conta'>
                             <NavLink to='./minha-conta' title='Minha Conta'>
@@ -74,7 +74,7 @@ const Navbar = () => {
                     }>
                     <div className='header-div'>
                         <div>
-                            <Logo />
+                            <Logo style={{ cursor: "pointer" }} onClick={() => history.push('./')} />
                         </div>
                         <div className='header-nav align-items-center'>
                             <NavLink to='./minha-conta' title='Minha Conta'>
@@ -99,7 +99,7 @@ const Navbar = () => {
                 }>
                 <div className='header-div'>
                     <div>
-                        <Logo />
+                        <Logo style={{ cursor: "pointer" }} onClick={() => history.push('./')} />
                     </div>
                     <div className='header-nav'>
                         <NavLink to='/login'>

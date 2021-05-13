@@ -21,7 +21,7 @@ export default function Inicio() {
     carregarEventos();
     carregarCursos();
     carregarNoticias();
-  });
+  }, []);
 
   return (
     <React.Fragment>
@@ -63,7 +63,6 @@ export default function Inicio() {
                   <CapaNoticia data={noticia} />
                 </Col>
               ))
-
               : <span style={{ textAlign: 'center' }}>Não existem noticias</span>
             }
           </Row>

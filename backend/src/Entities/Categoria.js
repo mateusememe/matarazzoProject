@@ -8,10 +8,16 @@ class Categoria {
     static SemId(nome, tipo) {
         return new Categoria(0, nome, tipo);
     }
-
+    getId() {
+        return this.id;
+    }
+    setId(id) {
+        return this.id;
+    }
     getNome() {
         return this.nome;
     }
+
     setNome(nome) {
         this.nome = nome;
     }

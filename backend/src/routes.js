@@ -12,12 +12,24 @@ routes.post('/usuarios/login', UsuCtrl.login);
 routes.get('/usuarios/busca/:usu_email', UsuCtrl.buscarUsuario);//busca de um determinado usuário
 routes.get('/usuarios/:id', UsuCtrl.buscarUsuarioId);
 
+const SesCtrl = require('./Controllers/SessaoCtrl');
+
+routes.post('/sessoes', SesCtrl.gravar);
+routes.get('/sessoes/datas/:eve_id', SesCtrl.listarSessoesEvento);
+routes.get('/sessoes/salas_horarios/:eve_id/:data', SesCtrl.listarSalasHorarios);
+
 const AssCtrl = require('./Controllers/AssentoCtrl');
 
 routes.post('/assentos', AssCtrl.gravarAssento);
 routes.get('/assentos', AssCtrl.listarAssentos);
+routes.get('/assentos/:sal_id/:ast_fileira', AssCtrl.listarAssentosFileira);
+routes.get('/assentosOcupados/:eve_id/:ses_id', AssCtrl.listarAssentosOcupados);
 routes.put('/assentos', AssCtrl.alterarAssento);
 routes.delete('/assentos/:ass_id', AssCtrl.excluirAssento);
+
+//ROTAS PARA SALA
+const SalCtrl = require('./Controllers/SalaCtrl');
+routes.get('/sala/qtdeFileiras/:sal_id', SalCtrl.recuperaQtdeFileiras);
 
 const CatCtrl = require('./Controllers/CategoriaCtrl');
 
@@ -44,7 +56,7 @@ routes.get('/eventosAtivos', EveCtrl.listarEventosAtivo);
 routes.post('/eventos', EveCtrl.gravarEvento);
 routes.put('/eventos', EveCtrl.alterarEvento);
 routes.delete('/eventos/:eve_id', EveCtrl.excluirEvento);
-routes.get('/eventos/:eve_id', EveCtrl.buscarEvento);
+routes.get('/eventos/:eve_id', EveCtrl.buscarEventoId);
 
 const NotCtrl = require('./Controllers/NoticiaCtrl');
 

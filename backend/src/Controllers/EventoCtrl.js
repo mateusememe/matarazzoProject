@@ -1,76 +1,43 @@
-const db = require('../models/Database');
+const EventoDAO = require('../DAO/EventoDAO')
+const Evento = require('../Entities/Evento')
 
 module.exports = {
 
-    async listarEventos(request, response) {//f
-        await db.conecta();
-        const sql = "SELECT * FROM evento";
-        const eventos = await db.consulta(sql);
-        return response.json(eventos.data);
+    async listarEventos(request, response) {
+        const result = await EventoDAO.listarEventos();
+        return response.json(result);
     },
 
-    async listarEventosAtivo(request, response) {//f
-        await db.conecta();
-        const sql = "SELECT * FROM evento WHERE eve_status = 'A'";
-        const eventos = await db.consulta(sql);
-        return response.json(eventos.data);
+    async listarEventosAtivo(request, response) {
+        const result = await EventoDAO.listarEventosAtivo();
+        return response.json(result);
     },
 
-    async buscarEvento(request, response) {
-        const {eve_id} = request.params;
-        await db.conecta();
-        const sql = "SELECT * FROM Evento WHERE eve_id = ?";
-        const value = [eve_id];
-        const evento = await db.consulta(sql, value);
-        return response.json(evento.data);
+    async buscarEventoId(request, response) {
+        const { id } = request.params;
+        const result = await EventoDAO.buscarEvento(id);
+        return response.json(result);
     },
 
-    async gravarEvento(request, response) {//f
-        const {
-            eve_nome, eve_status, eve_data,
-            eve_horario, eve_categoria, eve_img,
-            eve_adm, eve_valor
-        } = request.body;
-        await db.conecta();
-        const sql = "INSERT INTO evento (eve_nome, eve_status, eve_data," +
-            "eve_horario, cat_id, eve_img," +
-            "usu_id, eve_valor) VALUES" +
-            "(?,?,?,?,?,?,?,?)";
-        const valores = [
-            eve_nome, eve_status, eve_data,
-            eve_horario, eve_categoria, eve_img,
-            eve_adm, eve_valor
-        ];
-        const result = await db.manipula(sql, valores);
+    async gravarEvento(request, response) {
+
+        const { eve_nome, eve_status, eve_dataInicio, eve_dataFim, cat_id, eve_img, usu_id, eve_valor } = request.body;
+        const evento = Evento.SemId(eve_nome, eve_status, eve_dataInicio, eve_dataFim, cat_id, eve_img, usu_id, eve_valor);
+        const result = await EventoDAO.gravar(evento);
         return response.json(result);
     },
 
     async alterarEvento(request, response) {//f
-        const { 
-            eve_nome, eve_status, eve_data,
-            eve_horario, eve_categoria, eve_img,
-            eve_adm, eve_valor, eve_id
-        } = request.body;
-        const con = await db.conecta();
-        const sql = "UPDATE evento SET eve_nome = ?, eve_status = ?,"+
-            "eve_data = ?, eve_horario = ?, cat_id = ?, eve_img = ?,"+
-            "usu_id = ?, eve_valor = ? " +
-            "WHERE eve_id = ?";
-        const valores = [
-            eve_nome, eve_status, eve_data,
-            eve_horario, eve_categoria, eve_img,
-            eve_adm, eve_valor, eve_id
-        ];
-        const result = await db.manipula(sql, valores);
+
+        const { eve_id, eve_nome, eve_status, eve_dataInicio, eve_dataFim, cat_id, eve_img, usu_id, eve_valor } = request.body;
+        const evento = new Evento(eve_id, eve_nome, eve_status, eve_dataInicio, eve_dataFim, cat_id, eve_img, usu_id, eve_valor);
+        const result = await EventoDAO.alterar(evento);
         return response.json(result);
     },
 
     async excluirEvento(request, response) {
         const { eve_id } = request.params;
-        await db.conecta();
-        const sql = "DELETE FROM Evento WHERE eve_id = ?";
-        const valor = [eve_id];
-        const result = await db.manipula(sql, valor);
+        const result = await EventoDAO.excluir(eve_id);
         return response.json(result);
     },
 }

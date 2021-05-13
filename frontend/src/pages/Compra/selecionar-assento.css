@@ -1,0 +1,11 @@
+.custom-select {
+	width: fit-content;
+}
+
+.borda {
+	height: auto;
+	width: fit-content;
+	border-radius: 0.8vh;
+	background-color: #fce373;
+	border: 4px solid #e1ca67;
+}

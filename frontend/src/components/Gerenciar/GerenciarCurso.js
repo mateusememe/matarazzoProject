@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { useHistory } from 'react-router-dom';
+//import { useHistory } from 'react-router-dom';
 import {
   Container, Row, Col, Table, Button
 } from 'react-bootstrap';
@@ -9,7 +9,7 @@ import Modal from '../Modal'
 import { DadosContext } from '../../context/DadosContext.js';
 
 export default function GerenciarCurso(props) {
-  const history = useHistory();
+  //const history = useHistory();
 
   const [checado, setChecado] = useState(false);
   const [checado2, setChecado2] = useState(false);

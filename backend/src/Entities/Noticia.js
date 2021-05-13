@@ -1,16 +1,15 @@
-export class Noticia {
-    constructor(id, titulo, data, usu_id, cat_id) {
+class Noticia {
+    constructor(id, titulo, data, dataFim, usu_id, cat_id, descricao) {
         this.id = id;
         this.titulo = titulo;
         this.data = data;
+        this.dataFim = dataFim;
         this.usu_id = usu_id;
         this.cat_id = cat_id;
+        this.descricao = descricao;
     }
-    constructor(titulo, data, usu_id, cat_id) {
-        this(0, titulo, data, usu_id, cat_id);
-    }
-    constructor() {
-        this(0, 0, 0);
+    static SemId(titulo, data, dataFim, usu_id, cat_id, descricao) {
+        return new Categoria(0, titulo, data, dataFim, usu_id, cat_id, descricao);
     }
 
     getTitulo() {
@@ -20,6 +19,13 @@ export class Noticia {
         this.titulo = titulo;
     }
 
+    getDescricao() {
+        return this.descricao;
+    }
+    setDescricao(descricao) {
+        this.descricao = descricao;
+    }
+
     getData() {
         return this.data;
     }
@@ -27,22 +33,26 @@ export class Noticia {
         this.data = data;
     }
 
-    getUsu_id() {
+    getDataFim() {
+        return this.dataFim;
+    }
+    setDataFim(dataFim) {
+        this.dataFim = dataFim;
+    }
+
+
+    getUsuId() {
         return this.usu_id;
     }
-    setUsu_id(usu_id) {
+    setUsuId(usu_id) {
         this.usu_id = usu_id;
     }
 
-    getCat_id() {
+    getCatId() {
         return this.cat_id;
     }
-    setCat_id(cat_id) {
+    setCatId(cat_id) {
         this.cat_id = cat_id;
     }
-
 }
-/*
-    not_titulo, not_data, not_adm, not_categoria
-
-*/
+module.exports = Noticia;

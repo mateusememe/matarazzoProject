@@ -1,15 +1,29 @@
-export class Assento {
-    constructor(id, numero, fileira) {
+class Assento {
+    /*ast_id, sal_id, ast_num, ast_fileira*/
+    constructor(salId, id, numero, fileira) {
+        this.salId = salId;
         this.id = id;
         this.numero = numero;
         this.fileira = fileira;
     }
-    constructor(numero, fileira) {
-        this(0, numero, fileira);
+    static SemId(salId, numero, fileira) {
+        return new Assento(salId, 0, numero, fileira);
     }
-    constructor() {
-        this(0, 0, 0);
+
+    getSalId() {
+        return this.salId;
     }
+    setSalId(salId) {
+        this.salId = salId;
+    }
+
+    getId() {
+        return this.id;
+    }
+    setId(id) {
+        this.id = id;
+    }
+
     getNumero() {
         return this.numero;
     }
@@ -23,5 +37,5 @@ export class Assento {
     setFileira(fileira) {
         this.fileira = fileira;
     }
-
 }
+module.exports = Assento;

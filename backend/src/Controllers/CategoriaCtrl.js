@@ -4,6 +4,7 @@ const Categoria = require('../Entities/Categoria')
 module.exports = {
     async listarCategorias(request, response) {
         const { tipoCat } = request.params;
+        console.log(tipoCat);
         const result = await CategoriaDAO.listarCategorias(tipoCat);
         return response.json(result);
     },
@@ -16,15 +17,13 @@ module.exports = {
 
     async buscarCategoria(request, response) {
         const { cat_nome, cat_tipo } = request.params;
-        new Categoria();
-        const cat = new Categoria.SemId(cat_nome, cat_tipo);
+        const cat = Categoria.SemId(cat_nome, cat_tipo);
         const result = await CategoriaDAO.buscarCategoria(cat);
         return response.json(result.data);
     },
 
     async gravarCategoria(request, response) {
         const { cat_nome, cat_tipo } = request.body;
-        new Categoria();
         const cat = Categoria.SemId(cat_nome, cat_tipo);
         const result = await CategoriaDAO.gravar(cat);
         return response.json(result);

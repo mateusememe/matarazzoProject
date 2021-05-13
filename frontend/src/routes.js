@@ -6,8 +6,10 @@ import Login from './pages/Login/'
 import Cadastro from './pages/Cadastro'
 import PainelAdm from './pages/PainelAdm'
 import SelecionarSessao from './pages/Compra/selecionar-sessao.js'
-/* import Checkout from './pages/Compra/checkout'
 import Concluido from './pages/Compra/concluido'
+import Checkout from './pages/Compra/checkout-pagamento'
+import SelecionarAssento from './pages/Compra/selecionar-assento'
+/* 
 import RecuperarSenha from './pages/Login/recuperar-senha.js'
  */
 
@@ -20,8 +22,10 @@ export default function Rotas() {
         <Route path="/cadastro" component={Cadastro} />
         <Route path="/painel-administrador" component={PainelAdm} />
         <Route path="/selecionar-sessao" component={SelecionarSessao} />
-        {/*<Route path="/checkout" component={Checkout} />
         <Route path="/concluido" component={Concluido} />
+        <Route path="/checkout-pagamento" component={Checkout} />
+        <Route path="/selecionar-assentos" component={SelecionarAssento} />
+        {/*
         <Route path="/recuperar-senha" component={RecuperarSenha} /> */}
         <Redirect to="/" />
       </Switch>

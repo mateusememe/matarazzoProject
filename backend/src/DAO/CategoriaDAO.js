@@ -15,7 +15,7 @@ module.exports = {
     async alterar(categoria) {
         const sql = "UPDATE categoria SET cat_nome = ?, cat_tipo = ? WHERE cat_id = ?";
         const valores = [
-            categoria.getNome, categoria.getTipo, categoria.getId
+            categoria.getNome(), categoria.getTipo(), categoria.getId()
         ];
         await db.conecta();
         const result = await db.manipula(sql, valores);
@@ -25,6 +25,7 @@ module.exports = {
     async excluir(id) {
         const sql = "DELETE FROM categoria WHERE cat_id = ?";
         const valor = [id];
+        await db.conecta();
         const result = await db.manipula(sql, valor);
         return result;
     },

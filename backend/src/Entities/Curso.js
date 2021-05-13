@@ -1,19 +1,24 @@
-export class Curso {
-    constructor(id, nome, status, adm, categoria, valor, img) {
+class Curso {
+    constructor(id, nome, status, usu_id, categoria, valor, img) {
         this.id = id;
         this.nome = nome;
         this.status = status;
-        this.adm = adm;
+        this.usu_id = usu_id;
         this.categoria = categoria;
         this.valor = valor;
         this.img = img;
     }
-    constructor(nome, status, adm, categoria, valor, img) {
-        this(0, nome, status, adm, categoria, valor, img);
+    static curso(nome, status, usu_id, categoria, valor, img) {
+        return new Curso(0, nome, status, usu_id, categoria, valor, img);
     }
-    constructor() {
-        this(0, 0, 0);
+
+    getId() {
+        return this.id;
     }
+    setId(id) {
+        this.id = id;
+    }
+
     getNome() {
         return this.nome;
     }
@@ -28,17 +33,17 @@ export class Curso {
         this.status = status;
     }
 
-    getAdm() {
-        return this.adm;
+    getUsuId() {
+        return this.usu_id;
     }
-    setAdm(adm) {
-        this.adm = adm;
+    setUsuId(usu_id) {
+        this.usu_id = usu_id;
     }
 
-    getCategoria() {
+    getCatid() {
         return this.categoria;
     }
-    setCategoria(categoria) {
+    setCatid(categoria) {
         this.categoria = categoria;
     }
 
@@ -57,3 +62,4 @@ export class Curso {
     }
 
 }
+module.exports = Curso;
