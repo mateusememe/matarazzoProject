@@ -17,6 +17,7 @@ const SesCtrl = require('./Controllers/SessaoCtrl');
 routes.post('/sessoes', SesCtrl.gravar);
 routes.get('/sessoes/datas/:eve_id', SesCtrl.listarSessoesEvento);
 routes.get('/sessoes/salas_horarios/:eve_id/:data', SesCtrl.listarSalasHorarios);
+routes.get('/sessoes/:ses_id', SesCtrl.buscarSessao);
 
 const AssCtrl = require('./Controllers/AssentoCtrl');
 

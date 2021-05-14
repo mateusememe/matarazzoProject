@@ -9,6 +9,7 @@ import SelecionarSessao from './pages/Compra/selecionar-sessao.js'
 import Concluido from './pages/Compra/concluido'
 import Checkout from './pages/Compra/checkout-pagamento'
 import SelecionarAssento from './pages/Compra/selecionar-assento'
+import MinhaConta from './pages/Login/minha-conta'
 /* 
 import RecuperarSenha from './pages/Login/recuperar-senha.js'
  */
@@ -25,6 +26,7 @@ export default function Rotas() {
         <Route path="/concluido" component={Concluido} />
         <Route path="/checkout-pagamento" component={Checkout} />
         <Route path="/selecionar-assentos" component={SelecionarAssento} />
+        <Route path="/minha-conta" component={MinhaConta} />
         {/*
         <Route path="/recuperar-senha" component={RecuperarSenha} /> */}
         <Redirect to="/" />

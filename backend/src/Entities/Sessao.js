@@ -18,7 +18,7 @@ class Sessao {
     }
 
     setId(id) {
-        return this.ses_id = id;
+        this.ses_id = id;
     }
 
     getEveId() {
@@ -26,7 +26,7 @@ class Sessao {
     }
 
     setEveId(id) {
-        return this.eve_id = id;
+        this.eve_id = id;
     }
 
     getHorarioInicio() {
@@ -34,7 +34,7 @@ class Sessao {
     }
 
     setHorarioInicio(horarioInicio) {
-        return this.ses_horarioInicio = horarioInicio;
+        this.ses_horarioInicio = horarioInicio;
     }
 
     getQtdeIng() {
@@ -42,7 +42,7 @@ class Sessao {
     }
 
     setQtdeIng(qtdeIng) {
-        return this.ses_qtdeIng = qtdeIng;
+        this.ses_qtdeIng = qtdeIng;
     }
 
     getFreq() {
@@ -50,14 +50,14 @@ class Sessao {
     }
 
     setFreq(freq) {
-        return this.ses_freq = freq;
+        this.ses_freq = freq;
     }
 
     getSalId() {
         return this.sal_id;
     }
     setSalId(id) {
-        return this.sal_id = id;
+        this.sal_id = id;
     }
 
     getData() {
@@ -65,7 +65,7 @@ class Sessao {
     }
 
     setDataIni(data) {
-        return this.ses_data = data;
+        this.ses_data = data;
     }
 
 }

@@ -8,6 +8,13 @@ module.exports = {
     return sessoes.data;
   },
 
+  async BuscarSessao(ses_id) {
+    var sql = "SELECT * FROM SESSAO WHERE ses_id=" + ses_id;
+    await db.conecta();
+    const sessao = await db.consulta(sql);
+    return sessao.data;
+  },
+
   async SalasSessao(eve_id, data) {
     var sql = "SELECT DISTINCT(sal_id) FROM SESSAO WHERE eve_id=? AND ses_data = ? ORDER BY sal_id";
     const valores = [eve_id, data];
@@ -17,7 +24,7 @@ module.exports = {
   },
 
   async Horarios(eve_id, data, sala) {
-    var sql = "SELECT ses_horarioInicio FROM SESSAO WHERE eve_id=? AND ses_data = ? AND sal_id = ?";
+    var sql = "SELECT ses_horarioInicio, ses_id FROM SESSAO WHERE eve_id=? AND ses_data = ? AND sal_id = ?";
     const valores = [eve_id, data, sala];
     await db.conecta();
     const horarios = await db.consulta(sql, valores);

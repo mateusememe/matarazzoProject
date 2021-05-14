@@ -52,9 +52,9 @@ module.exports = {
         return eventos.data;
     },
 
-    async buscarEvento(id) {
+    async buscarEvento(eve_id) {
         const sql = "SELECT * FROM Evento WHERE eve_id = ?";
-        const value = [id];
+        const value = [eve_id];
         await db.conecta();
         const evento = await db.consulta(sql, value);
         return evento.data;

@@ -46,7 +46,6 @@ export default function SelecionarSessao() {
       return temp[0] + ':' + temp[1];
     }
   }
-
   async function carregarHorariosSala(data) {
     setChecado(data);
     console.log("data" + formatarData2(data));
@@ -55,6 +54,11 @@ export default function SelecionarSessao() {
     setHorario(response.data)
   }
 
+  async function selecionarAssentos(sala_id, ses_id) {
+    localStorage.setItem('ses_id', ses_id);
+    localStorage.setItem('sala_id', sala_id);
+    history.push('/selecionar-assentos');
+  }
   useEffect(() => {
     async function carregarDatas() {
       const response = await api.get('/sessoes/datas/' + eve_id);
@@ -96,30 +100,24 @@ export default function SelecionarSessao() {
           </Col>
         </Row>
         {checado
-          ?
-          <React.Fragment>
-            {horarios.length !== 0
-              ? horarios.map((horario) => (
-                <Row className="borda mb-3 p-2" key={`${horario.sala}`}>
-                  <Col>
-                    <h5 className="font-weight-bold text-lowercase">Sala {horario.sala}</h5>
-                    <Row>
-                      {
-                        horario.horario.map((h2, index) => (
-                          <button
-                            className="btn bg-brown m-2"
-                            type="submit" key={index}>
-                            {formatarHora(h2.ses_horarioInicio)}
-                          </button>
-                        ))
-                      }
-                    </Row>
-                  </Col>
+          ? horarios.map((horario) => (
+            <Row className="borda mb-3 p-2" key={`${horario.sala}`}>
+              <Col>
+                <h5 className="font-weight-bold text-lowercase">Sala {horario.sala}</h5>
+                <Row>
+                  {
+                    horario.horario.map((h2, index) => (
+                      <button
+                        className="btn bg-brown m-2"
+                        type="submit" key={index} onClick={() => selecionarAssentos(horario.sala, h2.ses_id)}>
+                        {formatarHora(h2.ses_horarioInicio)}
+                      </button>
+                    ))
+                  }
                 </Row>
-              ))
-              : null
-            }
-          </React.Fragment>
+              </Col>
+            </Row>
+          ))
           : null
         }
       </Container>

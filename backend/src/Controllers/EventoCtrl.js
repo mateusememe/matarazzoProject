@@ -14,8 +14,9 @@ module.exports = {
     },
 
     async buscarEventoId(request, response) {
-        const { id } = request.params;
-        const result = await EventoDAO.buscarEvento(id);
+        const { eve_id } = request.params;
+        //console.log()
+        const result = await EventoDAO.buscarEvento(eve_id);
         return response.json(result);
     },
 

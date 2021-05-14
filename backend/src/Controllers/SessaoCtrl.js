@@ -7,6 +7,12 @@ module.exports = {
     const result = await SessaoDAO.SessoesEvento(eve_id);
     return response.json(result);
   },
+  async buscarSessao(request, response) {
+    const { ses_id } = request.params;
+    console.log("id da sessao" + ses_id);
+    const result = await SessaoDAO.BuscarSessao(ses_id);
+    return response.json(result);
+  },
   async listarSalasHorarios(request, response) {
     const { eve_id, data } = request.params;
     const result = await SessaoDAO.SalasSessao(eve_id, data);
@@ -19,6 +25,7 @@ module.exports = {
     }
     return response.json(salas);
   },
+
   async gravar(request, response) {
     const { eve_id, ses_id, ses_horarioInicio, ses_qtdeIng, ses_freq, ses_data, sal_id } = request.body;
     const sessao = Sessoa.SemId(eve_id, ses_horarioInicio, ses_qtdeIng, ses_freq, sal_id, ses_data);

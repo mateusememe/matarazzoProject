@@ -28,7 +28,7 @@ module.exports = {
     async listarAssentosOcupados(request, response) {
         const { eve_id, ses_id } = request.params;
         const result = await AssentoDAO.listarAssentosOcupados(eve_id, ses_id);
-        //console.log(response.json(result))
+        console.log(result);
         return response.json(result);
     },
     async listarAssentosFileira(request, response) {

@@ -2,10 +2,27 @@
 	width: fit-content;
 }
 
-.borda {
+.borda-2 {
 	height: auto;
-	width: fit-content;
 	border-radius: 0.8vh;
 	background-color: #fce373;
 	border: 4px solid #e1ca67;
+}
+
+input[type='checkbox'] {
+	width: 36px;
+	height: 36px;
+	opacity: 0;
+}
+
+.icone-sofa {
+	position: absolute;
+}
+
+.label {
+	border: 1px solid #000;
+	display: inline-block;
+	padding: 3px;
+	/*  left center; */
+	/* padding-left: 15px; */
 }

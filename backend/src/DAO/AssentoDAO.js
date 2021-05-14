@@ -28,25 +28,23 @@ module.exports = {
     async listar() {
         const sql = "SELECT * FROM assento";
         await db.conecta();
-        const result = await db.manipula(sql, valor);
+        const result = await db.consulta(sql, valor);
         return result.data;
     },
 
     async listarAssentosFileira(sal_id, ast_fileira) {
-        const sql = "SELECT * FROM Assento WHERE sal_id= AND ast_fileira=? ORDER BY ast_num";
+        const sql = "SELECT * FROM Assento WHERE sal_id=? AND ast_fileira=? ORDER BY ast_num";
         const valores = [sal_id, ast_fileira];
         await db.conecta();
-        const result = await db.manipula(sql, valores);
+        const result = await db.consulta(sql, valores);
         return result.data;
     },
 
     async listarAssentosOcupados(eve_id, ses_id) {
-        const sql = "SELECT * FROM assento, ingresso, sessao, evento " +
-            "WHERE ingresso.ses_id=sessao.ses_id AND ingresso.eve_id=sessao.eve_id" +
-            "AND ingresso.ast_id=assento.ast_id AND sessao.eve_id  = ? AND sessao.ses_id = ?";
+        const sql = "select ast_id from ingresso where ingresso.eve_id=? AND ingresso.ses_id=?";
         const valores = [eve_id, ses_id];
         await db.conecta();
-        const result = await db.manipula(sql, valores);
+        const result = await db.consulta(sql, valores);
         return result.data;
     }
 }
