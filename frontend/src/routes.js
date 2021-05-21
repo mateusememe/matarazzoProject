@@ -10,6 +10,7 @@ import Concluido from './pages/Compra/concluido'
 import Checkout from './pages/Compra/checkout-pagamento'
 import SelecionarAssento from './pages/Compra/selecionar-assento'
 import MinhaConta from './pages/Login/minha-conta'
+import LeitorQrCode from './pages/QrCode/index'
 /* 
 import RecuperarSenha from './pages/Login/recuperar-senha.js'
  */
@@ -27,6 +28,7 @@ export default function Rotas() {
         <Route path="/checkout-pagamento" component={Checkout} />
         <Route path="/selecionar-assentos" component={SelecionarAssento} />
         <Route path="/minha-conta" component={MinhaConta} />
+        <Route path="/leitor-qrcode" component={LeitorQrCode} />
         {/*
         <Route path="/recuperar-senha" component={RecuperarSenha} /> */}
         <Redirect to="/" />

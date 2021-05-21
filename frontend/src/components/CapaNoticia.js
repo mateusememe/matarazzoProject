@@ -1,6 +1,6 @@
 import React from 'react';
-import { Card, Badge, Button } from 'react-bootstrap';
-
+import { Card, Row, Col } from 'react-bootstrap';
+import './capas.css'
 export default function CapaNoticia({ data }) {
 
   function formatarData(temp) {
@@ -14,17 +14,27 @@ export default function CapaNoticia({ data }) {
     }
   }
 
+  function formatarDesc(desc) {
+    return desc.substring(0, 70) + "...";
+  }
+
   return (
-    <Card className="h-100 shadow-sm bg-white rounded">
-      {/* <Card.Img variant="top" src={"uploads/" + data.not_img} /> */}
-      <Card.Body className="d-flex flex-column">
-        <Card.Img />
-        <div className="d-flex mb-2 justify-content-between">
-          <Card.Title className="mb-0 font-weight-bold">{data.not_titulo}</Card.Title>
-          <Badge pill className="mb-1" variant="warning">{formatarData(data.not_data)}</Badge>
-        </div>
-        <Card.Text className="text-secundary">{data.not_descricao}</Card.Text>
-        <Button className="mt-auto font-weight-bold" variant="success" block >Ver Mais</Button>
+    <Card>
+      <Card.Body>
+        <Row className="mb-2">
+          <Col xs={4}>
+            <Card.Img style={{ borderRadius: '50%', minHeight: '100%', width: '85%', objectFit: 'cover' }} src={"uploads/not_img.jpg"} />
+          </Col>
+          <Col xs={8} className="p-0">
+            <Card.Title className="font-weight-bold font-brown">{data.not_titulo}</Card.Title>
+            <Card.Subtitle className="mb-2 text-muted">Categ{data.not_categoria}</Card.Subtitle>
+          </Col>
+        </Row>
+        <Card.Text>
+          {formatarDesc(data.not_descricao)}
+          <a href="./" style={{ fontSize: '14px' }}>Continuar Lendo</a>
+        </Card.Text>
+        <Card.Text className="text-right">{formatarData(data.not_data)}</Card.Text>
       </Card.Body>
     </Card>
   )

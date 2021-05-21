@@ -2,6 +2,7 @@ const { Router } = require('express');
 const routes = Router();
 const multer = require('multer');
 const path = require('path');
+
 const UsuCtrl = require('./Controllers/UsuarioCtrl');
 
 routes.post('/usuarios/cadastro', UsuCtrl.gravarUsuario);
@@ -10,14 +11,22 @@ routes.put('/usuarios/alterar', UsuCtrl.alterarUsuario);
 routes.delete('/usuarios/:usu_id', UsuCtrl.excluirUsuario);
 routes.post('/usuarios/login', UsuCtrl.login);
 routes.get('/usuarios/busca/:usu_email', UsuCtrl.buscarUsuario);//busca de um determinado usuário
-routes.get('/usuarios/:id', UsuCtrl.buscarUsuarioId);
+routes.get('/usuarios/id/:id', UsuCtrl.buscarUsuarioId);
+
+const VenCtrl = require('./Controllers/VendaCtrl');
+routes.post('/venda/cadastro', VenCtrl.gravarVenda);
+
+const IngressoCtrl = require('./Controllers/IngressoCtrl');
+routes.post('/ingresso/cadastro', IngressoCtrl.gravarIngresso);
+routes.get('/ingresso/:ven_id', IngressoCtrl.listarIngressosVenda);
+routes.get('/ingresso/qrCode/:ing_qrCode', IngressoCtrl.buscarIngressoQr);
 
 const SesCtrl = require('./Controllers/SessaoCtrl');
-
 routes.post('/sessoes', SesCtrl.gravar);
 routes.get('/sessoes/datas/:eve_id', SesCtrl.listarSessoesEvento);
 routes.get('/sessoes/salas_horarios/:eve_id/:data', SesCtrl.listarSalasHorarios);
 routes.get('/sessoes/:ses_id', SesCtrl.buscarSessao);
+routes.put('/sessoes/incrementar_freq/:eve_id/:ses_id', SesCtrl.incrementarFreq);
 
 const AssCtrl = require('./Controllers/AssentoCtrl');
 

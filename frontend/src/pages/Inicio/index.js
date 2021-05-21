@@ -10,12 +10,17 @@ import CapaCurso from '../../components/CapaCurso'
 import CapaNoticia from '../../components/CapaNoticia'
 
 import { DadosContext } from '../../context/DadosContext.js';
+import InfoProvider, { InfoContext } from '../../context/InfoContext';
 
 export default function Inicio() {
   const {
     carregarCursos, carregarEventos, carregarNoticias,
     eventos, cursos, noticias
   } = useContext(DadosContext);
+
+  const {
+    emailCtx, setEmailCtx
+  } = useContext(InfoContext);
 
   useEffect(() => {
     carregarEventos();
@@ -24,11 +29,11 @@ export default function Inicio() {
   }, []);
 
   return (
-    <React.Fragment>
+    <InfoProvider>
       <Navbar />
       <CarouselIni />
-      <Container className="mt-1">
-        <Col className="mb-4">
+      <Container className="mt-5">
+        <Col className="mb-5">
           <h1 className="title">Proximos Eventos</h1>
           <Row>
             {eventos.length !== 0
@@ -37,11 +42,11 @@ export default function Inicio() {
                   <CapaEvento data={evento} />
                 </Col>
               ))
-              : <span style={{ fontWeight: 'bold' }}>Não existem eventos</span>
+              : <span style={{ fontWeight: 'bold', textAlign: 'center' }}>Não existem eventos</span>
             }
           </Row>
         </Col>
-        <Col className="mb-4">
+        <Col className="mb-5">
           <h1 className="title">Cursos Abertos</h1>
           <Row>
             {cursos.length !== 0
@@ -50,24 +55,24 @@ export default function Inicio() {
                   <CapaCurso data={cursos[key]} />
                 </Col>
               ))
-              : <span style={{ textAlign: 'center' }}>Não existem cursos</span>
+              : <span style={{ fontWeight: 'bold', textAlign: 'center' }}>Não existem cursos</span>
             }
           </Row>
         </Col>
-        <Col className="mb-4">
+        <Col className="mb-5">
           <h1 className="title">Ultimas Notícias</h1>
           <Row>
             {noticias.length !== 0
               ? noticias.map((noticia) => (
-                <Col xs={3} className="mb-0" key={`${noticia.not_id}`}>
+                <Col xs={4} className="mb-0" key={`${noticia.not_id}`}>
                   <CapaNoticia data={noticia} />
                 </Col>
               ))
-              : <span style={{ textAlign: 'center' }}>Não existem noticias</span>
+              : <span style={{ fontWeight: 'bold', textAlign: 'center' }}>Não existem noticias</span>
             }
           </Row>
         </Col>
       </Container>
-    </React.Fragment>
+    </InfoProvider>
   );
 }

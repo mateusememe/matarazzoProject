@@ -40,7 +40,7 @@ export default function Login() {
         setErroMsgS("");
         return true;
     }
-    
+
     async function validadarLogin(e) {
         setErroMsgE(""); setErroMsgS("");
         e.preventDefault();
@@ -48,6 +48,7 @@ export default function Login() {
         if (validarEmail() && validarSenha()) {
             const response = await api.post('/usuarios/login', { usu_email, usu_senha });
             if (response.data.length !== 0) {
+                console.log(response.usu_id);
                 localStorage.setItem('usu_email', usu_email);
                 localStorage.setItem('usu_senha', usu_senha);
                 localStorage.setItem('usu_id', response.data[0].usu_id);
@@ -95,7 +96,7 @@ export default function Login() {
                                 </div>
                                 {erroMsgS ? <span className="erro">{erroMsgS}</span> : null}
                                 <span className="form-group d-flex flex-row-reverse">
-                                    <Link to="/recuperar-senha" className="form-links">Recuperar Senha</Link>                                    
+                                    <Link to="/recuperar-senha" className="form-links">Recuperar Senha</Link>
                                 </span>
                                 <button className="btn bg-brown w-100" type="submit">ENTRAR</button>
                             </form>

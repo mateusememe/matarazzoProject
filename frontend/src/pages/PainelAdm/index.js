@@ -29,27 +29,6 @@ export default function PainelAdm() {
 	useEffect(() => {
 		if (nivel !== 'A') history.push('/');
 	}, [nivel, history]);
-	/*
-	function formatarData(temp) {
-		if (temp) {
-			temp = temp.split('T')[0];
-			const dia = temp.split('-')[2];
-			const mes = temp.split('-')[1];
-			const ano = temp.split('-')[0];
-
-			return ano + '-' + mes + '-' + dia;
-		}
-	}
-
-	function formatarHora(temp) {
-		if (temp) {
-			temp = temp.split(':');
-			if (temp[0] < 10) temp[0] = '0' + temp[0];
-			return temp[0] + ':' + temp[1];
-		}
-	} 
-	*/
-
 
 	return (
 		<React.Fragment>
@@ -134,6 +113,15 @@ export default function PainelAdm() {
 										eventKey='edit-adm'
 										onClick={() => carregarUsuarios()}>
 										Alterar ou Remover
+									</NavDropdown.Item>
+								</NavDropdown>
+								<NavDropdown title='Registrar Frequencia'
+									className='a'
+									id='nav-dropdown'>
+									<NavDropdown.Item
+										eventKey='freq-adm'
+										onClick={() => history.push('./leitor-qrcode')}>
+										Leitor QrCode
 									</NavDropdown.Item>
 								</NavDropdown>
 							</Nav>

@@ -31,5 +31,11 @@ module.exports = {
     const sessao = Sessoa.SemId(eve_id, ses_horarioInicio, ses_qtdeIng, ses_freq, sal_id, ses_data);
     const result = await SessaoDAO.gravar(sessao);
     return response.json(result);
+  },
+
+  async incrementarFreq(request, response) {
+    const { eve_id, ses_id } = request.params;
+    const result = await SessaoDAO.incrementarFreq(eve_id, ses_id);
+    return response.json(result);
   }
 }

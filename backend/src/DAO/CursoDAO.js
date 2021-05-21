@@ -36,15 +36,15 @@ module.exports = {
     },
 
     async listarCursos() {
-        await db.conecta();
         const sql = "SELECT * FROM curso";
+        await db.conecta();
         const cursos = await db.consulta(sql)
         return cursos.data;
     },
 
     async listarCursosAtivos() {
-        await db.conecta();
         const sql = "SELECT * FROM curso WHERE cur_status = 'A'";
+        await db.conecta();
         const cursos = await db.consulta(sql)
         return cursos.data;
     }

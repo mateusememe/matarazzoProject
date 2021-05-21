@@ -8,7 +8,7 @@ class Venda {
     this.ses_id = ses_id;
   }
 
-  static semId(data, MetodoPgmt, usu_id, eve_id, ses_id) {
+  static SemId(data, MetodoPgmt, usu_id, eve_id, ses_id) {
     return new Venda(0, data, MetodoPgmt, usu_id, eve_id, ses_id);
   }
 
@@ -30,8 +30,6 @@ class Venda {
   getSes_id() {
     return this.ses_id;
   }
-
-
   setId(id) {
     this.id = id;
   }

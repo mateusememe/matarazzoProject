@@ -4,11 +4,8 @@ module.exports = {
     //cadastros básicos e login
     async login(request, response) {
         const { usu_email, usu_senha } = request.body;
-        await db.conecta();
-        const sql = "SELECT * FROM Usuario WHERE usu_email = ? and usu_senha = ?";
-        const valores = [usu_email, usu_senha];
-        const result = await db.consulta(sql, valores);
-        return response.json(result.data);
+        const result = await UsuarioDAO.login(usu_email, usu_senha);
+        return response.json(result);
     },
 
     async listarUsuarios(request, response) {
@@ -17,20 +14,14 @@ module.exports = {
 
     async buscarUsuario(request, response) {
         const { usu_email } = request.params;
-        await db.conecta();
-        const sql = "SELECT usu_email FROM Usuario WHERE usu_email = ?";
-        const value = [usu_email];
-        const usuarios = await db.consulta(sql, value);
-        return response.json(usuarios.data);
+        const resp = await UsuarioDAO.buscarUsuario(usu_email);
+        return response.json(resp);
     },
 
     async buscarUsuarioId(request, response) {
         const { id } = request.params;
-        await db.conecta();
-        const sql = "SELECT * FROM Usuario WHERE usu_id = ?";
-        const value = [id];
-        const usuarios = await db.consulta(sql, value);
-        return response.json(usuarios.data);
+        const result = await UsuarioDAO.buscarUsuarioId(id);
+        return response.json(result);
     },
 
     async gravarUsuario(req, resp) {
@@ -44,7 +35,7 @@ module.exports = {
             usu_senha, usu_nivel
         );
 
-        var retorno = UsuarioDAO.gravar(usu);
+        const retorno = await UsuarioDAO.gravar(usu);
 
         return resp.json(retorno);
     },
@@ -60,7 +51,7 @@ module.exports = {
             usu_senha, usu_cpf, usu_dtNasc, usu_endereco,
             usu_cidade, usu_cep, usu_fone, usu_sexo);
 
-        const retorno = UsuarioDAO.alterar(usu);
+        const retorno = await UsuarioDAO.alterar(usu);
         return response.json(retorno);
     },
 

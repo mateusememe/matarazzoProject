@@ -1,6 +1,14 @@
 const db = require('../models/Database');
 
 module.exports = {
+    async login(email, senha) {
+        await db.conecta();
+        const sql = "SELECT * FROM Usuario WHERE usu_email = ? and usu_senha = ?";
+        const valores = [email, senha];
+        const result = await db.consulta(sql, valores);
+        return result.data;
+    },
+
     async gravar(usuario) {
         const sql = "INSERT INTO usuario (usu_nome, usu_sobrenome, usu_email, usu_senha, usu_nivel) " +
             "VALUES (?, ?, ?, ?, ?)";
@@ -12,8 +20,7 @@ module.exports = {
         ];
 
         await db.conecta();
-        const result = await db.manipula(sql, valores);
-        return result;
+        return db.manipula(sql, valores);
     },
 
     async alterar(usuario) {
@@ -26,16 +33,14 @@ module.exports = {
             usuario.getCidade(), usuario.getCep(), usuario.getFone(), usuario.getSexo(), usuario.getId()
         ];
         await db.conecta();
-        const result = await db.manipula(sql, valores);
-        return result;
+        return db.manipula(sql, valores);
     },
 
     async excluir(id) {
         const sql = "DELETE FROM usuario WHERE usu_id = ?";
         const valor = [id];
         await db.conecta();
-        const result = await db.manipula(sql, valor);
-        return result;
+        return db.manipula(sql, valor);
     },
 
     async listarUsuarios() {
@@ -43,6 +48,21 @@ module.exports = {
         await db.conecta();
         const usuarios = await db.consulta(sql);
         return usuarios.data;
+    },
+    async buscarUsuario(email) {
+        await db.conecta();
+        const sql = "SELECT usu_email FROM Usuario WHERE usu_email = ?";
+        const value = [email];
+        const usuarios = await db.consulta(sql, value);
+        return usuarios.data;
+    },
+
+    async buscarUsuarioId(id) {
+        await db.conecta();
+        const sql = "SELECT * FROM Usuario WHERE usu_id = ?";
+        const value = [id];
+        const usuario = await db.consulta(sql, value);
+        return usuario.data;
     }
 
 }

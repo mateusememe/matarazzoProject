@@ -11,6 +11,7 @@ export default function SelecionarSessao() {
   const [horarios, setHorario] = useState([]);
   const [datas, setData] = useState([]);
   const [checado, setChecado] = useState("");
+  const [evento, setEvento] = useState([]);
 
   const history = useHistory();
   const eve_id = localStorage.getItem("eve_id")
@@ -18,8 +19,7 @@ export default function SelecionarSessao() {
   function converterData(data) {
     var days = ['DOM', 'SEG', 'TER', 'QUA', 'QUI', 'SEX', 'SAB'];
     var d = new Date(data);
-    var dayName = days[d.getDay()];
-    return dayName;
+    return days[d.getDay()];
   }
 
   function formatarData(aux) {
@@ -59,18 +59,26 @@ export default function SelecionarSessao() {
     localStorage.setItem('sala_id', sala_id);
     history.push('/selecionar-assentos');
   }
+
   useEffect(() => {
     async function carregarDatas() {
       const response = await api.get('/sessoes/datas/' + eve_id);
       setData(response.data);
     }
+
+    async function carregarEventoID() {
+      const response = await api.get('/eventos/' + eve_id);
+      setEvento(response.data);
+    }
+
+    carregarEventoID();
     carregarDatas();
   }, [eve_id]);
 
   return (
     <React.Fragment>
       <Navbar />
-      <Banner />
+      <Banner data={evento} />
       <Container>
         <h3 className="font-weight-bold">Selecionar Dia</h3>
         <Row className="barra mb-5">

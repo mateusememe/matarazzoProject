@@ -43,5 +43,16 @@ module.exports = {
     await db.conecta();
     const result = await db.manipula(sql, valores);
     return result;
+  },
+
+  async incrementarFreq(eve_id, ses_id) {
+    const sql = "UPDATE Sessao SET ses_freq = (ses_freq+1) WHERE eve_id=? AND ses_id=?";
+    const valores = [
+      eve_id, ses_id
+    ];
+    await db.conecta();
+    const result = await db.manipula(sql, valores);
+    return result;
   }
+
 }

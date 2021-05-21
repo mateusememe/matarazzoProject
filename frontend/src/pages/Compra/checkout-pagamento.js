@@ -1,9 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
+import api from '../../services/api'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Col, Container, Row } from 'react-bootstrap';
 import './checkout.css'
+import { useHistory } from 'react-router';
+
+import { InfoContext } from '../../context/InfoContext.js';
 
 export default function CheckoutPagamento() {
+  const history = useHistory();
   const [cpf, setCpf] = useState('');
   const [dataNasc, setDataNasc] = useState('');
   const [endereco, setEndereco] = useState('');
@@ -16,6 +21,78 @@ export default function CheckoutPagamento() {
   const [telefone, setTelefone] = useState('');
   const [checadoPP, setChecadoPP] = useState(false);
   const [checadoCC, setChecadoCC] = useState(false);
+  const [eve_nome, setEveNome] = useState('');
+  const [eve_val, setEveVal] = useState();
+  const eve_id = localStorage.getItem('eve_id');
+  const usu_id = localStorage.getItem('usu_id');
+  const ses_id = localStorage.getItem('ses_id');
+  let ven_id = 0;
+
+  const {
+    selecionado, qtdeSelecionado
+  } = useContext(InfoContext);
+
+  async function recuperarNomeEvento() {
+    const response = await api.get('/eventos/' + eve_id);
+    setEveNome(response.data[0].eve_nome);
+    setEveVal(response.data[0].eve_valor);
+  }
+  function verificaMetodoPgmt() {
+    if (setChecadoPP)
+      return 'P';
+    return 'C';
+  }
+
+  async function concluir() {
+    let ast_id;
+    const ven_MetodoPgmt = verificaMetodoPgmt();
+    const hoje = new Date();
+    const ven_data = hoje.getFullYear() + "-" + (hoje.getMonth() + 1) + "-" + hoje.getDate();
+
+    const response = await api.post('/venda/cadastro', {
+      ven_data, ven_MetodoPgmt,
+      usu_id, eve_id, ses_id
+    });
+    if (response) {
+      ven_id = response.data.lastId;
+      console.log("ven_id: " + ven_id);
+      localStorage.setItem('ven_id', ven_id);
+      for (ast_id = 0; ast_id < selecionado.length; ast_id++) {
+        if (selecionado[ast_id]) {
+          let ing_qrCode = ven_id + "" + ast_id;
+          await api.post('/ingresso/cadastro', {
+            ing_qrCode,
+            eve_id, ses_id, ven_id, ast_id
+          });
+          history.push('/concluido');
+        }
+      }
+    }
+  }
+  async function recuperarUsuario() {
+    const response = await api.get('/usuarios/id/' + usu_id);
+    console.log(response.data);
+    if (response.data) {
+
+      if (response.data[0].usu_fone != null)
+        setTelefone(response.data[0].usu_fone);
+      if (response.data[0].usu_cpf != null)
+        setCpf(response.data[0].usu_cpf != null);
+      if (response.data[0].usu_endereco != null)
+        setEndereco(response.data[0].usu_endereco);
+      if (response.data[0].usu_cep != null)
+        setCep(response.data[0].usu_cep);
+      if (response.data[0].usu_cidade != null)
+        setCidade(response.data[0].usu_cidade);
+    }
+  }
+
+
+  useEffect(() => {
+    recuperarNomeEvento();
+    recuperarUsuario();
+  }, []);
+
   return (
     <React.Fragment>
       <Container className="mt-5">
@@ -71,8 +148,8 @@ export default function CheckoutPagamento() {
             </form>
           </Col>
           <Col xs={4} className="barra m-3 p-3 align-self-center">
-            <p className="m-0">2x INGRESSO EVENTO ? ............. R$00</p>
-            <p className="mt-2 mb-0 font-weight-bold">TOTAL: R$00,00</p>
+            <p className="m-0">{qtdeSelecionado} {eve_nome} ? ............. R${eve_val}</p>
+            <p className="mt-2 mb-0 font-weight-bold">TOTAL: R${qtdeSelecionado * eve_val}</p>
           </Col>
         </Row>
         <Row className="mt-5">
@@ -131,8 +208,7 @@ export default function CheckoutPagamento() {
                 </React.Fragment>
                 :
                 <React.Fragment>
-                  <h4> Você Selecionou para pagar presencialmente</h4>
-                  <p> No dia do Evento leve o dinheiro para pagar</p>
+                  <h4> Você selecionou para pagar presencialmente</h4>
                 </React.Fragment>
             }
 
@@ -181,18 +257,11 @@ export default function CheckoutPagamento() {
             <Col xs={5}>
               <button
                 className='btn bg-brown w-30'
-                type='submit'>
+                type='submit'
+                onClick={() => concluir()}>
                 CONFIRMAR
-                  </button>
+              </button>
             </Col>
-            {/* 
-              //row 
-                //inputs
-              //bt 
-            */}
-
-
-
           </Col>
         </Row>
       </Container>

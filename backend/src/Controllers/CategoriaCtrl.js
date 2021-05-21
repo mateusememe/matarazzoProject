@@ -12,14 +12,14 @@ module.exports = {
     async buscarCategoriaId(request, response) {
         const { id } = request.params;
         const result = await CategoriaDAO.buscarCategoriaId(id);
-        return response.json(result.data);
+        return response.json(result);
     },
 
     async buscarCategoria(request, response) {
         const { cat_nome, cat_tipo } = request.params;
         const cat = Categoria.SemId(cat_nome, cat_tipo);
         const result = await CategoriaDAO.buscarCategoria(cat);
-        return response.json(result.data);
+        return response.json(result);
     },
 
     async gravarCategoria(request, response) {

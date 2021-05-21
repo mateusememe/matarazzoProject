@@ -8,6 +8,7 @@
 body,
 html {
 	background: #fce373;
+	scroll-behavior: smooth;
 	-webkit-font-smoothing: antialiased;
 }
 

@@ -26,3 +26,8 @@ input[type='checkbox'] {
 	/*  left center; */
 	/* padding-left: 15px; */
 }
+
+.text-desc {
+	font-size: 18px;
+	font-weight: 500;
+}

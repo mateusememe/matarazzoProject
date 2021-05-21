@@ -5,27 +5,9 @@ import { useHistory } from 'react-router-dom';
 export default function CapaEvento({ data }) {
     const history = useHistory();
 
-    function formatarData(temp) {
-        if (temp) {
-            temp = temp.split("T")[0];
-            const dia = temp.split("-")[2];
-            const mes = temp.split("-")[1];
-            const ano = temp.split("-")[0];
-
-            return dia + "/" + mes + "/" + ano;
-        }
-    }
-
-    function formatarHora(temp) {
-        if (temp) {
-            temp = temp.split(":");
-            return temp[0] + ":" + temp[1];
-        }
-    }
-
-    function abrirPagina(id) {
-        console.log(id);
+    function abrirPagina(id, nome) {
         localStorage.setItem("eve_id", id);
+        localStorage.setItem("eve_nome", nome)
         history.push('./selecionar-sessao');
     }
 
@@ -36,11 +18,9 @@ export default function CapaEvento({ data }) {
                 <Card.Img />
                 <div className="d-flex mb-2 justify-content-between">
                     <Card.Title className="mb-0 font-weight-bold">{data.eve_nome}</Card.Title>
-                    <Badge pill className="mb-1" variant="warning">R${data.eve_valor}</Badge>
+                    <Badge pill className="mb-auto" variant="warning">R${data.eve_valor}</Badge>
                 </div>
-                <Card.Text className="text-secundary">Dia: {formatarData(data.eve_data)}</Card.Text>
-                <Card.Text className="text-secundary">Hora: {formatarHora(data.eve_horario)}</Card.Text>
-                <Button className="mt-auto font-weight-bold" variant="success" block onClick={() => abrirPagina(data.eve_id)}>VER MAIS</Button>
+                <Button className="mt-auto font-weight-bold" variant="success" block onClick={() => abrirPagina(data.eve_id, data.eve_nome)}>VER MAIS</Button>
             </Card.Body>
         </Card>
     )

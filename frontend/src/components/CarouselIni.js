@@ -4,11 +4,12 @@ import { Carousel } from 'react-bootstrap';
 export default function CarouselIni(/* {data} */) {
 
     return (
-        <Carousel>
+        <Carousel fade>
             <Carousel.Item>
                 <img
-                    className="d-block w-100"
-                    src="https://i.imgur.com/38GvigV.jpg" /* {data.banner1} */
+                    className="d-block"
+                    style={{ maxHeight: '500px', width: '100vw', objectFit: 'cover' }}
+                    src={"uploads/slide1.jpg"} /* {data.banner1} */
                     alt="First slide"
                 />
                 <Carousel.Caption>
@@ -18,8 +19,9 @@ export default function CarouselIni(/* {data} */) {
             </Carousel.Item>
             <Carousel.Item>
                 <img
-                    className="d-block w-100"
-                    src="https://i.imgur.com/0fUzsH4.jpg" /* {data.banner2} */
+                    className="d-block"
+                    style={{ maxHeight: '500px', width: '100vw', objectFit: 'cover' }}
+                    src={"uploads/slide2.jpg"} /* {data.banner2} */
                     alt="Second slide"
                 />
 
@@ -30,8 +32,9 @@ export default function CarouselIni(/* {data} */) {
             </Carousel.Item>
             <Carousel.Item>
                 <img
-                    className="d-block w-100"
-                    src="https://i.imgur.com/TqSyt2W.jpg" /* {data.banner2} */
+                    className="d-block"
+                    style={{ maxHeight: '500px', width: '100vw', objectFit: 'cover' }}
+                    src={"uploads/slide3.jpg"} /* {data.banner2} */
                     alt="Third slide"
                 />
 

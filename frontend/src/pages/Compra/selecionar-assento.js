@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import api from '../../services/api'
 import Navbar from '../../components/Navbar'
 import { Container, Row, Col, Nav } from 'react-bootstrap'
@@ -7,10 +7,12 @@ import { useHistory } from 'react-router-dom';
 
 import './selecionar-assento.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { InfoContext } from '../../context/InfoContext.js';
 
 export default function SelecionarAssento() {
+  const history = useHistory();
   const [assentosOcupados, setAssentosOcupados] = useState([]);
-  const [fileiraAtual, setFileiraAtual] = useState(1);
+  const [fileiraAtual, setFileiraAtual] = useState();
   const [assentos, setAssentos] = useState([[]]);
   const [fileiras, setFileira] = useState([]);
   const sala_id = localStorage.getItem('sala_id');
@@ -18,8 +20,9 @@ export default function SelecionarAssento() {
   const [eve_nome, setEveNome] = useState('');
   const [ses_horarioInicio, setHorarioInicio] = useState('');
   const ses_id = localStorage.getItem('ses_id');
-  const [selecionado, setSelecionado] = useState([[false]]);
-  const [qtdeSelecionado, setQtde] = useState(0);
+  const {
+    selecionado, setSelecionado, qtdeSelecionado, setQtde
+  } = useContext(InfoContext);
 
   async function carregarFileiras(sal_id) {
     const response = await api.get('/sala/qtdeFileiras/' + sal_id);
@@ -70,8 +73,10 @@ export default function SelecionarAssento() {
 
   function selecionar(ast) {
     const temp = selecionado.slice()
-    if (!selecionado[ast])
+    console.log(temp);
+    if (!selecionado[ast]) {
       setQtde(qtdeSelecionado + 1)
+    }
     else
       setQtde(qtdeSelecionado - 1)
     temp[ast] = !selecionado[ast]
@@ -86,15 +91,15 @@ export default function SelecionarAssento() {
   }, []);
 
   return (
-    <React.Fragment>
-      <Container className="pt-5">
+    <React.Fragment >
+      <Container className="pt-5" style={{ color: '#231f20' }}>
         <Navbar />
         <Col className="mt-5">
           <h1 className="text-center font-weight-bold mb-0">SELECIONAR ASSENTO</h1>
           <Row className="justify-content-center">
-            <p className="ml-3 mr-3 font-weight-medium">{eve_nome}</p>
-            <p className="ml-3 mr-3">sala {sala_id}</p>
-            <p className="ml-3 mr-3">{ses_horarioInicio}</p>
+            <p className="ml-3 mr-3 mb-0 text-desc">{eve_nome}</p>
+            <p className="ml-3 mr-3 mb-0 text-desc">Sala: {sala_id}</p>
+            <p className="ml-3 mr-3 mb-0 text-desc">{ses_horarioInicio.substring(0, 5)}</p>
           </Row>
         </Col>
 
@@ -147,7 +152,6 @@ export default function SelecionarAssento() {
                             checked={selecionado}
                             onChange={() => {
                               selecionar(ast.ast_id);
-
                             }} />
                         </Row>
                       </Col>
@@ -162,6 +166,14 @@ export default function SelecionarAssento() {
               <p>Quantidade de assentos selecionados: {qtdeSelecionado}</p>
             </Row>
           </Col>
+        </Row>
+        <Row className="justify-content-end mb-5">
+          <button
+            className='btn bg-brown'
+            type='submit'
+            onClick={() => history.push('./checkout-pagamento')}>
+            CONFIRMAR
+          </button>
         </Row>
       </Container >
     </React.Fragment >

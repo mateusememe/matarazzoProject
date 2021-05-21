@@ -11,18 +11,17 @@ export default function DadosProvider({ children }) {
   const [usuarios, setUsuario] = useState([]);
 
   const carregarCategorias = async tipoCat => {
-    console.log(tipoCat);
     const response = await api.get('/categorias/tipo/' + tipoCat);
     setCategoria(response.data);
   }
 
-  const carregarCursos = async () => {
-    const response = await api.get('/cursos');
+  async function carregarCursos() {
+    const response = await api.get('/cursosAtivos');
     setCurso(response.data);
   }
 
-  const carregarEventos = async () => {
-    const response = await api.get('/eventos');
+  async function carregarEventos() {
+    const response = await api.get('/eventosAtivos');
     setEvento(response.data);
   }
 
