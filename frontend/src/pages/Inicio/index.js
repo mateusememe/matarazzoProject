@@ -10,7 +10,7 @@ import CapaCurso from '../../components/CapaCurso'
 import CapaNoticia from '../../components/CapaNoticia'
 
 import { DadosContext } from '../../context/DadosContext.js';
-import InfoProvider, { InfoContext } from '../../context/InfoContext';
+import InfoProvider/* , { InfoContext } */ from '../../context/InfoContext';
 
 export default function Inicio() {
   const {
@@ -18,14 +18,15 @@ export default function Inicio() {
     eventos, cursos, noticias
   } = useContext(DadosContext);
 
-  const {
+  /* const {
     emailCtx, setEmailCtx
-  } = useContext(InfoContext);
+  } = useContext(InfoContext); */
 
   useEffect(() => {
     carregarEventos();
     carregarCursos();
     carregarNoticias();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

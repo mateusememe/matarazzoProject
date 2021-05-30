@@ -61,7 +61,7 @@ export default function SelecionarSessao() {
   }
 
   useEffect(() => {
-    async function carregarDatas() {
+    async function carregarDatasSessao() {
       const response = await api.get('/sessoes/datas/' + eve_id);
       setData(response.data);
     }
@@ -72,7 +72,7 @@ export default function SelecionarSessao() {
     }
 
     carregarEventoID();
-    carregarDatas();
+    carregarDatasSessao();
   }, [eve_id]);
 
   return (

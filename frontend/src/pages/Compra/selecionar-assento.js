@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react'
 import api from '../../services/api'
 import Navbar from '../../components/Navbar'
-import { Container, Row, Col, Nav } from 'react-bootstrap'
+import { Container, Row, Col } from 'react-bootstrap'
 import { FaCouch } from 'react-icons/fa';
 import { useHistory } from 'react-router-dom';
 
@@ -61,11 +61,13 @@ export default function SelecionarAssento() {
     const response = await api.get('/eventos/' + eve_id);
     setEveNome(response.data[0].eve_nome);
   }
+
   function estaOcupado(ast_id) {
     let i;
-    for (i = 0; i < assentosOcupados.length && assentosOcupados[i].ast_id != ast_id; i++);
+    for (i = 0; i < assentosOcupados.length && assentosOcupados[i].ast_id !== ast_id; i++);
     return i < assentosOcupados.length;
   }
+
   async function recuperarHorarioSessao() {
     const response = await api.get('/sessoes/' + ses_id);
     setHorarioInicio(response.data[0].ses_horarioInicio);
@@ -88,6 +90,7 @@ export default function SelecionarAssento() {
     recuperarNomeEvento();
     carregarFileiras(sala_id);
     carregarAssentosOcupados();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -127,10 +130,10 @@ export default function SelecionarAssento() {
           <Col>
             <h4 className="mb-0 font-weight-bold">Fileira {fileiraAtual}</h4>
             <Row className="borda-2 p-2">
-              {assentos.length != 0
+              {assentos.length !== 0
                 ? assentos.map((teste, sindex) => (
                   teste.map((ast, index) => (
-                    [sindex == fileiraAtual
+                    [sindex === fileiraAtual
                       ?
                       <Col className="justify-content-center align-itens-center ml-2 mr-2" key={`${ast.ast_num}`}>
                         <p className="text-center mb-0">{ast.ast_num}</p>

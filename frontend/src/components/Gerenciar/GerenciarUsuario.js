@@ -5,7 +5,7 @@ import {
 } from 'react-bootstrap';
 import { FiTrash, FiEdit } from 'react-icons/fi';
 import api from '../../services/api.js';
-import Modal from '../Modal'
+//import Modal from '../Modal'
 import { DadosContext } from '../../context/DadosContext.js';
 
 export default function GerenciarCategoria(props) {

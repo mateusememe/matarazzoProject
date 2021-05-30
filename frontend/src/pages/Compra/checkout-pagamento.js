@@ -10,7 +10,7 @@ import { InfoContext } from '../../context/InfoContext.js';
 export default function CheckoutPagamento() {
   const history = useHistory();
   const [cpf, setCpf] = useState('');
-  const [dataNasc, setDataNasc] = useState('');
+  //const [dataNasc, setDataNasc] = useState('');
   const [endereco, setEndereco] = useState('');
   const [cidade, setCidade] = useState('');
   const [cep, setCep] = useState('');
@@ -91,6 +91,7 @@ export default function CheckoutPagamento() {
   useEffect(() => {
     recuperarNomeEvento();
     recuperarUsuario();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom';
-import { Container, Row, Modal } from 'react-bootstrap';
-import axios from 'axios';
+import { Container, Row, Modal, Col } from 'react-bootstrap';
 import QrReader from 'react-qr-reader'
 import api from '../../services/api'
 
@@ -29,7 +28,7 @@ export default function LeitorQrCode() {
 
   async function validarQrCode(ing_qrCode) {
     const response = await api.get('/ingresso/qrCode/' + ing_qrCode);
-    if (response.data.length != 0) {
+    if (response.data.length !== 0) {
       setValido(true);
       await api.put('sessoes/incrementar_freq/' + eve_id + '/' + ses_id);
     }
@@ -54,11 +53,19 @@ export default function LeitorQrCode() {
               onError={handleError}
               onScan={handleScan}
             />
-            : <button
-              className="btn bg-brown mt-3 w-30"
-              onClick={() => setLeitorAtivo(true)}>
-              Abrir Leitor
-              </button>
+            :
+            <React.Fragment>
+              <Row className="justify-content-center">
+                <Col className="text-center">
+                  <h1>Leitor QrCode</h1>
+                  <button
+                    className="btn bg-brown mt-3 w-30"
+                    onClick={() => setLeitorAtivo(true)}>
+                    Abrir Leitor
+                  </button>
+                </Col>
+              </Row>
+            </React.Fragment>
         }
       </Row>
 

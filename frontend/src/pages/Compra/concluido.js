@@ -11,6 +11,7 @@ export default function Concluido() {
 
     useEffect(() => {
         recuperarIngressos();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     async function recuperarIngressos() {
         const response = await api.get('/ingresso/' + ven_id);
