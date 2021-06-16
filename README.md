@@ -46,7 +46,16 @@ Database
 <!-- - [React Native](https://reactnative.dev/) [soon] -->
 
 ## ⚙️ Features
+	
+### Fundamentais
 
+- [x] Vender ingressos
+- [x] Registrar frequência nos eventos
+- [ ] Criar Sala
+- [ ] Definir sessões de evento
+
+	
+	
 ### Usuários
 
 - [x] Cadastrar
@@ -81,6 +90,10 @@ Database
 - [x] Alterar
 - [x] Remover
 - [x] Visualizar
+	
+	
+	
+
 
 ## 📝 Licence
 
