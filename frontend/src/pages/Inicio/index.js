@@ -14,17 +14,13 @@ import InfoProvider/* , { InfoContext } */ from '../../context/InfoContext';
 
 export default function Inicio() {
   const {
-    carregarCursos, carregarEventos, carregarNoticias,
-    eventos, cursos, noticias
+    carregarCursosAtivos, carregarEventosAtivos, carregarNoticias,
+    eventosAtivos, cursosAtivos, noticias
   } = useContext(DadosContext);
 
-  /* const {
-    emailCtx, setEmailCtx
-  } = useContext(InfoContext); */
-
   useEffect(() => {
-    carregarEventos();
-    carregarCursos();
+    carregarEventosAtivos();
+    carregarCursosAtivos();
     carregarNoticias();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -37,9 +33,9 @@ export default function Inicio() {
         <Col className="mb-5">
           <h1 className="title">Proximos Eventos</h1>
           <Row>
-            {eventos.length !== 0
-              ? eventos.map((evento) => (
-                <Col xs={3} className="mb-0" key={`${evento.eve_id}`}>
+            {eventosAtivos.length !== 0
+              ? eventosAtivos.map((evento) => (
+                <Col xs={3} className="mb-0 mt-4" key={`${evento.eve_id}`}>
                   <CapaEvento data={evento} />
                 </Col>
               ))
@@ -50,22 +46,22 @@ export default function Inicio() {
         <Col className="mb-5">
           <h1 className="title">Cursos Abertos</h1>
           <Row>
-            {cursos.length !== 0
-              ? Object.keys(cursos).map((key, index) => (
-                <Col xs={3} className="mb-0" key={`${cursos[key].cur_id}`}>
-                  <CapaCurso data={cursos[key]} />
+            {cursosAtivos.length !== 0
+              ? Object.keys(cursosAtivos).map((key, index) => (
+                <Col xs={3} className="mb-0 mt-4" key={`${cursosAtivos[key].cur_id}`}>
+                  <CapaCurso data={cursosAtivos[key]} />
                 </Col>
               ))
               : <span style={{ fontWeight: 'bold', textAlign: 'center' }}>Não existem cursos</span>
             }
           </Row>
         </Col>
-        <Col className="mb-5">
+        <Col className="mb-2">
           <h1 className="title">Ultimas Notícias</h1>
           <Row>
             {noticias.length !== 0
               ? noticias.map((noticia) => (
-                <Col xs={4} className="mb-0" key={`${noticia.not_id}`}>
+                <Col xs={4} className="mb-0 mt-4" key={`${noticia.not_id}`}>
                   <CapaNoticia data={noticia} />
                 </Col>
               ))

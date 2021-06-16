@@ -9,7 +9,7 @@ class Sessao {
         this.ses_data = ses_data;
     }
 
-    static semID(eve_id, ses_horarioInicio, ses_qtdeIng, ses_freq, sal_id, ses_data) {
+    static SemId(eve_id, ses_horarioInicio, ses_qtdeIng, ses_freq, sal_id, ses_data) {
         return new Sessao(eve_id, 0, ses_horarioInicio, ses_qtdeIng, ses_freq, sal_id, ses_data);
     }
 

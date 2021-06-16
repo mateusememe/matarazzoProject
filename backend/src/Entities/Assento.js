@@ -6,6 +6,7 @@ class Assento {
         this.numero = numero;
         this.fileira = fileira;
     }
+
     static SemId(salId, numero, fileira) {
         return new Assento(salId, 0, numero, fileira);
     }

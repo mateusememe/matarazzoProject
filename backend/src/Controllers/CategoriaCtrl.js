@@ -4,7 +4,6 @@ const Categoria = require('../Entities/Categoria')
 module.exports = {
     async listarCategorias(request, response) {
         const { tipoCat } = request.params;
-        console.log(tipoCat);
         const result = await CategoriaDAO.listarCategorias(tipoCat);
         return response.json(result);
     },

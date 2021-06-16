@@ -20,17 +20,22 @@ module.exports = {
     },
 
     async gravarEvento(request, response) {
-
-        const { eve_nome, eve_status, eve_dataInicio, eve_dataFim, cat_id, eve_img, usu_id, eve_valor } = request.body;
-        const evento = Evento.SemId(eve_nome, eve_status, eve_dataInicio, eve_dataFim, cat_id, eve_img, usu_id, eve_valor);
+        const {
+            eve_nome, eve_status, eve_data, eve_dataFim, eve_horario, eve_horarioFim,
+            eve_categoria, eve_img, eve_adm, eve_valor, eve_desc
+        } = request.body;
+        //(nome, status, dataInicio, dataFim, cat_id, img, usu_id, valor, descricao
+        const evento = Evento.SemId(eve_nome, eve_status, eve_data, eve_dataFim, eve_horario,
+            eve_horarioFim, eve_categoria, eve_img, eve_adm, eve_valor, eve_desc
+        );
         const result = await EventoDAO.gravar(evento);
         return response.json(result);
     },
 
     async alterarEvento(request, response) {//f
-
-        const { eve_id, eve_nome, eve_status, eve_dataInicio, eve_dataFim, cat_id, eve_img, usu_id, eve_valor } = request.body;
-        const evento = new Evento(eve_id, eve_nome, eve_status, eve_dataInicio, eve_dataFim, cat_id, eve_img, usu_id, eve_valor);
+        const { eve_nome, eve_status, eve_data, eve_dataFim, eve_horario, eve_horarioFim, eve_categoria, eve_img, eve_adm, eve_valor, eve_desc, eve_id } = request.body;
+        const evento = new Evento(eve_id, eve_nome, eve_status, eve_data, eve_dataFim, eve_horario, eve_horarioFim,
+            eve_categoria, eve_img, eve_adm, eve_valor, eve_desc);
         const result = await EventoDAO.alterar(evento);
         return response.json(result);
     },

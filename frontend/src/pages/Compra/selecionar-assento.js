@@ -12,13 +12,15 @@ import { InfoContext } from '../../context/InfoContext.js';
 export default function SelecionarAssento() {
   const history = useHistory();
   const [assentosOcupados, setAssentosOcupados] = useState([]);
-  const [fileiraAtual, setFileiraAtual] = useState();
+  const [fileiraAtual, setFileiraAtual] = useState(0);
   const [assentos, setAssentos] = useState([[]]);
   const [fileiras, setFileira] = useState([]);
-  const sala_id = localStorage.getItem('sala_id');
-  const eve_id = localStorage.getItem('eve_id');
   const [eve_nome, setEveNome] = useState('');
   const [ses_horarioInicio, setHorarioInicio] = useState('');
+
+  //falta pegar do context
+  const eve_id = localStorage.getItem('eve_id');
+  const sala_id = localStorage.getItem('sala_id');
   const ses_id = localStorage.getItem('ses_id');
   const {
     selecionado, setSelecionado, qtdeSelecionado, setQtde
@@ -30,33 +32,21 @@ export default function SelecionarAssento() {
     for (let i = 1; i <= response.data[0].sal_qtdeFileira; i++)
       temp.push(i);
     setFileira(temp);
-    /*
-      const response = await api.get('/sala/qtdeFileiras/' + sal_id);
-      let temp = [], tempAssentos= [];
-      for (let i = 1; i <= response.data[0].sal_qtdeFileira; i++){
-        temp.push(i);
-        tempAssentos[i] = await api.get('/assentos/' + sala_id + '/' + i);
-      }
-      setAssentos(tempAssentos);
-      setFileira(temp);
-    */
   }
 
   async function carregarAssentosOcupados() {
     const response = await api.get('/assentosOcupados/' + eve_id + '/' + ses_id);
-    console.log(response.data);
     setAssentosOcupados(response.data);
   }
 
   async function carregarAssentos(ast_fileira) {
     const response = await api.get('/assentos/' + sala_id + '/' + ast_fileira);
     const temp = assentos.slice();
-
     temp[ast_fileira] = response.data;
-    console.log(temp);
+    console.log(temp)
     setAssentos(temp);
-
   }
+
   async function recuperarNomeEvento() {
     const response = await api.get('/eventos/' + eve_id);
     setEveNome(response.data[0].eve_nome);
@@ -64,7 +54,7 @@ export default function SelecionarAssento() {
 
   function estaOcupado(ast_id) {
     let i;
-    for (i = 0; i < assentosOcupados.length && assentosOcupados[i].ast_id !== ast_id; i++);
+    for (i = 0; i < assentosOcupados.length && assentosOcupados[i].ast_id != ast_id; i++);
     return i < assentosOcupados.length;
   }
 
@@ -75,7 +65,6 @@ export default function SelecionarAssento() {
 
   function selecionar(ast) {
     const temp = selecionado.slice()
-    console.log(temp);
     if (!selecionado[ast]) {
       setQtde(qtdeSelecionado + 1)
     }
@@ -126,58 +115,67 @@ export default function SelecionarAssento() {
           </select>
         </Row>
 
-        <Row className="mt-5 justify-content-center">
-          <Col>
-            <h4 className="mb-0 font-weight-bold">Fileira {fileiraAtual}</h4>
-            <Row className="borda-2 p-2">
-              {assentos.length !== 0
-                ? assentos.map((teste, sindex) => (
-                  teste.map((ast, index) => (
-                    [sindex === fileiraAtual
-                      ?
-                      <Col className="justify-content-center align-itens-center ml-2 mr-2" key={`${ast.ast_num}`}>
-                        <p className="text-center mb-0">{ast.ast_num}</p>
-                        <Row className="align-items-center justify-content-center">
-                          {
-                            estaOcupado(ast.ast_id)
-                              ? <FaCouch className="icone-sofa" size={36} color='#d0bb5f' />
-                              :
-                              [selecionado[ast.ast_id]
-                                ? <FaCouch className="icone-sofa" size={36} color='#6bd84d' />
-                                : <FaCouch className="icone-sofa" size={36} color='#231F20' />
-                              ]
-                          }
-                          <input
-                            id={ast.ast_id}
-                            type="checkbox"
-                            value={ast.ast_id}
-                            disabled={estaOcupado(ast.ast_id)}
-                            checked={selecionado}
-                            onChange={() => {
-                              selecionar(ast.ast_id);
-                            }} />
-                        </Row>
-                      </Col>
-                      : null]
-                  ))
-                ))
-                : null
-              }
-            </Row>
-            <Row className="justify-content-between">
-              <p>A fileira 1 é a mais próxima do palco.</p>
-              <p>Quantidade de assentos selecionados: {qtdeSelecionado}</p>
-            </Row>
-          </Col>
-        </Row>
-        <Row className="justify-content-end mb-5">
-          <button
-            className='btn bg-brown'
-            type='submit'
-            onClick={() => history.push('./checkout-pagamento')}>
-            CONFIRMAR
-          </button>
-        </Row>
+
+        {
+          fileiraAtual != 0
+            ? <React.Fragment>
+              <Row className="mt-5 justify-content-center">
+                <Col>
+                  <h4 className="mb-0 font-weight-bold">Fileira {fileiraAtual}</h4>
+                  <Row className="borda-2 p-2">
+                    {assentos.length != 0
+                      ? assentos.map((teste, sindex) => (
+                        teste.map((ast, index) => (
+                          [sindex == fileiraAtual
+                            ?
+                            <Col className="justify-content-center align-itens-center ml-2 mr-2" key={`${ast.ast_num}`}>
+                              <p className="text-center mb-0">{ast.ast_num}</p>
+                              <Row className="align-items-center justify-content-center">
+                                {
+                                  estaOcupado(ast.ast_id)
+                                    ? <FaCouch key={`${ast.ast_num}`} className="icone-sofa" size={36} color='#d0bb5f' />
+                                    :
+                                    [selecionado[ast.ast_id]
+                                      ? <FaCouch key={`${ast.ast_num}`} className="icone-sofa" size={36} color='#6bd84d' />
+                                      : <FaCouch key={`${ast.ast_num}`} className="icone-sofa" size={36} color='#231F20' />
+                                    ]
+                                }
+                                <input
+                                  id={ast.ast_id}
+                                  type="checkbox"
+                                  value={ast.ast_id}
+                                  disabled={estaOcupado(ast.ast_id)}
+                                  checked={selecionado}
+                                  onChange={() => {
+                                    selecionar(ast.ast_id);
+                                  }} />
+                              </Row>
+                            </Col>
+                            : null]
+                        ))
+                      ))
+                      : null
+                    }
+                  </Row>
+                  <Row className="justify-content-between">
+                    <p>A fileira 1 é a mais próxima do palco.</p>
+                    <p>Quantidade de assentos selecionados: {qtdeSelecionado}</p>
+                  </Row>
+                </Col>
+              </Row>
+
+              <Row className="justify-content-end mb-5">
+                <button
+                  className='btn bg-brown'
+                  type='submit'
+                  onClick={() => history.push('./checkout-pagamento')}>
+                  CONFIRMAR
+                </button>
+              </Row>
+
+            </React.Fragment>
+            : <h4 className="text-center mt-5">Selecione uma fileira</h4>
+        }
       </Container >
     </React.Fragment >
   );

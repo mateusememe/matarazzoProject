@@ -3,15 +3,15 @@ const db = require('../models/Database')
 module.exports = {
 
     async gravar(assento) {
-        const sql = "INSERT INTO assento (sal_id, ast_numero, ast_fileira) " +
+        const sql = "INSERT INTO assento (sal_id, ast_num, ast_fileira) " +
             "VALUES (?, ?, ?)";
-        const valores = [asssento.getSalId(), assento.getNome(), assento.getFileira()];
+        const valores = [assento.getSalId(), assento.getNumero(), assento.getFileira()];
         await db.conecta();
         const result = await db.manipula(sql, valores);
         return result;
     },
     async alterar(assento) {
-        const sql = "UPDATE assento SET ast_numero = ?, ast_fileira = ? WHERE ast_id = ?";
+        const sql = "UPDATE assento SET ast_num = ?, ast_fileira = ? WHERE ast_id = ?";
         const valores = [assento.getNumero(), assento.getFileira(), assento.getId()];
         await db.conecta();
         const result = await db.manipula(sql, valores);
@@ -20,6 +20,13 @@ module.exports = {
     async excluir(sal_id, ast_id) {
         const sql = "DELETE FROM assento WHERE sal_id = ? AND ast_id = ?";
         const valor = [sal_id, ast_id];
+        await db.conecta();
+        const result = await db.manipula(sql, valor);
+        return result;
+    },
+    async excluirPorSala(sal_id) {
+        const sql = "DELETE FROM assento WHERE sal_id = ?";
+        const valor = [sal_id];
         await db.conecta();
         const result = await db.manipula(sql, valor);
         return result;

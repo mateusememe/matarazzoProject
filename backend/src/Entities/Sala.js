@@ -4,6 +4,10 @@ class Sala {
     this.nome = nome;
     this.qtdeAssento = qtdeAssento;
     this.qtdeFileira = qtdeFileira;
+    //sal_id, sal_nome, sal_qtdeAssento, sal_qtdeFileira
+  }
+  static SemId(id, nome, qtdeAssento, qtdeFileira) {
+    return new Sala(0, id, nome, qtdeAssento, qtdeFileira);
   }
   getId() {
     return this.id;

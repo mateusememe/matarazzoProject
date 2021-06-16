@@ -15,11 +15,17 @@
 }
 
 .titulo-banner {
-	font-size: 5vw;
+	font-size: 70px;
 	font-weight: bold;
 }
 
 .resumo-banner {
 	padding-bottom: 10px;
+	color: rgba(255, 255, 255, 0.493);
+}
+.resumo-banner-noticia {
+	padding-bottom: 10px;
+	font-size: 20px;
+	margin-bottom: 5%;
 	color: rgba(255, 255, 255, 0.493);
 }

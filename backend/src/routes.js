@@ -15,10 +15,12 @@ routes.get('/usuarios/id/:id', UsuCtrl.buscarUsuarioId);
 
 const VenCtrl = require('./Controllers/VendaCtrl');
 routes.post('/venda/cadastro', VenCtrl.gravarVenda);
+routes.get('/venda/:usu_id', VenCtrl.listarVendasUsuario);
 
 const IngressoCtrl = require('./Controllers/IngressoCtrl');
 routes.post('/ingresso/cadastro', IngressoCtrl.gravarIngresso);
 routes.get('/ingresso/:ven_id', IngressoCtrl.listarIngressosVenda);
+routes.get('/ingresso/usuario/:usu_id', IngressoCtrl.ingressosUsuario);
 routes.get('/ingresso/qrCode/:ing_qrCode', IngressoCtrl.buscarIngressoQr);
 
 const SesCtrl = require('./Controllers/SessaoCtrl');
@@ -26,7 +28,10 @@ routes.post('/sessoes', SesCtrl.gravar);
 routes.get('/sessoes/datas/:eve_id', SesCtrl.listarSessoesEvento);
 routes.get('/sessoes/salas_horarios/:eve_id/:data', SesCtrl.listarSalasHorarios);
 routes.get('/sessoes/:ses_id', SesCtrl.buscarSessao);
+routes.get('/sessoes/', SesCtrl.listarSessoes);
+routes.delete('/sessoes/:id', SesCtrl.remover);
 routes.put('/sessoes/incrementar_freq/:eve_id/:ses_id', SesCtrl.incrementarFreq);
+routes.put('/sessoes/', SesCtrl.alterar);
 
 const AssCtrl = require('./Controllers/AssentoCtrl');
 
@@ -36,10 +41,15 @@ routes.get('/assentos/:sal_id/:ast_fileira', AssCtrl.listarAssentosFileira);
 routes.get('/assentosOcupados/:eve_id/:ses_id', AssCtrl.listarAssentosOcupados);
 routes.put('/assentos', AssCtrl.alterarAssento);
 routes.delete('/assentos/:ass_id', AssCtrl.excluirAssento);
+routes.delete('/assentos/sala/:sal_id', AssCtrl.excluirAssentosSala);
 
 //ROTAS PARA SALA
 const SalCtrl = require('./Controllers/SalaCtrl');
 routes.get('/sala/qtdeFileiras/:sal_id', SalCtrl.recuperaQtdeFileiras);
+routes.get('/salas', SalCtrl.listarSalas);
+routes.post('/salas', SalCtrl.gravar);
+routes.put('/salas', SalCtrl.alterar);
+routes.delete('/salas/:id', SalCtrl.remover);
 
 const CatCtrl = require('./Controllers/CategoriaCtrl');
 
@@ -78,28 +88,39 @@ routes.get('/noticias/:not_id', NotCtrl.buscarNoticia);
 
 //Controla upload
 const storageEventos = multer.diskStorage({
-    destination: "../frontend/public/uploads",
+    //fazer uma pasta dedicada
+    destination: "../frontend/public/uploads/evento",
     filename: function (req, file, cb) {
         cb(null, "EVENTO-IMG-" + Date.now() + path.extname(file.originalname));
     }
 });
 
 const storageCursos = multer.diskStorage({
-    destination: "../frontend/public/uploads",
+    //fazer uma pasta dedicada
+    destination: "../frontend/public/uploads/curso",
     filename: function (req, file, cb) {
         cb(null, "CURSO-IMG-" + Date.now() + path.extname(file.originalname));
     }
 });
 
+const storageNoticias = multer.diskStorage({
+    destination: "../frontend/public/uploads/noticia",
+    filename: function (req, file, cb) {
+        cb(null, "NOTICIA-IMG-" + Date.now() + path.extname(file.originalname));
+    }
+});
+
 const uploadEventos = multer({
     storage: storageEventos,
-    limits: { fileSize: 900000 },
 }).single('eve_img');
 
 const uploadCursos = multer({
     storage: storageCursos,
-    limits: { fileSize: 900000 },
 }).single('cur_img');
+
+const uploadNoticias = multer({
+    storage: storageNoticias,
+}).single('not_img');
 
 routes.post('/upload/eventos', function (req, res) {
     uploadEventos(req, res, function (err) {
@@ -117,6 +138,17 @@ routes.post('/upload/cursos', function (req, res) {
             console.log(JSON.stringify(err));
             res.status(400).send('upload da imagem falhou');
         } else
+            res.send(res.req.file.filename);
+    });
+});
+routes.post('/upload/noticias', function (req, res) {
+    //console.log("Requisicao: " + req); //check
+    uploadNoticias(req, res, function (err) {
+        if (err) {
+            console.log(JSON.stringify(err));
+            res.status(400).send('upload da imagem falhou');
+        }
+        else
             res.send(res.req.file.filename);
     });
 });

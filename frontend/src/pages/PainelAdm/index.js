@@ -11,6 +11,8 @@ import GerenciarEvento from '../../components/Gerenciar/GerenciarEvento'
 import GerenciarNoticia from '../../components/Gerenciar/GerenciarNoticia'
 import GerenciarCategoria from '../../components/Gerenciar/GerenciarCategoria.js';
 import GerenciarUsuario from '../../components/Gerenciar/GerenciarUsuario';
+import GerenciarSala from '../../components/Gerenciar/GerenciarSala'
+import GerenciarSessao from '../../components/Gerenciar/GerenciarSessoes'
 
 import { DadosContext } from '../../context/DadosContext.js';
 
@@ -20,11 +22,11 @@ export default function PainelAdm() {
 	const usuario = localStorage.getItem('usu_id');
 	const nivel = localStorage.getItem('usu_nivel');
 
-	const { carregarCategorias } = useContext(DadosContext);
-	const { carregarCursos } = useContext(DadosContext);
-	const { carregarEventos } = useContext(DadosContext);
-	const { carregarNoticias } = useContext(DadosContext);
-	const { carregarUsuarios } = useContext(DadosContext);
+	const {
+		carregarCategorias, carregarCursos,
+		carregarEventos, carregarNoticias, carregarUsuarios,
+		carregarSalas, carregarSessoes
+	} = useContext(DadosContext);
 
 	useEffect(() => {
 		if (nivel !== 'A') history.push('/');
@@ -35,7 +37,7 @@ export default function PainelAdm() {
 			<Container>
 				<button className='btn bg-brown mt-3 w-30'>
 					<Link
-						to='./'
+						to='/'
 						style={{ color: '#fce373', textDecoration: 'none' }}>
 						INÍCIO
 					</Link>
@@ -52,7 +54,7 @@ export default function PainelAdm() {
 										eventKey='add-curso'
 										onClick={() => carregarCategorias('C')}>
 										Adicionar Novo
-										</NavDropdown.Item>
+									</NavDropdown.Item>
 									<NavDropdown.Divider />
 									<NavDropdown.Item
 										onClick={() => carregarCursos()}
@@ -124,6 +126,35 @@ export default function PainelAdm() {
 										Leitor QrCode
 									</NavDropdown.Item>
 								</NavDropdown>
+								<NavDropdown title='Gerenciar Sessao'
+									className='a'
+									id='nav-dropdown'>
+									<NavDropdown.Item
+										eventKey='add-sessao'
+										onClick={() => { carregarEventos(); carregarSalas() }}>
+										Adicionar Novo
+									</NavDropdown.Item>
+									<NavDropdown.Divider />
+									<NavDropdown.Item
+										onClick={() => { carregarSessoes(); carregarEventos() }}
+										eventKey='edit-sessao'>
+										Alterar ou Remover
+									</NavDropdown.Item>
+								</NavDropdown>
+								<NavDropdown title='Gerenciar Salas'
+									className='a'
+									id='nav-dropdown'>
+									<NavDropdown.Item
+										eventKey='add-sala'>
+										Adicionar Novo
+									</NavDropdown.Item>
+									<NavDropdown.Divider />
+									<NavDropdown.Item
+										onClick={() => carregarSalas()}
+										eventKey='edit-sala'>
+										Remover
+									</NavDropdown.Item>
+								</NavDropdown>
 							</Nav>
 						</Col>
 						<Col sm={9}>
@@ -189,6 +220,20 @@ export default function PainelAdm() {
 										usuario={usuario} nivel={nivel}
 										flag='edit'
 									/>
+								</Tab.Pane>
+								<Tab.Pane eventKey='add-sessao'>
+									<GerenciarSessao
+										flag='add'
+									/>
+								</Tab.Pane>
+								<Tab.Pane eventKey='edit-sessao'>
+									<GerenciarSessao />
+								</Tab.Pane>
+								<Tab.Pane eventKey='add-sala'>
+									<GerenciarSala flag='add' />
+								</Tab.Pane>
+								<Tab.Pane eventKey='edit-sala'>
+									<GerenciarSala />
 								</Tab.Pane>
 							</Tab.Content>
 						</Col>

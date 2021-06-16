@@ -24,6 +24,7 @@ module.exports = {
     },
 
     async alterar(usuario) {
+        console.log("no alterar")
         const sql = "UPDATE usuario SET usu_nome = ?, usu_sobrenome = ?,"
             + " usu_email = ?, usu_senha = ?, usu_cpf = ?, usu_dtNasc = ?, usu_endereco = ?,"
             + " usu_cidade = ?, usu_cep = ?, usu_fone = ?, usu_sexo = ? WHERE usu_id = ?";
@@ -32,6 +33,7 @@ module.exports = {
             usuario.getSenha(), usuario.getCpf(), usuario.getDtNasc(), usuario.getEndereco(),
             usuario.getCidade(), usuario.getCep(), usuario.getFone(), usuario.getSexo(), usuario.getId()
         ];
+        console.log("sql: " + sql + " valores: " + valores);
         await db.conecta();
         return db.manipula(sql, valores);
     },

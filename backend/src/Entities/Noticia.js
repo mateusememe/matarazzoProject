@@ -1,5 +1,5 @@
 class Noticia {
-    constructor(id, titulo, data, dataFim, usu_id, cat_id, descricao) {
+    constructor(id, titulo, data, dataFim, usu_id, cat_id, descricao, imagem) {
         this.id = id;
         this.titulo = titulo;
         this.data = data;
@@ -7,9 +7,10 @@ class Noticia {
         this.usu_id = usu_id;
         this.cat_id = cat_id;
         this.descricao = descricao;
+        this.imagem = imagem;
     }
-    static SemId(titulo, data, dataFim, usu_id, cat_id, descricao) {
-        return new Categoria(0, titulo, data, dataFim, usu_id, cat_id, descricao);
+    static SemId(titulo, data, dataFim, usu_id, cat_id, descricao, imagem) {
+        return new Noticia(0, titulo, data, dataFim, usu_id, cat_id, descricao, imagem);
     }
 
     getTitulo() {
@@ -24,6 +25,13 @@ class Noticia {
     }
     setDescricao(descricao) {
         this.descricao = descricao;
+    }
+
+    getImagem() {
+        return this.imagem;
+    }
+    setImagem(imagem) {
+        this.imagem = imagem;
     }
 
     getData() {
@@ -53,6 +61,19 @@ class Noticia {
     }
     setCatId(cat_id) {
         this.cat_id = cat_id;
+    }
+
+    getId() {
+        return this.id;
+    }
+
+    setId(id) {
+        this.id = id;
+    }
+
+    getExibe() {
+        let text = "[" + this.id + "," + this.titulo + "," + this.data + "," + this.dataFim + "," + this.usu_id + "," + this.cat_id + "," + this.descricao + "," + this.imagem + "]"
+        return text;
     }
 }
 module.exports = Noticia;

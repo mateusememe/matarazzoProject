@@ -58,7 +58,7 @@ const Navbar = () => {
                             <NavLink to='./'>
                                 <button className='btn bt-dark bg-yellow' onClick={logOut}>
                                     SAIR
-								</button>
+                                </button>
                             </NavLink>
                         </div>
                     </div>
@@ -76,14 +76,14 @@ const Navbar = () => {
                         <div>
                             <Logo style={{ cursor: "pointer" }} onClick={() => history.push('./')} />
                         </div>
-                        <div className='header-nav align-items-center'>
+                        <div className='header-nav width5 align-items-center m-0'>
                             <NavLink to='./minha-conta' title='Minha Conta'>
                                 <FaUser color='#fce373' />
                             </NavLink>
                             <NavLink to='./'>
                                 <button className='btn bt-dark bg-yellow' onClick={logOut}>
                                     SAIR
-								</button>
+                                </button>
                             </NavLink>
                         </div>
                     </div>

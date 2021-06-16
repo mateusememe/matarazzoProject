@@ -13,7 +13,7 @@ export default function CapaEvento({ data }) {
 
     return (
         <Card className="h-100 shadow-sm bg-white rounded">
-            <Card.Img variant="top" src={"uploads/" + data.eve_img} />
+            <Card.Img variant="top" src={"uploads/evento/" + data.eve_img} />
             <Card.Body className="d-flex flex-column">
                 <Card.Img />
                 <div className="d-flex mb-2 justify-content-between">

@@ -1,6 +1,13 @@
 const db = require('../models/Database')
 
 module.exports = {
+  async listarSessoes() {
+    const sql = "SELECT * FROM sessao ORDER BY eve_id";
+    await db.conecta();
+    const sessoes = await db.consulta(sql);
+    return sessoes.data;
+  },
+
   async SessoesEvento(eve_id) {
     var sql = "SELECT DISTINCT ses_data FROM SESSAO WHERE ses_data>=CURRENT_DATE AND eve_id=" + eve_id + " ORDER BY ses_data";
     await db.conecta();
@@ -39,7 +46,19 @@ module.exports = {
       sessao.getEveId(), sessao.getHorarioInicio(), sessao.getQtdeIng(),
       sessao.getFreq(), sessao.getData(), sessao.getSalId()
     ];
+    await db.conecta();
+    const result = await db.manipula(sql, valores);
+    return result;
+  },
 
+  async alterar(sessao) {
+    const sql = "UPDATE sessao SET eve_id = ?, ses_horarioInicio = ?, " +
+      "ses_qtdeIng = ?, ses_freq = ?, sal_id = ?, ses_data = ? " +
+      "WHERE ses_id = ?";
+    const valores = [
+      sessao.getEveId(), sessao.getHorarioInicio(), sessao.getQtdeIng(),
+      sessao.getFreq(), sessao.getSalId(), sessao.getData(), sessao.getId()
+    ];
     await db.conecta();
     const result = await db.manipula(sql, valores);
     return result;
@@ -53,6 +72,13 @@ module.exports = {
     await db.conecta();
     const result = await db.manipula(sql, valores);
     return result;
+  },
+
+  async remover(id) {
+    const sql = "DELETE FROM sessao WHERE ses_id = ?";
+    const valor = [id];
+    await db.conecta();
+    return db.manipula(sql, valor);
   }
 
 }

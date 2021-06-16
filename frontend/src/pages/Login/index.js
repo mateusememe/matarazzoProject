@@ -1,18 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Container, Row } from 'react-bootstrap';
 import api from '../../services/api.js'
+import { UsuContext } from '../../context/UsuContext';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './login.css'
 
 export default function Login() {
-    const email = localStorage.getItem("usu_email");
+    const email = localStorage.getItem('usu_email');
     const [usu_email, setEmail] = useState('');
     const [usu_senha, setSenha] = useState('');
     const [erroMsgE, setErroMsgE] = useState('');
     const [erroMsgS, setErroMsgS] = useState('');
     const history = useHistory();
+
+    /* const {
+        emailCtx,
+        setIdCtx,
+        setEmailCtx,
+        setSenhaCtx,
+        setNivelCtx
+    } = useContext(UsuContext); */
 
     function validarEmail() {
         if (usu_email === "") {
@@ -33,7 +42,6 @@ export default function Login() {
             return false;
         }
         else if (!(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/i).test(usu_senha)) {
-            //Mínimo de 6 caracteres, pelo menos uma letra e um número:
             setErroMsgS("Senha inválida!");
             return false;
         }
@@ -48,7 +56,11 @@ export default function Login() {
         if (validarEmail() && validarSenha()) {
             const response = await api.post('/usuarios/login', { usu_email, usu_senha });
             if (response.data.length !== 0) {
-                console.log(response.usu_id);
+                /* console.log(response.usu_id);
+                setEmailCtx(usu_email);
+                setSenhaCtx(usu_senha);
+                setIdCtx(response.data[0].usu_id);
+                setNivelCtx(response.data[0].usu_nivel) */
                 localStorage.setItem('usu_email', usu_email);
                 localStorage.setItem('usu_senha', usu_senha);
                 localStorage.setItem('usu_id', response.data[0].usu_id);
@@ -81,8 +93,8 @@ export default function Login() {
                                         placeholder="Digite seu email..."
                                     >
                                     </input>
+                                    {erroMsgE ? <span className="erro">{erroMsgE}</span> : null}
                                 </div>
-                                {erroMsgE ? <span className="erro">{erroMsgE}</span> : null}
                                 <div className="form-group mb-1">
                                     <input
                                         className="form-ctrl"
@@ -93,8 +105,8 @@ export default function Login() {
                                         placeholder="Digite sua senha..."
                                     >
                                     </input>
+                                    {erroMsgS ? <span className="erro">{erroMsgS}</span> : null}
                                 </div>
-                                {erroMsgS ? <span className="erro">{erroMsgS}</span> : null}
                                 <span className="form-group d-flex flex-row-reverse">
                                     <Link to="/recuperar-senha" className="form-links">Recuperar Senha</Link>
                                 </span>

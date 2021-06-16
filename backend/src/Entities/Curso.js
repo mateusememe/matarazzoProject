@@ -40,10 +40,10 @@ class Curso {
         this.usu_id = usu_id;
     }
 
-    getCatid() {
+    getCatId() {
         return this.categoria;
     }
-    setCatid(categoria) {
+    setCatId(categoria) {
         this.categoria = categoria;
     }
 

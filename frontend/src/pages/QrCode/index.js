@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { Container, Row, Modal, Col } from 'react-bootstrap';
 import QrReader from 'react-qr-reader'
 import api from '../../services/api'
-
+import './test.css'
 
 export default function LeitorQrCode() {
   const [valido, setValido] = useState(false);
@@ -42,33 +42,52 @@ export default function LeitorQrCode() {
   }, [nivel, history]);
 
   return (
-    <Container>
-      <Row className="justify-content-center mt-5">
-        {
-          leitorAtivo
-            ?
-            <QrReader
-              delay={500}
-              style={{ width: '30vw' }}
-              onError={handleError}
-              onScan={handleScan}
-            />
-            :
-            <React.Fragment>
-              <Row className="justify-content-center">
-                <Col className="text-center">
-                  <h1>Leitor QrCode</h1>
+    <React.Fragment>
+      <Container>
+        <Row className="justify-content-center mt-5">
+          {
+            leitorAtivo
+              ?
+              <React.Fragment>
+                <Col className='text-center'>
+                  <Row className='justify-content-center'>
+                    <QrReader
+                      delay={500}
+                      style={{ width: '30vw' }}
+                      onError={handleError}
+                      onScan={handleScan}
+                    />
+                  </Row>
                   <button
                     className="btn bg-brown mt-3 w-30"
-                    onClick={() => setLeitorAtivo(true)}>
-                    Abrir Leitor
+                    onClick={() => history.push('./painel-administrador')}>
+                    SAIR
                   </button>
                 </Col>
-              </Row>
-            </React.Fragment>
-        }
-      </Row>
-
+              </React.Fragment>
+              :
+              <React.Fragment>
+                <Row className="justify-content-center">
+                  <Col className="text-center">
+                    <h1>Leitor QrCode</h1>
+                    <button
+                      className="btn bg-brown mt-3 w-30"
+                      onClick={() => setLeitorAtivo(true)}>
+                      Abrir Leitor
+                    </button>
+                    <Col>
+                      <button
+                        className="btn bg-brown mt-3 w-30"
+                        onClick={() => history.push('./painel-administrador')}>
+                        SAIR
+                      </button>
+                    </Col>
+                  </Col>
+                </Row>
+              </React.Fragment>
+          }
+        </Row>
+      </Container>
       <Modal
         show={modal}
         onHide={() => { setValido(false); setModal(false) }}
@@ -88,8 +107,7 @@ export default function LeitorQrCode() {
           }
         </Modal.Body>
       </Modal>
-
-    </Container >
+    </React.Fragment>
   );
 
 }

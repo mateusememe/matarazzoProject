@@ -1,5 +1,5 @@
 const AssentoDAO = require('../DAO/AssentoDAO')
-const Categoria = require('../Entities/Assento')
+const Assento = require('../Entities/Assento');
 
 module.exports = {
 
@@ -16,7 +16,7 @@ module.exports = {
     },
     async alterarAssento(request, response) {
         const { sal_id, ast_id, ast_numero, ast_fileira } = request.body;
-        const ast = new Categoria(sal_id, ast_id, ast_numero, ast_fileira);
+        const ast = new Assento(sal_id, ast_id, ast_numero, ast_fileira);
         const result = await AssentoDAO.alterar(ast);
         return response.json(result);
     },
@@ -25,17 +25,19 @@ module.exports = {
         const result = await AssentoDAO.excluir(ast_id);
         return response.json(result);
     },
+    async excluirAssentosSala(request, response) {
+        const { sal_id } = request.params;
+        const result = await AssentoDAO.excluirPorSala(sal_id);
+        return response.json(result);
+    },
     async listarAssentosOcupados(request, response) {
         const { eve_id, ses_id } = request.params;
         const result = await AssentoDAO.listarAssentosOcupados(eve_id, ses_id);
-        console.log(result);
         return response.json(result);
     },
     async listarAssentosFileira(request, response) {
         const { sal_id, ast_fileira } = request.params;
-        console.log(sal_id, ast_fileira);
         const result = await AssentoDAO.listarAssentosFileira(sal_id, ast_fileira);
-        console.log(result);
         return response.json(result);
     }
 }
