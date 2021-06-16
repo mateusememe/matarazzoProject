@@ -51,8 +51,8 @@ Database
 
 - [x] Vender ingressos
 - [x] Registrar frequência nos eventos
-- [ ] Criar Sala
-- [ ] Definir sessões de evento
+- [x] Criar Sala
+- [x] Definir sessões de evento
 
 	
 	
