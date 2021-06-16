@@ -5,7 +5,7 @@
 </br>
 
 <h4 align="center"> 
-	🚧  React Select 🚀 Em construção...  🚧
+	🚧  React Select 🚀 Finalizado...  🚧
 </h4>
 
 </br>
