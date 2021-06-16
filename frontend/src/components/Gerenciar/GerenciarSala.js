@@ -58,30 +58,32 @@ export default function GerenciarSala({ flag }) {
     let sal_id, ast_numero, ast_fileira;
     setQtdeFileira(fileiras.length);
     setQtdeAssento(0);
+    let sal_qtdeAssento = 0;
+    let sal_qtdeFileira = fileiras.length;
+
     //gravar o registro de uma sala
-    console.log(sal_nome, sal_qtdeAssento, sal_qtdeFileira);
     const response = await api.post('/salas', {
       sal_nome, sal_qtdeAssento, sal_qtdeFileira
     });
+    console.log("post parameters: " + sal_nome + sal_qtdeAssento + sal_qtdeFileira);
     console.log(response);
+
     if (response.length !== 0) {
       sal_id = response.data.lastId;
-      let qtdeAssento = 0;
       for (let i = 0; i < fileiras.length; i++) {
-        ast_fileira = i + 1;
+        //ast_fileira = i + 1;
         for (let j = 0; j < fileiras[i].assentos.length; j++) {
-          ast_numero = j + 1;
+          //ast_numero = j + 1;
           //gravar o registro de assentos de uma determinada fileira
           await api.post('/assentos', {
-            sal_id, ast_numero, ast_fileira
+            sal_id, ast_numero: j + 1, ast_fileira: i + 1
           })
         }
-        qtdeAssento += fileiras[i].assentos.length;
+        sal_qtdeAssento += fileiras[i].assentos.length;
       }
-      setQtdeAssento(qtdeAssento);
-      //console.log(sal_id, sal_nome, sal_qtdeAssento, sal_qtdeFileira)
-      const resPut = await api.put('/salas',
-        { sal_id, sal_nome, sal_qtdeAssento, sal_qtdeFileira });
+      console.log(sal_id, sal_nome, sal_qtdeAssento, sal_qtdeFileira)
+      const resPut = await api.put('/salas', { sal_id, sal_nome, sal_qtdeAssento, sal_qtdeFileira });
+      console.log(resPut.data);
       setDone(true);
     }
   }
