@@ -1,14 +1,27 @@
 <h1 align="center">MatarazzoProject</h1>
 
-<p align="center">A college project for the class "Projeto Integrador II";</p>
+## 🛠 Technologies
 
-</br>
+- [Node.js](https://nodejs.org/en/)
+- [React](https://pt-br.reactjs.org/)
+- [MySQL](https://www.mysql.com/)
 
-<h4 align="center"> 
-	🚧  React Select 🚀 Finalizado...  🚧
-</h4>
+## ⚙️ Features
+	
+### Main
 
-</br>
+- [x] Sell tickets
+- [x] QrCode reader to frequency register in the event
+- [x] Manage Room (Seats) 
+- [x] Manage Show/Event Sessions (Time and Room) 
+	
+### Manage (CRUD) 
+
+- [x] Users
+- [x] News
+- [x] Courses
+- [x] Shows/Events
+- [x] Categories
 
 <h1 align="center">✨ Contributors</h1>
 
@@ -33,68 +46,6 @@
   </tr>
 <table>
 
-## 🛠 Technologies
-
-The Following tools were used in the construction of this project:
-
-- [Node.js](https://nodejs.org/en/)
-- [React](https://pt-br.reactjs.org/)
-
-Database
-
-- [MySQL](https://www.mysql.com/)
-<!-- - [React Native](https://reactnative.dev/) [soon] -->
-
-## ⚙️ Features
-	
-### Fundamentais
-
-- [x] Vender ingressos
-- [x] Registrar frequência nos eventos
-- [x] Criar Sala
-- [x] Definir sessões de evento
-
-	
-	
-### Usuários
-
-- [x] Cadastrar
-- [x] Alterar
-- [x] Remover
-- [x] Visualizar
-
-### Notícias
-
-- [x] Cadastrar
-- [x] Alterar
-- [x] Remover
-- [x] Visualizar
-
-### Cursos
-
-- [x] Cadastrar
-- [x] Alterar
-- [x] Remover
-- [x] Visualizar
-
-### Eventos
-
-- [x] Cadastrar
-- [x] Alterar
-- [x] Remover
-- [x] Visualizar
-
-### Categorias
-
-- [x] Cadastrar
-- [x] Alterar
-- [x] Remover
-- [x] Visualizar
-	
-	
-	
-
-
 ## 📝 Licence
 
-Este projeto esta sobe a licença [MIT](./LICENSE).
+Licensed by [MIT](./LICENSE).
